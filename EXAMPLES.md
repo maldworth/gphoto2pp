@@ -258,7 +258,7 @@ There's no point in pasting the code here, but this example basically shows off 
 * getAllWidgetsOfType(enum type) -> which will also return a vector<string> of only widgets that are of the specified type.
 Different cameras offer different abilities and configuration, which should be accessable through these widgets. Some are clearly named, some are not. You will see examples of both in example 6.
 
-I guess this is a good time as any to briefly explain what the camera widgets are. (Full explanation of widgets can be found [here](http://maldworth.github.io/gphoto2pp/classgphoto2pp_1_1_camera_widget_wrapper.html).
+I guess this is a good time as any to briefly explain what the camera widgets are. (Full explanation of widgets can be found [here](http://maldworth.github.io/gphoto2pp/classgphoto2pp_1_1_camera_widget_wrapper.html#details).
 GPhoto2 organizes the camera's settings in a n-ary tree of widgets. The widget types and their associated values are:
 
 | Type    | Value  |

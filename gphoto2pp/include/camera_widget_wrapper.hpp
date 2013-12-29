@@ -15,7 +15,26 @@ namespace gphoto2pp
 	
 	/**
 	 * \class CameraWidgetWrapper
-	 * A wrapper around the gphoto2 CameraWidget struct.
+	 * This class provides a RAII wrapper around the gphoto2 CameraWidget struct. In the gphoto2 the camera's abilities are represented by an N-ary tree.
+	 * 
+	 * Gphoto2 has 9 node types. 7 of them compose the leaf nodes of the tree and contian read, or read/write values. 2 of them (window and section) are non value widgets, and represent the internal nodes with 1 or more children.
+	 * 
+	 * Every camera abilities tree has Only 1 root node, which is always of type *Window*. Then this can have n children, typically they are *Section* widgets.
+	 * 
+	 * Please review the above graphical tree to look at the inheritance hierarchy of the widget types to understand the underlying value they each represent.
+	 * 
+	 * | Type    | Value  | Node Type |
+	 * | ------- |:------:| --------- |
+	 * | Window  | N/A    | Root      |
+	 * | Section | N/A    | Non Leaf  |
+	 * | Text    | string | Leaf      |
+	 * | Range   | float  | Leaf      |
+	 * | Toggle  | int    | Leaf      |
+	 * | Radio   | string | Leaf      |
+	 * | Menu    | string | Leaf      |
+	 * | Button  | N/A    | Leaf      |
+	 * | Date    | time_t | Leaf      |
+	 * 
 	 */
 	class CameraWidgetWrapper
 	{
