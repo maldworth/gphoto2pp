@@ -29,7 +29,7 @@ The examples should have fairly detailed comments in the source code, so I will 
 
 Example 1
 ---------
-Has zero device interaction, so you can actually run this just to 'double check' that gphoto2 and gphoto2pp are installed and linked in your system. Each gphoto2pp member and class maps to a gphoto method, or struct with associated methods. **LibraryVersion** maps to 'gp_library_version(...)'. This trend will continue, , stripping off the gp_, or gp_camera_ and then CamelCasing the proceeding gphoto2 method signature.
+Has zero device interaction, so you can actually run this just to *double check* that gphoto2 and gphoto2pp are installed and linked in your system. Each gphoto2pp member and class maps to a gphoto method, or struct with associated methods. **LibraryVersion** maps to *gp_library_version(...)*. This trend will continue, , stripping off the gp_, or gp_camera_ and then CamelCasing the proceeding gphoto2 method signature.
 
 ```cpp
 #include "helper_gphoto2.hpp"
@@ -53,15 +53,15 @@ int main(int argc, char* argv[]) {
 
 Example 2
 ---------
-There are a variety of gphoto2 structs (eg. Camera, CameraList, CameraFile, etc...), and so the RAII Classes I chose to append ''Wrapper'' to the end of the name. In this case, 'struct CameraList*' is contained inside our class 'CameraListWrapper', and it's created and cleaned up appropriately.
+There are a variety of gphoto2 structs (eg. Camera, CameraList, CameraFile, etc...), and so the RAII Classes I chose to append *Wrapper* to the end of the name. In this case, *struct CameraList* is contained inside our class *CameraListWrapper*, and it's created and cleaned up appropriately.
 
 This example scans all ports for recognized cameras and returns the list of cameras found. 
 
-You may also note we have added the 'helper_' header again. When certain actions and methods are performed that don't don't directly map to a gphoto2 method or struct, I separate them into a 'helper_' header file.
+You may also note we have added the 'helper_' header again. When certain actions and methods are performed that don't don't directly map to a gphoto2 method or struct, I separate them into a *helper_* header file.
 
 Lastly we have two parent type of exceptions that can be caught.
 * **gphoto2pp::exceptions::gphoto2_exception**
-  Every gphoto2 method call is wrapped in a 'checkResponse' method, which looks at the return value, and if it's less than 0, this means it is an error code, and so this will gather the error message and throw.
+  Every gphoto2 method call is wrapped in a *checkResponse* method, which looks at the return value, and if it's less than 0, this means it is an error code, and so this will gather the error message and throw.
 * **gphoto2pp::exceptions::GPhoto2ppExceptions**
   Everything else that might fail or cause unknown behavior that is not related to a gphoto2 call will inherit from this exception.
 
@@ -150,7 +150,7 @@ int main(int argc, char* argv[]) {
 
 Example 4
 ---------
-This examples shows a few different methods of capturing. All of them use the 'helper::' which I recommend you use, and also check out [helpers documentation](http://maldworth.github.io/gphoto2pp/doxygen/somelink.html).
+This examples shows a few different methods of capturing. All of them use the *helper::* which I recommend you use, and also check out [helpers documentation](http://maldworth.github.io/gphoto2pp/doxygen/somelink.html).
 * Initializing the cameraWrapper will connect to the first found camera. This saves us the time of calling the autoDetect methods.
 * Capture Method 1
   Pretty self explanitory in the code. Not much else to say.
@@ -195,7 +195,7 @@ int main(int argc, char* argv[]) {
 		gphoto2pp::helper::capture(cameraWrapper, cameraFileWrapper, true);
 		
 		// This is only really needed if your camera is set to take pictures in RAW.
-		// Because by default the mime type for those is 'application/unknown'
+		// Because by default the mime type for those is *application/unknown*
 		cameraFileWrapper.detectMimeType();
 		
 		std::cout << "FileName (empty by default): "<< cameraFileWrapper.getFileName() << std::endl;
@@ -272,7 +272,7 @@ GPhoto2 organizes the camera's settings in a n-ary tree of widgets. The widget t
 | Button  | -      |
 | Date    | time_t |
 
-For example, the battery level indicator is a read only **Text** widget. The name is 'batterylevel', but the full name is '/main/status/batterylevel'. This represents the tree path taken to get to the batterylevel, and 'main' would be a **window** widget, and 'status' is a **section** widget. Although the setValue method is accessible for all widgets, attempt to set a value to the 'batterylevel' widget would result in a gphoto2_exception.
+For example, the battery level indicator is a read only **Text** widget. The name is *batterylevel*, but the full name is */main/status/batterylevel*. This represents the tree path taken to get to the batterylevel, and *main* would be a **window** widget, and *status* is a **section** widget. Although the setValue method is accessible for all widgets, attempt to set a value to the *batterylevel* widget would result in a gphoto2_exception.
 
 Example 6
 ---------
@@ -280,7 +280,7 @@ Don't be daunted by this example. Because I wanted to make them easy to interact
 
 In order to get widgets, you have to always first use the ``CameraWrapper::getConfig()``. This is traversing the camera settings and constructing the N-ary tree of all current settings. This is a snapshot of the camera settings. If the camera is altered externally (I press the menu button and change a setting on the camera), then I will have to call the ``getConfig`` method again, because now my current one is out of date.
 
-Most widgets have a name, which is what we use to retrieve the widget ``getChildByName``. This 'name' is the value you received from example 5. You must make sure its just the 'name'. In the below example however, we use ``getChildByLabel``, but you might wonder how we knew that the label was 'ISO speed'. I previously retrieved the widget, and then used ``getLabel`` to find out what the label was. Most of the time you will use ``getChildByName``, but I wanted to show you there are other ways to get the same widget.
+Most widgets have a name, which is what we use to retrieve the widget ``getChildByName``. This *name* is the value you received from example 5. You must make sure its just the *name*. In the below example however, we use ``getChildByLabel``, but you might wonder how we knew that the label was *ISO speed*. I previously retrieved the widget, and then used ``getLabel`` to find out what the label was. Most of the time you will use ``getChildByName``, but I wanted to show you there are other ways to get the same widget.
 
 When preparing to write to the camera, its always good to have the most recent settings. Because what you do is you are writing the ISO to the leaf node, and then writing the whole tree back to the camera. So as I mentioned above, if your tree is out of date (maybe some other leaf node has updated), then you are potentially changing another setting on the camera.
 
@@ -295,7 +295,7 @@ void doRadioWidget(gphoto2pp::CameraWrapper& cameraWrapper, bool readOnly)
 	std::cout << "# Radio Widget             #" << std::endl;
 	std::cout << "#############################" << std::endl;
 	
-	// Now we will get the iso widget. We could use the name 'iso', but to change it up, we will use the label instead
+	// Now we will get the iso widget. We could use the name *iso*, but to change it up, we will use the label instead
 	auto radioWidget = rootWidget.getChildByLabel<gphoto2pp::RadioWidget>("ISO Speed");
 	std::cout << "\tReading iso Values" << std::endl;
 	std::cout << "\t   label:\t" << radioWidget.getLabel() << std::endl;
@@ -327,7 +327,7 @@ void doRadioWidget(gphoto2pp::CameraWrapper& cameraWrapper, bool readOnly)
 
 ```
 
-If you also take a glance at ``void doMenuWidget(gphoto2pp::CameraWrapper& cameraWrapper, bool readOnly)`` you will notice that this widget name is '5004' which is somewhat meaningless. But if you retrieve this widget and look at the label and values, you will see that it with a Nikon D90, it represents the capture type. So if there's some setting on your camera that is more unique to the manufacturer, you might have to explore some of the oddly named widgets to find out what it does.
+If you also take a glance at ``void doMenuWidget(gphoto2pp::CameraWrapper& cameraWrapper, bool readOnly)`` you will notice that this widget name is *5004* which is somewhat meaningless. But if you retrieve this widget and look at the label and values, you will see that it with a Nikon D90, it represents the capture type. So if there's some setting on your camera that is more unique to the manufacturer, you might have to explore some of the oddly named widgets to find out what it does.
 
 Example 7
 ---------
@@ -409,7 +409,7 @@ int main(int argc, char* argv[]) {
 ```
 Example 10
 ----------
-This example shows how to make a tethered listener. GPhoto2 has an example 'sample-tether.c'. This has a loop it uses for the wait_for_event, and so in C++11 we are able to easily use threads with an observer pattern. This functoinality is all baked into gphoto2pp, and all you need to do is subscribe for the event type, and start the listener.
+This example shows how to make a tethered listener. GPhoto2 has an example *sample-tether.c*. This has a loop it uses for the wait_for_event, and so in C++11 we are able to easily use threads with an observer pattern. This functoinality is all baked into gphoto2pp, and all you need to do is subscribe for the event type, and start the listener.
 You can use lambda functions, or if you have an instance method you want to bind the event to instead, you can use std::bind with the function and instance reference.
 ```cpp
 #include "camera_wrapper.hpp"

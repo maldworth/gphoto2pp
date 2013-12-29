@@ -20,9 +20,9 @@ User Prerequisites
 
 Dev/Test/Contributor Prerequisites
 ----------------------------------
-Everything mentioned in 'User Prerequisites' plus:
+Everything mentioned in *User Prerequisites* plus:
 * cxxtest 
-* '(optional)' doxygen and graphviz
+* *(optional)* doxygen and graphviz
 Once complete the installation, please also view the [Dev-Test document](DEV-TEST.md) for more information.
 
 Installing libgphoto2 (Simple)
@@ -38,7 +38,7 @@ You only need to do this if you explicitly want the latest and greatest libgphot
 
 Installing CMake
 ----------------
-Again, most distros have this, so install it through your package manager 'brew, apt-get, yum, etc...'
+Again, most distros have this, so install it through your package manager *brew, apt-get, yum, etc...*
 
 Installing Dev/Test/Contributor Only
 ------------------------------------
@@ -49,9 +49,9 @@ Installing gphoto2pp
 --------------------
 We are almost there.
 * Download gphoto2pp from here (of course), and extract it to any directory of your choosing.
-* Open a terminal and go into the ./gphoto2pp/build folder. Then run the command ``cmake ../``. CMake will scan and make sure gphoto2 is linked in the system before continuing, and then it will create all the 'Makefile's which will be used to compile and install gphoto2pp
-* Pay attention to the output, if there's an error saying 'Could NOT find CxxTest...' that's okay if you are just a User because you will not be running any unit tests
+* Open a terminal and go into the ./gphoto2pp/build folder. Then run the command ``cmake ../``. CMake will scan and make sure gphoto2 is linked in the system before continuing, and then it will create all the Makefile's which will be used to compile and install gphoto2pp
+* Pay attention to the output, if there's an error saying *Could NOT find CxxTest...* that's okay if you are just a User because you will not be running any unit tests
 * Now enter the command ``make``, and it will build the library and all examples.
 * Lastly, you most likely want to install, as this will copy the library and headers to your system lib paths. Run the command ``make install`` and let it do it's magic. (will probably require sudo)
 * You might have to use the command ``ldconfig`` to update your PATH with the new library (this is the command my OS, it might vary)
-* Optional, if you want to uninstall at any time, you can run ``make uninstall`` from this same directory. You will need to have the 'install_manifest.txt' preserved so the uninstall know's what files to uninstall. (again, will probably require sudo)
+* Optional, if you want to uninstall at any time, you can run ``make uninstall`` from this same directory. You will need to have the *install_manifest.txt* preserved so the uninstall know's what files to uninstall. (again, will probably require sudo)

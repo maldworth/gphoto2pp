@@ -5,7 +5,7 @@ gphoto2pp is a C++11 wrapper for libgphoto2.
 
 Table Of Contents
 -----------------
-* [Prerequisites](#user-prerequisites)
+* [Prerequisites](#prerequisites)
 * [2 Minute Tutorial](#2-minute-tutorial)
 * [Installation](INSTALL.md#installation)
   * [User Prerequisites](INSTALL.md#user-prerequisites)
@@ -37,7 +37,7 @@ Prerequisites
 ------------
 * A C++11 compiler (I've only tested g++, but others should work)
 * libgphoto2 (2.4.14 or greater)
-* cmake (2.8.3 or greater), 'only needed to build the library once to generate libgphoto2pp.so'
+* cmake (2.8.3 or greater), *only needed to build the library once to generate libgphoto2pp.so*
   
 2 Minute Tutorial
 -----------------
