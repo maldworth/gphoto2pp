@@ -167,7 +167,32 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a3339c4d5dd8bf96978285b6c2d48eea0"><td class="memItemLeft" align="right" valign="top">gphoto2::_CameraWidget *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgphoto2pp_1_1_camera_widget_wrapper.html#a3339c4d5dd8bf96978285b6c2d48eea0">m_cameraWidget</a> = nullptr</td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>A wrapper around the <a class="el" href="namespacegphoto2.html">gphoto2</a> CameraWidget struct. </p>
+<div class="textblock"><p>This class provides a RAII wrapper around the <a class="el" href="namespacegphoto2.html">gphoto2</a> CameraWidget struct. In the <a class="el" href="namespacegphoto2.html">gphoto2</a> the camera's abilities are represented by an N-ary tree.</p>
+<p>Gphoto2 has 9 node types. 7 of them compose the leaf nodes of the tree and contian read, or read/write values. 2 of them (window and section) are non value widgets, and represent the internal nodes with 1 or more children.</p>
+<p>Every camera abilities tree has Only 1 root node, which is always of type <em>Window</em>. Then this can have n children, typically they are <em>Section</em> widgets.</p>
+<p>Please review the above graphical tree to look at the inheritance hierarchy of the widget types to understand the underlying value they each represent.</p>
+<table class="doxtable">
+<tr>
+<th>Type </th><th align="center">Value </th></tr>
+<tr>
+<td>Window </td><td align="center">N/A </td></tr>
+<tr>
+<td>Section </td><td align="center">N/A </td></tr>
+<tr>
+<td>Text </td><td align="center">string </td></tr>
+<tr>
+<td>Range </td><td align="center">float </td></tr>
+<tr>
+<td>Toggle </td><td align="center">int </td></tr>
+<tr>
+<td>Radio </td><td align="center">string </td></tr>
+<tr>
+<td>Menu </td><td align="center">string </td></tr>
+<tr>
+<td>Button </td><td align="center">N/A </td></tr>
+<tr>
+<td>Date </td><td align="center">time_t </td></tr>
+</table>
 </div><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a7bd48f7609b19029ee37707130dd5672"></a>
 <div class="memitem">
@@ -704,7 +729,7 @@ Protected Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacegphoto2pp.html">gphoto2pp</a></li><li class="navelem"><a class="el" href="classgphoto2pp_1_1_camera_widget_wrapper.html">CameraWidgetWrapper</a></li>
-    <li class="footer">Generated on Sun Dec 29 2013 14:47:02 for GPhoto2pp by
+    <li class="footer">Generated on Sun Dec 29 2013 15:30:33 for GPhoto2pp by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
