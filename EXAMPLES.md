@@ -260,16 +260,17 @@ Different cameras offer different abilities and configuration, which should be a
 
 I guess this is a good time as any to briefly explain what the camera widgets are. (Full explanation of widgets can be found [here](http://maldworth.github.io/gphoto2pp)).
 GPhoto2 organizes the camera's settings in a n-ary tree of widgets. The widget types and their associated values are:
+
 | Type    | Value  |
 | ------- |:------:|
-| Window  | -      |
-| Section | -      |
+| Window  |        |
+| Section |        |
 | Text    | string |
 | Range   | float  |
 | Toggle  | int    |
 | Radio   | string |
 | Menu    | string |
-| Button  | -      |
+| Button  |        |
 | Date    | time_t |
 
 For example, the battery level indicator is a read only **Text** widget. The name is *batterylevel*, but the full name is */main/status/batterylevel*. This represents the tree path taken to get to the batterylevel, and *main* would be a **window** widget, and *status* is a **section** widget. Although the setValue method is accessible for all widgets, attempt to set a value to the *batterylevel* widget would result in a gphoto2_exception.
