@@ -1,0 +1,12 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classgphoto2pp_1_1exceptions_1_1_g_photo2pp_exception.html" title="gphoto2pp::exceptions\l::GPhoto2ppException" alt="" coords="5,282,168,329"/>
+<area shape="rect" id="node3" href="$classgphoto2pp_1_1exceptions_1_1_argument_exception.html" title="gphoto2pp::exceptions\l::ArgumentException" alt="" coords="244,5,407,51"/>
+<area shape="rect" id="node5" href="$classgphoto2pp_1_1exceptions_1_1_camera_wrapper_exception.html" title="gphoto2pp::exceptions\l::CameraWrapperException" alt="" coords="229,74,421,121"/>
+<area shape="rect" id="node7" href="$classgphoto2pp_1_1exceptions_1_1_helper_exception.html" title="gphoto2pp::exceptions\l::HelperException" alt="" coords="244,143,407,190"/>
+<area shape="rect" id="node9" href="$classgphoto2pp_1_1exceptions_1_1_index_out_of_range.html" title="gphoto2pp::exceptions\l::IndexOutOfRange" alt="" coords="244,213,407,259"/>
+<area shape="rect" id="node11" href="$classgphoto2pp_1_1exceptions_1_1_invalid_linked_version_exception.html" title="gphoto2pp::exceptions\l::InvalidLinkedVersionException" alt="" coords="216,282,435,329"/>
+<area shape="rect" id="node13" href="$classgphoto2pp_1_1exceptions_1_1_invalid_widget_type.html" title="gphoto2pp::exceptions\l::InvalidWidgetType" alt="" coords="244,351,407,398"/>
+<area shape="rect" id="node15" href="$classgphoto2pp_1_1exceptions_1_1_no_camera_found_error.html" title="gphoto2pp::exceptions\l::NoCameraFoundError" alt="" coords="243,421,408,467"/>
+<area shape="rect" id="node17" href="$classgphoto2pp_1_1exceptions_1_1_null_widget.html" title="gphoto2pp::exceptions\l::NullWidget" alt="" coords="244,490,407,537"/>
+<area shape="rect" id="node19" href="$classgphoto2pp_1_1exceptions_1_1_value_out_of_limits.html" title="gphoto2pp::exceptions\l::ValueOutOfLimits" alt="" coords="244,559,407,606"/>
+</map>

@@ -1,0 +1,20 @@
+<map id="gphoto2pp::CameraWidgetWrapper" name="gphoto2pp::CameraWidgetWrapper">
+<area shape="rect" id="node3" href="$classgphoto2pp_1_1_non_value_widget.html" title="gphoto2pp::NonValueWidget" alt="" coords="313,32,513,61"/>
+<area shape="rect" id="node9" href="$classgphoto2pp_1_1_value_widget_base.html" title="gphoto2pp::ValueWidgetBase\&lt; T \&gt;" alt="" coords="293,85,533,115"/>
+<area shape="rect" id="node11" href="$classgphoto2pp_1_1_value_widget_base.html" title="gphoto2pp::ValueWidgetBase\l\&lt; float \&gt;" alt="" coords="311,138,516,185"/>
+<area shape="rect" id="node17" href="$classgphoto2pp_1_1_value_widget_base.html" title="gphoto2pp::ValueWidgetBase\l\&lt; int \&gt;" alt="" coords="311,207,516,254"/>
+<area shape="rect" id="node23" href="$classgphoto2pp_1_1_value_widget_base.html" title="gphoto2pp::ValueWidgetBase\l\&lt; std::string \&gt;" alt="" coords="311,277,516,323"/>
+<area shape="rect" id="node35" href="$classgphoto2pp_1_1_value_widget_base.html" title="gphoto2pp::ValueWidgetBase\l\&lt; std::time_t \&gt;" alt="" coords="311,346,516,393"/>
+<area shape="rect" id="node5" href="$classgphoto2pp_1_1_section_widget.html" title="gphoto2pp::SectionWidget" alt="" coords="584,5,768,35"/>
+<area shape="rect" id="node7" href="$classgphoto2pp_1_1_window_widget.html" title="gphoto2pp::WindowWidget" alt="" coords="583,59,769,88"/>
+<area shape="rect" id="node13" href="$classgphoto2pp_1_1_float_widget.html" title="gphoto2pp::FloatWidget" alt="" coords="592,147,760,176"/>
+<area shape="rect" id="node15" href="$classgphoto2pp_1_1_range_widget.html" title="gphoto2pp::RangeWidget" alt="" coords="824,147,1003,176"/>
+<area shape="rect" id="node19" href="$classgphoto2pp_1_1_int_widget.html" title="gphoto2pp::IntWidget" alt="" coords="600,216,752,245"/>
+<area shape="rect" id="node21" href="$classgphoto2pp_1_1_toggle_widget.html" title="gphoto2pp::ToggleWidget" alt="" coords="823,216,1004,245"/>
+<area shape="rect" id="node25" href="$classgphoto2pp_1_1_string_widget.html" title="gphoto2pp::StringWidget" alt="" coords="589,285,763,315"/>
+<area shape="rect" id="node27" href="$classgphoto2pp_1_1_choices_widget.html" title="gphoto2pp::ChoicesWidget" alt="" coords="820,277,1007,307"/>
+<area shape="rect" id="node33" href="$classgphoto2pp_1_1_text_widget.html" title="gphoto2pp::TextWidget" alt="" coords="831,331,996,360"/>
+<area shape="rect" id="node29" href="$classgphoto2pp_1_1_menu_widget.html" title="gphoto2pp::MenuWidget" alt="" coords="1057,251,1231,280"/>
+<area shape="rect" id="node31" href="$classgphoto2pp_1_1_radio_widget.html" title="gphoto2pp::RadioWidget" alt="" coords="1057,304,1231,333"/>
+<area shape="rect" id="node37" href="$classgphoto2pp_1_1_date_widget.html" title="gphoto2pp::DateWidget" alt="" coords="593,355,759,384"/>
+</map>

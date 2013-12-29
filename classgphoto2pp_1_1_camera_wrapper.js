@@ -1,0 +1,27 @@
+var classgphoto2pp_1_1_camera_wrapper =
+[
+    [ "CameraWrapper", "classgphoto2pp_1_1_camera_wrapper.html#a5097ce157b63a97f726514c8ae9cc5af", null ],
+    [ "CameraWrapper", "classgphoto2pp_1_1_camera_wrapper.html#ad040f53b041cf749153e66161f178b42", null ],
+    [ "~CameraWrapper", "classgphoto2pp_1_1_camera_wrapper.html#a8fb53e517206d571e3b2a19ffcf33929", null ],
+    [ "CameraWrapper", "classgphoto2pp_1_1_camera_wrapper.html#af3045cb32d128b50f5473f9cf70c9ff9", null ],
+    [ "CameraWrapper", "classgphoto2pp_1_1_camera_wrapper.html#aa28a49b122888a5514abf73a76d31173", null ],
+    [ "capture", "classgphoto2pp_1_1_camera_wrapper.html#aecb21f74514170d9c3fa2d99961fa435", null ],
+    [ "capturePreview", "classgphoto2pp_1_1_camera_wrapper.html#ae21c7d41a07fbc4581b0b84330bc2c4d", null ],
+    [ "fileDelete", "classgphoto2pp_1_1_camera_wrapper.html#a1cf14b5d89f7d07e75076d60c6baeb00", null ],
+    [ "fileGet", "classgphoto2pp_1_1_camera_wrapper.html#a6fb3e2e25c46adddda6146ab7ea6e2e1", null ],
+    [ "folderDeleteAll", "classgphoto2pp_1_1_camera_wrapper.html#a91b40fbc3796e92b4d075bee28ad41fa", null ],
+    [ "folderListFiles", "classgphoto2pp_1_1_camera_wrapper.html#adc84667b73a30ee48153bba9141b368e", null ],
+    [ "folderListFolders", "classgphoto2pp_1_1_camera_wrapper.html#a46e4bb628939e62d7256bd39b77523ed", null ],
+    [ "folderMakeDir", "classgphoto2pp_1_1_camera_wrapper.html#ad7948df24d7ed266ca159f7b602f0bed", null ],
+    [ "folderPutFile", "classgphoto2pp_1_1_camera_wrapper.html#a98484e53611facad485b392c6df808c1", null ],
+    [ "folderRemoveDir", "classgphoto2pp_1_1_camera_wrapper.html#a1f6e9510409818ea916d127b441c9382", null ],
+    [ "getConfig", "classgphoto2pp_1_1_camera_wrapper.html#a5b908c1c810cbb0915d5aa32cc419401", null ],
+    [ "getSummary", "classgphoto2pp_1_1_camera_wrapper.html#a04fbe32b74b7691f499a6a912ddfdbfd", null ],
+    [ "operator=", "classgphoto2pp_1_1_camera_wrapper.html#a01896bb259d42e901351219fbcc6a06d", null ],
+    [ "operator=", "classgphoto2pp_1_1_camera_wrapper.html#a67b09170935817bdf77a2a60d24f5923", null ],
+    [ "setConfig", "classgphoto2pp_1_1_camera_wrapper.html#a53ed023a185e788bb028b6f503aaf896", null ],
+    [ "startListeningForEvents", "classgphoto2pp_1_1_camera_wrapper.html#ac1b8914fede536cde09d93101abe890f", null ],
+    [ "stopListeningForEvents", "classgphoto2pp_1_1_camera_wrapper.html#ad116e9e60c97e2549b4d16651b208112", null ],
+    [ "subscribeToCameraEvent", "classgphoto2pp_1_1_camera_wrapper.html#a346cddfdf69a96fdff4e160033854718", null ],
+    [ "triggerCapture", "classgphoto2pp_1_1_camera_wrapper.html#a78353f9ffa815183b86847e439dcbfef", null ]
+];

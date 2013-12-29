@@ -1,0 +1,8 @@
+<map id="gphoto2pp::StringWidget" name="gphoto2pp::StringWidget">
+<area shape="rect" id="node7" href="$classgphoto2pp_1_1_choices_widget.html" title="gphoto2pp::ChoicesWidget" alt="" coords="97,256,284,285"/>
+<area shape="rect" id="node13" href="$classgphoto2pp_1_1_text_widget.html" title="gphoto2pp::TextWidget" alt="" coords="308,256,473,285"/>
+<area shape="rect" id="node2" href="$classgphoto2pp_1_1_value_widget_base.html" title="gphoto2pp::ValueWidgetBase\l\&lt; std::string \&gt;" alt="" coords="188,83,393,130"/>
+<area shape="rect" id="node4" href="$classgphoto2pp_1_1_camera_widget_wrapper.html" title="gphoto2pp::CameraWidgetWrapper" alt="" coords="171,5,411,35"/>
+<area shape="rect" id="node9" href="$classgphoto2pp_1_1_menu_widget.html" title="gphoto2pp::MenuWidget" alt="" coords="5,333,179,363"/>
+<area shape="rect" id="node11" href="$classgphoto2pp_1_1_radio_widget.html" title="gphoto2pp::RadioWidget" alt="" coords="203,333,376,363"/>
+</map>

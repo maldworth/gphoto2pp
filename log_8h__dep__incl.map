@@ -1,0 +1,26 @@
+<map id="gphoto2pp/include/log.h" name="gphoto2pp/include/log.h">
+<area shape="rect" id="node3" href="$camera__abilities__list__wrapper_8cpp.html" title="gphoto2pp/src/camera\l_abilities_list_wrapper.cpp" alt="" coords="5,83,187,130"/>
+<area shape="rect" id="node5" href="$camera__file__wrapper_8cpp.html" title="gphoto2pp/src/camera\l_file_wrapper.cpp" alt="" coords="211,83,368,130"/>
+<area shape="rect" id="node7" href="$camera__list__wrapper_8cpp.html" title="gphoto2pp/src/camera\l_list_wrapper.cpp" alt="" coords="392,83,549,130"/>
+<area shape="rect" id="node9" href="$camera__widget__wrapper_8cpp.html" title="gphoto2pp/src/camera\l_widget_wrapper.cpp" alt="" coords="573,83,731,130"/>
+<area shape="rect" id="node11" href="$camera__wrapper_8cpp.html" title="gphoto2pp/src/camera\l_wrapper.cpp" alt="" coords="755,83,912,130"/>
+<area shape="rect" id="node13" href="$choices__widget_8cpp.html" title="gphoto2pp/src/choices\l_widget.cpp" alt="" coords="936,83,1096,130"/>
+<area shape="rect" id="node15" href="$date__widget_8cpp.html" title="gphoto2pp/src/date\l_widget.cpp" alt="" coords="1120,83,1259,130"/>
+<area shape="rect" id="node17" href="$float__widget_8cpp.html" title="gphoto2pp/src/float\l_widget.cpp" alt="" coords="1283,83,1421,130"/>
+<area shape="rect" id="node19" href="$gp__port__info__list__wrapper_8cpp.html" title="gphoto2pp/src/gp_port\l_info_list_wrapper.cpp" alt="" coords="1445,83,1603,130"/>
+<area shape="rect" id="node21" href="$helper__camera__wrapper_8cpp.html" title="gphoto2pp/src/helper\l_camera_wrapper.cpp" alt="" coords="1627,83,1784,130"/>
+<area shape="rect" id="node23" href="$helper__context_8cpp.html" title="gphoto2pp/src/helper\l_context.cpp" alt="" coords="1808,83,1957,130"/>
+<area shape="rect" id="node25" href="$helper__debugging_8cpp.html" title="gphoto2pp/src/helper\l_debugging.cpp" alt="" coords="1981,83,2131,130"/>
+<area shape="rect" id="node27" href="$helper__gphoto2_8cpp.html" title="gphoto2pp/src/helper\l_gphoto2.cpp" alt="" coords="2155,83,2304,130"/>
+<area shape="rect" id="node29" href="$helper__widgets_8cpp.html" title="gphoto2pp/src/helper\l_widgets.cpp" alt="" coords="2328,83,2477,130"/>
+<area shape="rect" id="node31" href="$int__widget_8cpp.html" title="gphoto2pp/src/int_widget.cpp" alt="" coords="2501,92,2701,121"/>
+<area shape="rect" id="node33" href="$menu__widget_8cpp.html" title="gphoto2pp/src/menu\l_widget.cpp" alt="" coords="2725,83,2872,130"/>
+<area shape="rect" id="node35" href="$non__value__widget_8cpp.html" title="gphoto2pp/src/non_value\l_widget.cpp" alt="" coords="2896,83,3075,130"/>
+<area shape="rect" id="node37" href="$radio__widget_8cpp.html" title="gphoto2pp/src/radio\l_widget.cpp" alt="" coords="3099,83,3243,130"/>
+<area shape="rect" id="node39" href="$range__widget_8cpp.html" title="gphoto2pp/src/range\l_widget.cpp" alt="" coords="3267,83,3416,130"/>
+<area shape="rect" id="node41" href="$section__widget_8cpp.html" title="gphoto2pp/src/section\l_widget.cpp" alt="" coords="3440,83,3597,130"/>
+<area shape="rect" id="node43" href="$string__widget_8cpp.html" title="gphoto2pp/src/string\l_widget.cpp" alt="" coords="3621,83,3768,130"/>
+<area shape="rect" id="node45" href="$text__widget_8cpp.html" title="gphoto2pp/src/text\l_widget.cpp" alt="" coords="3792,83,3925,130"/>
+<area shape="rect" id="node47" href="$toggle__widget_8cpp.html" title="gphoto2pp/src/toggle\l_widget.cpp" alt="" coords="3949,83,4099,130"/>
+<area shape="rect" id="node49" href="$window__widget_8cpp.html" title="gphoto2pp/src/window\l_widget.cpp" alt="" coords="4123,83,4283,130"/>
+</map>
