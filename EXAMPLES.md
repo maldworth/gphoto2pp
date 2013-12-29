@@ -263,14 +263,14 @@ GPhoto2 organizes the camera's settings in a n-ary tree of widgets. The widget t
 
 | Type    | Value  |
 | ------- |:------:|
-| Window  |        |
-| Section |        |
+| Window  | N/A    |
+| Section | N/A    |
 | Text    | string |
 | Range   | float  |
 | Toggle  | int    |
 | Radio   | string |
 | Menu    | string |
-| Button  |        |
+| Button  | N/A    |
 | Date    | time_t |
 
 For example, the battery level indicator is a read only **Text** widget. The name is *batterylevel*, but the full name is */main/status/batterylevel*. This represents the tree path taken to get to the batterylevel, and *main* would be a **window** widget, and *status* is a **section** widget. Although the setValue method is accessible for all widgets, attempt to set a value to the *batterylevel* widget would result in a gphoto2_exception.

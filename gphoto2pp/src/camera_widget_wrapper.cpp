@@ -1,0 +1,212 @@
+#include "camera_widget_wrapper.hpp"
+
+#include "helper_gphoto2.hpp"
+#include "camera_widget_type_wrapper.hpp"
+
+#include "log.h"
+
+namespace gphoto2
+{
+#include <gphoto2/gphoto2-widget.h>
+}
+
+namespace gphoto2pp
+{
+	CameraWidgetWrapper::CameraWidgetWrapper(gphoto2::_CameraWidget* cameraWidget)
+		: m_cameraWidget(cameraWidget)
+	{
+		FILE_LOG(logINFO) << "CameraWidgetWrapper Constructor for " << getName();
+		
+		// This call to increment the reference is correct 99% of the time when this constructor is called
+		// because it is likely being called for a child widget. However the one scenario when we call this
+		// constructor from the CameraWrapper.getConfig, it is the parent, and so we have now just incremented
+		// the reference to == 2. This is wrong, and so we unref in a special overloaded constructor in WindowWidget class
+		ref();
+	}
+	
+	CameraWidgetWrapper::~CameraWidgetWrapper()
+	{
+		if(m_cameraWidget != nullptr)
+		{	
+			FILE_LOG(logINFO) << "~CameraWidgetWrapper Destructor for: " << getName();
+			
+			unref();
+			
+			m_cameraWidget = nullptr;
+		}
+		else
+		{
+			FILE_LOG(logINFO) << "~CameraWidgetWrapper Destructor - null Widget";
+		}
+	}
+
+	CameraWidgetWrapper::CameraWidgetWrapper(CameraWidgetWrapper&& other)
+		: m_cameraWidget(other.m_cameraWidget)
+	{
+		FILE_LOG(logINFO) << "CameraWidgetWrapper Move Constructor";
+			
+		other.m_cameraWidget = nullptr; // So when the 'other' instance calls it's destructor, it won't try to unreference.
+	}
+
+	CameraWidgetWrapper& CameraWidgetWrapper::operator=(CameraWidgetWrapper&& other)
+	{
+		FILE_LOG(logINFO) << "CameraWidgetWrapper Move Assignment";
+		
+		// Check for self assignment
+		if(this != &other)
+		{
+			// Release current objects resource
+			if(m_cameraWidget != nullptr)
+			{
+				unref();
+			}
+			
+			// Steal or "move" the other objects resource
+			m_cameraWidget = other.m_cameraWidget;
+			
+			// Unreference the other objects resource, so it's destructor doesn't unreference it
+			other.m_cameraWidget = nullptr;
+		}
+		
+		return *this;
+	}
+	
+	CameraWidgetWrapper::CameraWidgetWrapper(const CameraWidgetWrapper& other)
+		: m_cameraWidget(other.m_cameraWidget)
+	{
+		FILE_LOG(logINFO) << "CameraWidgetWrapper Copy Constructor";
+		ref();
+	}
+
+	CameraWidgetWrapper& CameraWidgetWrapper::operator=(const CameraWidgetWrapper& other)
+	{
+		FILE_LOG(logINFO) << "CameraWidgetWrapper Copy Assignment";
+		
+		// Check for self assignment
+		if(this != &other)
+		{
+			// Release current objects resource
+			if(m_cameraWidget != nullptr)
+			{
+				unref();
+			}
+			
+			// copy the other objects pointer
+			m_cameraWidget = other.m_cameraWidget;
+			
+			// Now we add reference to thew new one we just copied
+			if(m_cameraWidget != nullptr)
+			{
+				ref();
+			}
+		}
+		return *this;
+	}
+	
+	gphoto2::_CameraWidget* CameraWidgetWrapper::getPtr() const
+	{
+		return m_cameraWidget;
+	}
+
+	std::string CameraWidgetWrapper::getName() const
+	{
+		const char* temp = nullptr;
+		
+		gphoto2pp::checkResponse(gphoto2::gp_widget_get_name(m_cameraWidget, &temp),"gp_widget_get_name");
+		
+		return std::string(temp);
+	}
+
+	CameraWidgetTypeWrapper CameraWidgetWrapper::getType() const
+	{
+		gphoto2::CameraWidgetType temp;
+
+		gphoto2pp::checkResponse(gphoto2::gp_widget_get_type(m_cameraWidget, &temp),"gp_widget_get_type");
+		
+		FILE_LOG(logDEBUG) << "CameraWidgetType value is '" << static_cast<int>(temp) << "'";
+		
+		return static_cast<CameraWidgetTypeWrapper>(temp);
+	}
+
+	std::string CameraWidgetWrapper::getLabel() const
+	{
+		const char* temp = nullptr;
+		
+		gphoto2pp::checkResponse(gphoto2::gp_widget_get_label(m_cameraWidget, &temp),"gp_widget_get_label");
+		
+		return std::string(temp);
+	}
+
+	std::string CameraWidgetWrapper::getInfo() const
+	{
+		const char* temp = nullptr;
+		
+		gphoto2pp::checkResponse(gphoto2::gp_widget_get_info(m_cameraWidget, &temp),"gp_widget_get_info");
+		
+		return std::string(temp);
+	}
+	
+	int CameraWidgetWrapper::getId() const
+	{
+		int id = 0;
+		
+		gphoto2pp::checkResponse(gphoto2::gp_widget_get_id(m_cameraWidget, &id),"gp_widget_get_id");
+		
+		return id;
+	}
+	
+	CameraWidgetWrapper CameraWidgetWrapper::getRoot() const
+	{
+		return CameraWidgetWrapper(getRootDefault());
+	}
+	
+	CameraWidgetWrapper CameraWidgetWrapper::getParent() const
+	{
+		return CameraWidgetWrapper(getParentDefault());
+	}
+	
+	gphoto2::_CameraWidget* CameraWidgetWrapper::getRootDefault() const
+	{
+		gphoto2::_CameraWidget* rootWidget = nullptr;
+
+		gphoto2pp::checkResponse(gphoto2::gp_widget_get_root(m_cameraWidget, &rootWidget),"gp_widget_get_root");
+		
+		return rootWidget;
+	}
+	
+	void CameraWidgetWrapper::ref()
+	{
+		gphoto2::_CameraWidget* rootWidget = getRootDefault();
+		
+		gphoto2pp::checkResponse(gphoto2::gp_widget_ref(rootWidget),"gp_widget_ref");
+	}
+	
+	void CameraWidgetWrapper::unref()
+	{
+		gphoto2::_CameraWidget* rootWidget = getRootDefault();
+		
+		gphoto2pp::checkResponse(gphoto2::gp_widget_unref(rootWidget),"gp_widget_unref");
+	}
+	
+	gphoto2::_CameraWidget* CameraWidgetWrapper::getParentDefault() const
+	{
+		gphoto2::_CameraWidget* parentWidget = nullptr;
+
+		gphoto2pp::checkResponse(gphoto2::gp_widget_get_parent(m_cameraWidget, &parentWidget),"gp_widget_get_parent");
+		
+		return parentWidget;
+	}
+	
+	void* CameraWidgetWrapper::getValueDefault() const
+	{
+		void* temp;
+		gphoto2pp::checkResponse(gphoto2::gp_widget_get_value(m_cameraWidget, &temp),"gp_widget_get_value");
+		return temp;
+	}
+	
+	void CameraWidgetWrapper::setValueDefault(const void* value)
+	{
+		gphoto2pp::checkResponse(gphoto2::gp_widget_set_value(m_cameraWidget, value),"gp_widget_set_value");	
+	}
+}
+
