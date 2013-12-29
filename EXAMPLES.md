@@ -150,7 +150,7 @@ int main(int argc, char* argv[]) {
 
 Example 4
 ---------
-This examples shows a few different methods of capturing. All of them use the *helper::* which I recommend you use, and also check out [helpers documentation](http://maldworth.github.io/gphoto2pp/doxygen/somelink.html).
+This examples shows a few different methods of capturing. All of them use the *helper::* which I recommend you use, and also check out [helpers documentation](http://maldworth.github.io/gphoto2pp/namespacegphoto2pp_1_1helper.html).
 * Initializing the cameraWrapper will connect to the first found camera. This saves us the time of calling the autoDetect methods.
 * Capture Method 1
   Pretty self explanitory in the code. Not much else to say.
@@ -258,7 +258,7 @@ There's no point in pasting the code here, but this example basically shows off 
 * getAllWidgetsOfType(enum type) -> which will also return a vector<string> of only widgets that are of the specified type.
 Different cameras offer different abilities and configuration, which should be accessable through these widgets. Some are clearly named, some are not. You will see examples of both in example 6.
 
-I guess this is a good time as any to briefly explain what the camera widgets are. (Full explanation of widgets can be found [here](http://maldworth.github.io/gphoto2pp)).
+I guess this is a good time as any to briefly explain what the camera widgets are. (Full explanation of widgets can be found [here](http://maldworth.github.io/gphoto2pp/classgphoto2pp_1_1_camera_widget_wrapper.html).
 GPhoto2 organizes the camera's settings in a n-ary tree of widgets. The widget types and their associated values are:
 
 | Type    | Value  |
@@ -332,7 +332,7 @@ If you also take a glance at ``void doMenuWidget(gphoto2pp::CameraWrapper& camer
 
 Example 7
 ---------
-For cameras that support a live view mode, this will want to use [capture preview](http://maldworth.github.io/gphoto2pp/doxygen) to get a continuous stream of pictures. Please note I haven't tested this on canon cameras, it might need a little tweak to get it to work.
+For cameras that support a live view mode, this will want to use [capture preview](http://maldworth.github.io/gphoto2pp/classgphoto2pp_1_1_camera_wrapper.html#ae21c7d41a07fbc4581b0b84330bc2c4d) to get a continuous stream of pictures. Please note I haven't tested this on canon cameras, it might need a little tweak to get it to work.
 
 Example 8
 ---------

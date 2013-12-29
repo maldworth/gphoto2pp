@@ -29,7 +29,7 @@ Table Of Contents
   * [Example 11](EXAMPLES.md#example-11)
 * [Dev/Test/Contributor](#devtest)
 * [FAQ](#faq)
-* [Doxygen Documentation](http://maldworth.github.io/gphoto2pp/)
+* [Doxygen Documentation](#doxygen-documentation)
 * [Other Useful Links](#other-useful-links)
 * [Version History](#version-history)
 
