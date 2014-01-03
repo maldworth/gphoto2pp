@@ -7,9 +7,6 @@
 #include <string>
 #include <stdio.h>
 
-namespace gphoto2pp
-{
-
 inline std::string NowTime();
 
 enum TLogLevel {logEMERGENCY, logALERT, logCRITICAL, logERROR, logWARN, logWARN1, logWARN2, logWARN3, logINFO, logDEBUG};
@@ -177,7 +174,5 @@ inline std::string NowTime()
 }
 
 #endif //WIN32
-
-}
 
 #endif //__LOG_H__

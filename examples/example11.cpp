@@ -43,11 +43,11 @@ int main(int argc, char* argv[]) {
 		std::cout << "#############################" << std::endl;
 		
 		// Enable the GPhoto2pp logging, which by default goes to the stdout
-		gphoto2pp::FILELog::ReportingLevel() = gphoto2pp::logDEBUG;
+		FILELog::ReportingLevel() = logDEBUG;
 		auto pair = gphoto2pp::autoDetect();
 		
 		// Now we set it to error so it won't interfere with our example below
-		gphoto2pp::FILELog::ReportingLevel() = gphoto2pp::logERROR;
+		FILELog::ReportingLevel() = logERROR;
 		
 		// Hook the debugger up at any time, first we need a functor to send the logger for events
 		auto mylogger = [](gphoto2pp::helper::debugging::LogLevelWrapper level, const std::string& domain, const std::string& str, void* data)
@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
 			std::cout << str << std::endl;
 			
 			// If you want to log it using the same mechanism as gphoto2pp, use this line instead of cout
-			// gphoto2pp::FILE_LOG(logDEBUG) << (s.count() % 60) << "." << (us.count() % 1000000) << ": " << str;
+			// FILE_LOG(logDEBUG) << (s.count() % 60) << "." << (us.count() % 1000000) << ": " << str;
 		};
 		
 		// This registration variable should be kept in scope for as long as you want it to log.

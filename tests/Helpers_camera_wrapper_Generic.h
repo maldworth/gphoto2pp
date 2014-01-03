@@ -38,7 +38,7 @@ class Helpers_gphoto2_Generic : public CxxTest::TestSuite
 public:
 	void setUp()
 	{
-		gphoto2pp::FILELog::ReportingLevel() = gphoto2pp::logCRITICAL;
+		FILELog::ReportingLevel() = logCRITICAL;
 	}
 	
 	void testCaptureAutoDelete()

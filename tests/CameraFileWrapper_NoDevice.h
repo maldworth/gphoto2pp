@@ -46,7 +46,7 @@ class CameraFileWrapper_NoDevice : public CxxTest::TestSuite
 public:
 	void setUp()
 	{
-		gphoto2pp::FILELog::ReportingLevel() = gphoto2pp::logCRITICAL;
+		FILELog::ReportingLevel() = logCRITICAL;
 	}
 	
 	void testInitializeFile()
