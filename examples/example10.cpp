@@ -27,7 +27,12 @@
 #include "camera_file_type_wrapper.hpp"
 #include "camera_file_path_wrapper.hpp"
 #include "camera_event_type_wrapper.hpp" // For the subscribeToCameraEvent(...) method
+
+#include "helper_camera_wrapper.hpp"
+
 #include "exceptions.hpp"
+
+#include "log.h"
 
 #include <iostream>
 #include <functional>
@@ -68,7 +73,7 @@ int main(int argc, char* argv[]) {
 		// Subscribe to the event we want with our handler
 		auto registration = cameraWrapper.subscribeToCameraEvent(gphoto2pp::CameraEventTypeWrapper::FileAdded, myhandler);
 		
-		// An alternate way to show handler registration
+		// An alternate way to show handler registration with an object method
 		MyTestHandlerClass mthc;
 		auto registration2 = cameraWrapper.subscribeToCameraEvent(gphoto2pp::CameraEventTypeWrapper::FileAdded, std::bind(&MyTestHandlerClass::mySuperSpecialHandler, std::cref(mthc), _1, _2));
 		

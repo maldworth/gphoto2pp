@@ -28,8 +28,27 @@
 #include "camera_capture_type_wrapper.hpp"
 #include "exceptions.hpp"
 
+#include "window_widget.hpp"
+#include "toggle_widget.hpp"
+
 #include <iostream>
 #include <fstream> // only for capture method 3
+
+// This method is only needed for certain canon cameras. I had tested this on a Canon EOS Rebel T2i (shows as Canon EOS 550D) with the boolean set to true and false, and I noticed no difference. So you might need it or you might not depending on what camera you use.
+void setCanonCapture(gphoto2pp::CameraWrapper& cameraWrapper, bool capture)
+{
+	try
+	{
+		auto captureWidget = cameraWrapper.getConfig().getChildByName<gphoto2pp::ToggleWidget>("capture");
+		captureWidget.setValue(capture ? 1 : 0);
+		cameraWrapper.setConfig(captureWidget);
+	}
+	catch(const std::runtime_error& e)
+	{
+		// Swallow the exception
+		std::cout << "Tried to set canon capture, failed. The camera is probably not a canon" << std::endl;
+	}
+}
 
 int main(int argc, char* argv[]) {
 	try
@@ -38,6 +57,8 @@ int main(int argc, char* argv[]) {
 		std::cout << "# connect to camera         #" << std::endl;
 		std::cout << "#############################" << std::endl;
 		gphoto2pp::CameraWrapper cameraWrapper; // Not passing in model and port will connect to the first available camera.
+		
+		setCanonCapture(cameraWrapper, true);
 		
 		std::cout << "#############################" << std::endl;
 		std::cout << "# Capture Method 1          #" << std::endl;

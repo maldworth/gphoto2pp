@@ -177,17 +177,31 @@ public:
 		// Because we are making two calls, we will store the rootWidget in a pointer to avoid gphoto from having to construct the tree twice.
 		auto rootWidget = _camera.getConfig();
 		auto imageTypes = rootWidget.getChildByName<gphoto2pp::MenuWidget>("5004");
-		auto imageSizes = rootWidget.getChildByName<gphoto2pp::MenuWidget>("5003");
 		
 		auto oldImageType = imageTypes.getValue();
+		
+		// Value to set our camera to
+		auto setToType = oldImageType == "0" ? "5" : "0";
+		
+		// If it's raw, we need to set the camera's type to Jpeg Basic first before we can set the size.
+		TS_ASSERT_THROWS_NOTHING(imageTypes.setValue(setToType));
+		
+		TS_ASSERT_THROWS_NOTHING(_camera.setConfig(imageTypes));
+		
+		// Now we update our config tree, so we have the latest from the camera
+		rootWidget = _camera.getConfig();
+		
+		
+		// Next we get our size value
+		auto imageSizes = rootWidget.getChildByName<gphoto2pp::MenuWidget>("5003");
+		
+		// Save the old image size, so we can restore it
 		auto oldImageSize = imageSizes.getValue();
 		
 		// Range for exposure is -3 to 1, steps of 0.333 (or 1/3)
-		auto setToType = oldImageType == "0" ? "5" : "0";
+		
 		auto setToSize = oldImageSize == "2144x1424" ? "3216x2136" : "2144x1424";
 		
-		// Setting Type
-		TS_ASSERT_THROWS_NOTHING(imageTypes.setValue(setToType));
 		// Setting Size
 		TS_ASSERT_THROWS_NOTHING(imageSizes.setValue(setToSize));
 		
@@ -225,7 +239,11 @@ public:
 	{
 		auto actionWidget = _camera.getConfig().getChildByName<gphoto2pp::NonValueWidget>("actions");
 		
-		TS_ASSERT_EQUALS(actionWidget.countChildren(), 3); // maybe 4?
+#ifdef GPHOTO_LESS_25
+		TS_ASSERT_EQUALS(actionWidget.countChildren(), 3);
+#else
+		TS_ASSERT_EQUALS(actionWidget.countChildren(), 4); // 2.5 and greater have an additional widget named "controlmode"
+#endif
 	}
 	
 	// This is the test that sets the capturetarget widget to SD instead of internal memory

@@ -105,6 +105,13 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		std::vector<std::string> getAllFiles(CameraWrapper& cameraWrapper);
+		
+		/**
+		 * \brief Canon cameras need this set to *true* to allow pictures to save to the sd card
+		 * \param[in]	cameraWrapper	instance which will be used to issue the capture command
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		void setCanonCapture(CameraWrapper& cameraWrapper, bool capture);
 	}
 }
 

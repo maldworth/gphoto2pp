@@ -43,7 +43,7 @@ namespace gphoto2pp
 			/**
 			 * \brief The error code received from the gphoto2 method
 			 */
-			int getResultCode()
+			int getResultCode() const
 			{
 				return m_resultCode;
 			}
