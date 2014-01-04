@@ -169,23 +169,6 @@ namespace gphoto2pp
 		 */
 		gphoto2::_CameraWidget* getParentDefault() const;
 		
-		/**
-		 * \brief Gets the value of the current widget
-		 * This is protected because we don't want api users having to guess the conversions from void* to a more user friendly data structure.
-		 * \note Direct wrapper for gp_widget_get_value(...)
-		 * \throw GPhoto2pp::exceptions::gphoto2_exception
-		 */
-		void* getValueDefault() const;
-		
-		/**
-		 * \brief Sets the value of the current widget
-		 * This is protected because we don't want api users having to use an unfriendly void*.
-		 * \param[in]	value	to set the widget to
-		 * \note Direct wrapper for gp_widget_set_value(...)
-		 * \throw GPhoto2pp::exceptions::gphoto2_exception
-		 */
-		void setValueDefault(const void* value);
-		
 		gphoto2::_CameraWidget* m_cameraWidget = nullptr;
 	};
 

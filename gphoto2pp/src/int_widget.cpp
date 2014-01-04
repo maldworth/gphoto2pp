@@ -24,11 +24,18 @@
 
 #include "int_widget.hpp"
 
+#include "helper_gphoto2.hpp"
 #include "helper_widgets.hpp"
-#include "exceptions.hpp"
 #include "camera_widget_type_wrapper.hpp"
 
+#include "exceptions.hpp"
+
 #include "log.h"
+
+namespace gphoto2
+{
+#include <gphoto2/gphoto2-widget.h>
+}
 
 namespace gphoto2pp
 {
@@ -41,21 +48,15 @@ namespace gphoto2pp
 	
 	int IntWidget::getValue() const
 	{
-		void* temp = nullptr;
+		int temp = 0;
 		
-		temp = this->getValueDefault();
+		gphoto2pp::checkResponse(gphoto2::gp_widget_get_value(m_cameraWidget, &temp),"gp_widget_get_value");
 		
-		return *reinterpret_cast<int*>(&temp);
-		
-		//return *static_cast<int*>(&temp);
+		return temp;
 	}
 	void IntWidget::setValue(const int& value)
 	{
-		void* temp = nullptr;
-		
-		temp = const_cast<int*>(&value);
-		
-		this->setValueDefault(temp);
+		gphoto2pp::checkResponse(gphoto2::gp_widget_set_value(m_cameraWidget, &value),"gp_widget_set_value");
 	}
 
 }

@@ -24,11 +24,19 @@
 
 #include "float_widget.hpp"
 
+#include "helper_gphoto2.hpp"
 #include "helper_widgets.hpp"
-#include "exceptions.hpp"
 #include "camera_widget_type_wrapper.hpp"
 
+#include "exceptions.hpp"
+
+
 #include "log.h"
+
+namespace gphoto2
+{
+#include <gphoto2/gphoto2-widget.h>
+}
 
 namespace gphoto2pp
 {
@@ -41,19 +49,15 @@ namespace gphoto2pp
 	
 	float FloatWidget::getValue() const
 	{
-		void* temp = nullptr;
+		float temp = 0;
 		
-		temp = this->getValueDefault();
+		gphoto2pp::checkResponse(gphoto2::gp_widget_get_value(m_cameraWidget, &temp),"gp_widget_get_value");
 		
-		return *reinterpret_cast<float*>(&temp);
+		return temp;
 	}
 	void FloatWidget::setValue(const float& value)
 	{
-		void* temp = nullptr;
-		
-		temp = const_cast<float*>(&value);
-		
-		this->setValueDefault(temp);
+		gphoto2pp::checkResponse(gphoto2::gp_widget_set_value(m_cameraWidget, &value),"gp_widget_set_value");
 	}
 }
 

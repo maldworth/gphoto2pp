@@ -24,10 +24,17 @@
 
 #include "date_widget.hpp"
 
-#include "exceptions.hpp"
+#include "helper_gphoto2.hpp"
 #include "camera_widget_type_wrapper.hpp"
 
+#include "exceptions.hpp"
+
 #include "log.h"
+
+namespace gphoto2
+{
+#include <gphoto2/gphoto2-widget.h>
+}
 
 namespace gphoto2pp
 {
@@ -45,22 +52,18 @@ namespace gphoto2pp
 	
 	std::time_t DateWidget::getValue() const
 	{
-		void* temp = this->getValueDefault();
+		int temp = 0;
 		
-		int temp2 = *reinterpret_cast<int*>(&temp);
+		gphoto2pp::checkResponse(gphoto2::gp_widget_get_value(m_cameraWidget, &temp),"gp_widget_get_value");
 		
-		return static_cast<std::time_t>(temp2);
+		return static_cast<std::time_t>(temp);
 	}
 	
 	void DateWidget::setValue(const std::time_t& datetime)
 	{
-		const int temp = static_cast<int>(datetime);
+		int temp = static_cast<int>(datetime);
 		
-		void* temp2 = const_cast<int*>(&temp);
-		
-		this->setValueDefault(temp2);
-		
-		//this->setValue(static_cast<int>(datetime));
+		gphoto2pp::checkResponse(gphoto2::gp_widget_set_value(m_cameraWidget, &temp),"gp_widget_set_value");
 	}
 }
 

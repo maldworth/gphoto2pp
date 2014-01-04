@@ -220,17 +220,5 @@ namespace gphoto2pp
 		
 		return parentWidget;
 	}
-	
-	void* CameraWidgetWrapper::getValueDefault() const
-	{
-		void* temp;
-		gphoto2pp::checkResponse(gphoto2::gp_widget_get_value(m_cameraWidget, &temp),"gp_widget_get_value");
-		return temp;
-	}
-	
-	void CameraWidgetWrapper::setValueDefault(const void* value)
-	{
-		gphoto2pp::checkResponse(gphoto2::gp_widget_set_value(m_cameraWidget, value),"gp_widget_set_value");	
-	}
 }
 

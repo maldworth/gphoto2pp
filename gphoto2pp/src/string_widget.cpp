@@ -24,10 +24,17 @@
 
 #include "string_widget.hpp"
 
-#include "exceptions.hpp"
+#include "helper_gphoto2.hpp"
 #include "camera_widget_type_wrapper.hpp"
 
+#include "exceptions.hpp"
+
 #include "log.h"
+
+namespace gphoto2
+{
+#include <gphoto2/gphoto2-widget.h>
+}
 
 namespace gphoto2pp
 {
@@ -40,18 +47,16 @@ namespace gphoto2pp
 
 	std::string StringWidget::getValue() const
 	{
-		void* temp;
-			
-		temp = this->getValueDefault();
+		char* temp = nullptr;
 		
-		return std::string(static_cast<char*>(temp));
+		gphoto2pp::checkResponse(gphoto2::gp_widget_get_value(m_cameraWidget, &temp),"gp_widget_get_value");
+		
+		return std::string(temp);
 	}
 	
 	void StringWidget::setValue(const std::string& value)
 	{
-		const void* tempValue = static_cast<const void*>(value.c_str());
-		
-		this->setValueDefault(tempValue);
+		gphoto2pp::checkResponse(gphoto2::gp_widget_set_value(m_cameraWidget, value.c_str()),"gp_widget_set_value");
 	}
 
 }

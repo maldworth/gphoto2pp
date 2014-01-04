@@ -83,7 +83,7 @@ and then execute it
 ./a.out
 ```
 
-That's it! The library is certainly capable of more, which you can view at [examples](EXAMPLES.md) on our github pages.
+That's it! The library is certainly capable of more, which you can view at [examples](EXAMPLES.md).
 
 Installation
 ------------
