@@ -239,11 +239,9 @@ public:
 	{
 		auto actionWidget = _camera.getConfig().getChildByName<gphoto2pp::NonValueWidget>("actions");
 		
-#ifdef GPHOTO_LESS_25
-		TS_ASSERT_EQUALS(actionWidget.countChildren(), 3);
-#else
-		TS_ASSERT_EQUALS(actionWidget.countChildren(), 4); // 2.5 and greater have an additional widget named "controlmode"
-#endif
+		TS_ASSERT_LESS_THAN_EQUALS(actionWidget.countChildren(), 4); // (because 2.4.14 has 3 children, and 2.5 or greater has 4 children)
+		
+		TS_ASSERT_DIFFERS(actionWidget.countChildren(), 0); // But also make sure it's not zero
 	}
 	
 	// This is the test that sets the capturetarget widget to SD instead of internal memory
