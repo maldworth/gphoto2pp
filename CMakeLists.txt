@@ -2,6 +2,13 @@ cmake_minimum_required (VERSION 2.8.3)
 enable_testing()
 project (GPHOTO2PP)
 
+#set the version of our library
+# MAJOR, is significant breaking changes, MINOR, is when we might have changed signatures of existing functions, PATCH, is just bug fixes and no breaking changes
+set(MYLIB_VERSION_MAJOR 1)
+set(MYLIB_VERSION_MINOR 0)
+set(MYLIB_VERSION_PATCH 0)
+set(MYLIB_VERSION_STRING ${MYLIB_VERSION_MAJOR}.${MYLIB_VERSION_MINOR}.${MYLIB_VERSION_PATCH})
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules/)
 
 find_package( Gphoto2 REQUIRED )

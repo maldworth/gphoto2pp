@@ -9,6 +9,10 @@ add_library( gphoto2pp SHARED ${SOURCES})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+# sets the shared library version
+# http://cmake.3232098.n2.nabble.com/Version-in-name-of-shared-library-td7581530.html
+set_target_properties( gphoto2pp PROPERTIES VERSION ${MYLIB_VERSION_STRING} SOVERSION ${MYLIB_VERSION_MAJOR} )
+
 # adds the 'make install' targets to copy the shared library to /usr/local/lib/ directory
 install( TARGETS gphoto2pp DESTINATION lib )
 # adds all the relevant headers to /usr/local/include/gphoto2pp when make install is executed
