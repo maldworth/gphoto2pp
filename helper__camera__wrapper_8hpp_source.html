@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>GPhoto2pp: gphoto2pp/include/helper_camera_wrapper.hpp Source File</title>
+<title>gphoto2pp: gphoto2pp/include/helper_camera_wrapper.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,8 +27,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">GPhoto2pp
-   &#160;<span id="projectnumber">0.0.0.1</span>
+   <div id="projectname">gphoto2pp
    </div>
    <div id="projectbrief">A C++ Wrapper for libgphoto2</div>
   </td>
@@ -105,47 +104,50 @@ $(document).ready(function(){initNavTree('helper__camera__wrapper_8hpp_source.ht
 <div class="title">helper_camera_wrapper.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="helper__camera__wrapper_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef HELPERCAMERAWRAPPER_HPP</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define HELPERCAMERAWRAPPER_HPP</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="camera__file__type__wrapper_8hpp.html">camera_file_type_wrapper.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="camera__capture__type__wrapper_8hpp.html">camera_capture_type_wrapper.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>gphoto2pp</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="comment">// Forward Declarations</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keyword">class </span>CameraWrapper;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <span class="keyword">class </span>CameraFileWrapper;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        </div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="code" href="namespacegphoto2pp_1_1helper.html">   16</a></span>&#160;        <span class="keyword">namespace </span>helper</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                <span class="keywordtype">void</span> <a class="code" href="namespacegphoto2pp_1_1helper.html#ad294447b4fc9785ae7dcc4b1454de988" title="Takes a preview picture from the camera. This capture type might not be supported by all cameras (req...">capturePreview</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper, <span class="keyword">const</span> std::string&amp; outputFilename);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                <span class="keywordtype">void</span> <a class="code" href="namespacegphoto2pp_1_1helper.html#ad294447b4fc9785ae7dcc4b1454de988" title="Takes a preview picture from the camera. This capture type might not be supported by all cameras (req...">capturePreview</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper, std::ostream&amp; outputStream);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <span class="keywordtype">void</span> <a class="code" href="namespacegphoto2pp_1_1helper.html#a73677c87dbd2cbf0faaf1c72845955c3" title="Captures a file from the camera.">capture</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper, <a class="code" href="classgphoto2pp_1_1_camera_file_wrapper.html">CameraFileWrapper</a>&amp; cameraFile, <span class="keywordtype">bool</span> autoDeleteFileFromSrc = <span class="keyword">false</span>, <span class="keyword">const</span> <a class="code" href="namespacegphoto2pp.html#a401aa24ccd3a576bfe386866d919eb9d">CameraCaptureTypeWrapper</a>&amp; captureType = CameraCaptureTypeWrapper::Image, <span class="keyword">const</span> <a class="code" href="namespacegphoto2pp.html#a89862c4686a8ed59eb7461e6b032087b">CameraFileTypeWrapper</a>&amp; fileType = CameraFileTypeWrapper::Normal);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="keywordtype">void</span> <a class="code" href="namespacegphoto2pp_1_1helper.html#a73677c87dbd2cbf0faaf1c72845955c3" title="Captures a file from the camera.">capture</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper, <span class="keyword">const</span> std::string&amp; outputFilename, <span class="keywordtype">bool</span> autoDeleteFileFromSrc = <span class="keyword">false</span>, <span class="keyword">const</span> <a class="code" href="namespacegphoto2pp.html#a401aa24ccd3a576bfe386866d919eb9d">CameraCaptureTypeWrapper</a>&amp; captureType = CameraCaptureTypeWrapper::Image, <span class="keyword">const</span> <a class="code" href="namespacegphoto2pp.html#a89862c4686a8ed59eb7461e6b032087b">CameraFileTypeWrapper</a>&amp; fileType = CameraFileTypeWrapper::Normal);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                <span class="keywordtype">void</span> <a class="code" href="namespacegphoto2pp_1_1helper.html#a73677c87dbd2cbf0faaf1c72845955c3" title="Captures a file from the camera.">capture</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper, std::ostream&amp; outputStream, <span class="keywordtype">bool</span> autoDeleteFileFromSrc = <span class="keyword">false</span>, <span class="keyword">const</span> <a class="code" href="namespacegphoto2pp.html#a401aa24ccd3a576bfe386866d919eb9d">CameraCaptureTypeWrapper</a>&amp; captureType = CameraCaptureTypeWrapper::Image, <span class="keyword">const</span> <a class="code" href="namespacegphoto2pp.html#a89862c4686a8ed59eb7461e6b032087b">CameraFileTypeWrapper</a>&amp; fileType = CameraFileTypeWrapper::Normal);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                std::vector&lt;std::string&gt; <a class="code" href="namespacegphoto2pp_1_1helper.html#af5a0c761a74baf427747c4b11a040649" title="Recursively scans the camera&#39;s filesystem and compiles a list of all folders present.">getAllFolders</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                std::vector&lt;std::string&gt; <a class="code" href="namespacegphoto2pp_1_1helper.html#a765c8bf890b18c448d0d89b66c9ff663" title="Recursively scans the camera&#39;s filesystem and compiles a list of all files present.">getAllFiles</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif // HELPERCAMERAWRAPPER_HPP</span></div>
+<a href="helper__camera__wrapper_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef HELPERCAMERAWRAPPER_HPP</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define HELPERCAMERAWRAPPER_HPP</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="camera__file__type__wrapper_8hpp.html">camera_file_type_wrapper.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="camera__capture__type__wrapper_8hpp.html">camera_capture_type_wrapper.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span>gphoto2pp</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="comment">// Forward Declarations</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keyword">class </span>CameraWrapper;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">class </span>CameraFileWrapper;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        </div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="namespacegphoto2pp_1_1helper.html">   40</a></span>&#160;        <span class="keyword">namespace </span>helper</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <span class="keywordtype">void</span> <a class="code" href="namespacegphoto2pp_1_1helper.html#ad294447b4fc9785ae7dcc4b1454de988" title="Takes a preview picture from the camera. This capture type might not be supported by all cameras (req...">capturePreview</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper, <span class="keyword">const</span> std::string&amp; outputFilename);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keywordtype">void</span> <a class="code" href="namespacegphoto2pp_1_1helper.html#ad294447b4fc9785ae7dcc4b1454de988" title="Takes a preview picture from the camera. This capture type might not be supported by all cameras (req...">capturePreview</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper, std::ostream&amp; outputStream);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keywordtype">void</span> <a class="code" href="namespacegphoto2pp_1_1helper.html#a73677c87dbd2cbf0faaf1c72845955c3" title="Captures a file from the camera.">capture</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper, <a class="code" href="classgphoto2pp_1_1_camera_file_wrapper.html">CameraFileWrapper</a>&amp; cameraFile, <span class="keywordtype">bool</span> autoDeleteFileFromSrc = <span class="keyword">false</span>, <span class="keyword">const</span> <a class="code" href="namespacegphoto2pp.html#a401aa24ccd3a576bfe386866d919eb9d">CameraCaptureTypeWrapper</a>&amp; captureType = CameraCaptureTypeWrapper::Image, <span class="keyword">const</span> <a class="code" href="namespacegphoto2pp.html#a89862c4686a8ed59eb7461e6b032087b">CameraFileTypeWrapper</a>&amp; fileType = CameraFileTypeWrapper::Normal);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                <span class="keywordtype">void</span> <a class="code" href="namespacegphoto2pp_1_1helper.html#a73677c87dbd2cbf0faaf1c72845955c3" title="Captures a file from the camera.">capture</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper, <span class="keyword">const</span> std::string&amp; outputFilename, <span class="keywordtype">bool</span> autoDeleteFileFromSrc = <span class="keyword">false</span>, <span class="keyword">const</span> <a class="code" href="namespacegphoto2pp.html#a401aa24ccd3a576bfe386866d919eb9d">CameraCaptureTypeWrapper</a>&amp; captureType = CameraCaptureTypeWrapper::Image, <span class="keyword">const</span> <a class="code" href="namespacegphoto2pp.html#a89862c4686a8ed59eb7461e6b032087b">CameraFileTypeWrapper</a>&amp; fileType = CameraFileTypeWrapper::Normal);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                <span class="keywordtype">void</span> <a class="code" href="namespacegphoto2pp_1_1helper.html#a73677c87dbd2cbf0faaf1c72845955c3" title="Captures a file from the camera.">capture</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper, std::ostream&amp; outputStream, <span class="keywordtype">bool</span> autoDeleteFileFromSrc = <span class="keyword">false</span>, <span class="keyword">const</span> <a class="code" href="namespacegphoto2pp.html#a401aa24ccd3a576bfe386866d919eb9d">CameraCaptureTypeWrapper</a>&amp; captureType = CameraCaptureTypeWrapper::Image, <span class="keyword">const</span> <a class="code" href="namespacegphoto2pp.html#a89862c4686a8ed59eb7461e6b032087b">CameraFileTypeWrapper</a>&amp; fileType = CameraFileTypeWrapper::Normal);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                std::vector&lt;std::string&gt; <a class="code" href="namespacegphoto2pp_1_1helper.html#af5a0c761a74baf427747c4b11a040649" title="Recursively scans the camera&#39;s filesystem and compiles a list of all folders present.">getAllFolders</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                std::vector&lt;std::string&gt; <a class="code" href="namespacegphoto2pp_1_1helper.html#a765c8bf890b18c448d0d89b66c9ff663" title="Recursively scans the camera&#39;s filesystem and compiles a list of all files present.">getAllFiles</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <span class="keywordtype">void</span> <a class="code" href="namespacegphoto2pp_1_1helper.html#aed990ed89e2731d86d1d4865227280b9" title="Canon cameras need this set to true to allow pictures to save to the sd card.">setCanonCapture</a>(<a class="code" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a>&amp; cameraWrapper, <span class="keywordtype">bool</span> capture);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;}</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="preprocessor">#endif // HELPERCAMERAWRAPPER_HPP</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_4ff2cb11c0d4a5c2390028fe5d6db1a4.html">gphoto2pp</a></li><li class="navelem"><a class="el" href="dir_8af568c9da717146ff6d834a6e2ad540.html">include</a></li><li class="navelem"><a class="el" href="helper__camera__wrapper_8hpp.html">helper_camera_wrapper.hpp</a></li>
-    <li class="footer">Generated on Sun Dec 29 2013 15:30:33 for GPhoto2pp by
+    <li class="footer">Generated on Sat Jan 4 2014 15:20:50 for gphoto2pp by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

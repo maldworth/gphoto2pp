@@ -14,11 +14,9 @@ var classgphoto2pp_1_1_camera_widget_wrapper =
     [ "getRoot", "classgphoto2pp_1_1_camera_widget_wrapper.html#a6f77183e775336bd583849fcece76dce", null ],
     [ "getRootDefault", "classgphoto2pp_1_1_camera_widget_wrapper.html#a8044bf2f2253ba6a4eb27c30fdd9c39b", null ],
     [ "getType", "classgphoto2pp_1_1_camera_widget_wrapper.html#a5630b6b5c209038af0496c3a696fb1f9", null ],
-    [ "getValueDefault", "classgphoto2pp_1_1_camera_widget_wrapper.html#a7a757ada255f5e678fda34bf88c68e2d", null ],
     [ "operator=", "classgphoto2pp_1_1_camera_widget_wrapper.html#a69a1f7ee27c4e6d632ff6613c0b8af32", null ],
     [ "operator=", "classgphoto2pp_1_1_camera_widget_wrapper.html#aa823a8fbbcdc5e566e8b65705101298d", null ],
     [ "ref", "classgphoto2pp_1_1_camera_widget_wrapper.html#a0483ae9aeac06361510d104702f4515b", null ],
-    [ "setValueDefault", "classgphoto2pp_1_1_camera_widget_wrapper.html#ac856baece675187a7ac5eb9e1daa13b5", null ],
     [ "unref", "classgphoto2pp_1_1_camera_widget_wrapper.html#ada4df7b07749e05b83fcb4bda29d1efb", null ],
     [ "m_cameraWidget", "classgphoto2pp_1_1_camera_widget_wrapper.html#a3339c4d5dd8bf96978285b6c2d48eea0", null ]
 ];

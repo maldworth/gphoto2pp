@@ -6,6 +6,6 @@ var searchData=
   ['_7ecamerawidgetwrapper',['~CameraWidgetWrapper',['../classgphoto2pp_1_1_camera_widget_wrapper.html#a7bd48f7609b19029ee37707130dd5672',1,'gphoto2pp::CameraWidgetWrapper']]],
   ['_7ecamerawrapper',['~CameraWrapper',['../classgphoto2pp_1_1_camera_wrapper.html#a8fb53e517206d571e3b2a19ffcf33929',1,'gphoto2pp::CameraWrapper']]],
   ['_7egpportinfolistwrapper',['~GPPortInfoListWrapper',['../classgphoto2pp_1_1_g_p_port_info_list_wrapper.html#a66d4499f04c292f810d9e2616181eeb0',1,'gphoto2pp::GPPortInfoListWrapper']]],
-  ['_7elog',['~Log',['../classgphoto2pp_1_1_log.html#a9d3434ba9e5c9985955806120b1d139b',1,'gphoto2pp::Log']]],
+  ['_7elog',['~Log',['../class_log.html#a63b4053be167c0215c0968a49f4edf39',1,'Log']]],
   ['_7eportloggingeventsmanager',['~PortLoggingEventsManager',['../structgphoto2pp_1_1helper_1_1debugging_1_1detail_1_1_port_logging_events_manager.html#abac9bb33c4c413bef4cd35d16ed7e974',1,'gphoto2pp::helper::debugging::detail::PortLoggingEventsManager']]]
 ];

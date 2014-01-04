@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['get',['Get',['../classgphoto2pp_1_1_log.html#adc8006f2a5215738fcf56d6cce18e649',1,'gphoto2pp::Log']]],
+  ['get',['Get',['../class_log.html#af1e91af54d9f85caaa661f794b37bffb',1,'Log']]],
   ['getallfiles',['getAllFiles',['../namespacegphoto2pp_1_1helper.html#a765c8bf890b18c448d0d89b66c9ff663',1,'gphoto2pp::helper']]],
   ['getallfolders',['getAllFolders',['../namespacegphoto2pp_1_1helper.html#af5a0c761a74baf427747c4b11a040649',1,'gphoto2pp::helper']]],
   ['getallwidgetsnames',['getAllWidgetsNames',['../namespacegphoto2pp_1_1helper.html#af47ce2166703031591b43e7aa8d757f4',1,'gphoto2pp::helper']]],
@@ -33,13 +33,12 @@ var searchData=
   ['getparentdefault',['getParentDefault',['../classgphoto2pp_1_1_camera_widget_wrapper.html#a00c14891c6139d7bcf6af33fb19adbe3',1,'gphoto2pp::CameraWidgetWrapper']]],
   ['getptr',['getPtr',['../classgphoto2pp_1_1_camera_abilities_list_wrapper.html#a9c7b80741933ec1c1a1c5b1e50c6a292',1,'gphoto2pp::CameraAbilitiesListWrapper::getPtr()'],['../classgphoto2pp_1_1_camera_file_wrapper.html#a2cc3e0e8072a7fa7b373f042b8692506',1,'gphoto2pp::CameraFileWrapper::getPtr()'],['../classgphoto2pp_1_1_camera_list_wrapper.html#a2ba32fdf5b8708030e167418638f0a34',1,'gphoto2pp::CameraListWrapper::getPtr()'],['../classgphoto2pp_1_1_camera_widget_wrapper.html#a5025b74859b716548ff6798a521a5f32',1,'gphoto2pp::CameraWidgetWrapper::getPtr()'],['../classgphoto2pp_1_1_g_p_port_info_list_wrapper.html#aeebf16af16caafa166572c3519c9f226',1,'gphoto2pp::GPPortInfoListWrapper::getPtr()']]],
   ['getrange',['getRange',['../classgphoto2pp_1_1_range_widget.html#aa91d0676c7a3566196fefe1b8f6fd89f',1,'gphoto2pp::RangeWidget']]],
-  ['getresultcode',['getResultCode',['../classgphoto2pp_1_1exceptions_1_1gphoto2__exception.html#a135ba6ab38f24d7526ca0fcabd53081c',1,'gphoto2pp::exceptions::gphoto2_exception']]],
+  ['getresultcode',['getResultCode',['../classgphoto2pp_1_1exceptions_1_1gphoto2__exception.html#af95ef22c3b32ab832180516256aa2f1b',1,'gphoto2pp::exceptions::gphoto2_exception']]],
   ['getroot',['getRoot',['../classgphoto2pp_1_1_camera_widget_wrapper.html#a6f77183e775336bd583849fcece76dce',1,'gphoto2pp::CameraWidgetWrapper']]],
   ['getrootdefault',['getRootDefault',['../classgphoto2pp_1_1_camera_widget_wrapper.html#a8044bf2f2253ba6a4eb27c30fdd9c39b',1,'gphoto2pp::CameraWidgetWrapper']]],
   ['getsummary',['getSummary',['../classgphoto2pp_1_1_camera_wrapper.html#a04fbe32b74b7691f499a6a912ddfdbfd',1,'gphoto2pp::CameraWrapper']]],
   ['gettype',['getType',['../classgphoto2pp_1_1_camera_widget_wrapper.html#a5630b6b5c209038af0496c3a696fb1f9',1,'gphoto2pp::CameraWidgetWrapper']]],
   ['getvalue',['getValue',['../classgphoto2pp_1_1_camera_list_wrapper.html#abeb65f8769e79dfcbe8041706c6d9cec',1,'gphoto2pp::CameraListWrapper::getValue()'],['../classgphoto2pp_1_1_date_widget.html#ab7a00e6b77fb33723272a28581de58ac',1,'gphoto2pp::DateWidget::getValue()'],['../classgphoto2pp_1_1_float_widget.html#a3ed71167cfa5a34ede6cd5829184beb7',1,'gphoto2pp::FloatWidget::getValue()'],['../classgphoto2pp_1_1_int_widget.html#ab2c3d1a7f8ef8b09b3448c94b7b1b173',1,'gphoto2pp::IntWidget::getValue()'],['../classgphoto2pp_1_1_string_widget.html#a4cd8a1f1ca7831de0e04de92a5303450',1,'gphoto2pp::StringWidget::getValue()'],['../classgphoto2pp_1_1_value_widget_base.html#a664b87bc993dd248c1cae2bebc06b2a7',1,'gphoto2pp::ValueWidgetBase::getValue()']]],
-  ['getvaluedefault',['getValueDefault',['../classgphoto2pp_1_1_camera_widget_wrapper.html#a7a757ada255f5e678fda34bf88c68e2d',1,'gphoto2pp::CameraWidgetWrapper']]],
   ['getwidgetsummary',['getWidgetSummary',['../namespacegphoto2pp_1_1helper.html#a4b8cd91583bef5f867d4f0457d290010',1,'gphoto2pp::helper']]],
   ['gphoto2_5fexception',['gphoto2_exception',['../classgphoto2pp_1_1exceptions_1_1gphoto2__exception.html#abcb722e51110c81de14e477cd4439703',1,'gphoto2pp::exceptions::gphoto2_exception']]],
   ['gphoto2ppexception',['GPhoto2ppException',['../classgphoto2pp_1_1exceptions_1_1_g_photo2pp_exception.html#a248e7b05ee76593339eecf89e1adaa07',1,'gphoto2pp::exceptions::GPhoto2ppException']]],

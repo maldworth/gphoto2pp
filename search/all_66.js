@@ -3,7 +3,7 @@ var searchData=
   ['file_5flog',['FILE_LOG',['../log_8h.html#ad0de4260ab1f1fe62f457d2a1299e536',1,'log.h']]],
   ['filedelete',['fileDelete',['../classgphoto2pp_1_1_camera_wrapper.html#a1cf14b5d89f7d07e75076d60c6baeb00',1,'gphoto2pp::CameraWrapper']]],
   ['fileget',['fileGet',['../classgphoto2pp_1_1_camera_wrapper.html#a6fb3e2e25c46adddda6146ab7ea6e2e1',1,'gphoto2pp::CameraWrapper']]],
-  ['filelog',['FILELog',['../classgphoto2pp_1_1_f_i_l_e_log.html',1,'gphoto2pp']]],
+  ['filelog',['FILELog',['../class_f_i_l_e_log.html',1,'']]],
   ['filelog_5fdeclspec',['FILELOG_DECLSPEC',['../log_8h.html#a34823d79567394ed3d93d45af3e19abf',1,'log.h']]],
   ['filelog_5fmax_5flevel',['FILELOG_MAX_LEVEL',['../log_8h.html#a6c6bb5efb42799004bfb0e047598c185',1,'log.h']]],
   ['findbyname',['findByName',['../classgphoto2pp_1_1_camera_list_wrapper.html#a5415e8b784cb5e850e902dd0df83fc05',1,'gphoto2pp::CameraListWrapper']]],
@@ -18,5 +18,5 @@ var searchData=
   ['foldermakedir',['folderMakeDir',['../classgphoto2pp_1_1_camera_wrapper.html#ad7948df24d7ed266ca159f7b602f0bed',1,'gphoto2pp::CameraWrapper']]],
   ['folderputfile',['folderPutFile',['../classgphoto2pp_1_1_camera_wrapper.html#a98484e53611facad485b392c6df808c1',1,'gphoto2pp::CameraWrapper']]],
   ['folderremovedir',['folderRemoveDir',['../classgphoto2pp_1_1_camera_wrapper.html#a1f6e9510409818ea916d127b441c9382',1,'gphoto2pp::CameraWrapper']]],
-  ['fromstring',['FromString',['../classgphoto2pp_1_1_log.html#ad0768f29a50023b76c59e1de2605aa42',1,'gphoto2pp::Log']]]
+  ['fromstring',['FromString',['../class_log.html#a684966272ade00c32c6e9744eb6b3e9c',1,'Log']]]
 ];

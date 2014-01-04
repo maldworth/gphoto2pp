@@ -12,7 +12,7 @@
 <area shape="rect" id="node63" href="$camera__event__type__wrapper_8hpp.html" title="camera_event_type_wrapper.hpp" alt="" coords="1728,111,1952,140"/>
 <area shape="rect" id="node65" href="$camera__capture__type__wrapper_8hpp.html" title="camera_capture_type\l_wrapper.hpp" alt="" coords="1976,102,2131,149"/>
 <area shape="rect" id="node67" href="$log_8h.html" title="log.h" alt="" coords="1024,111,1075,140"/>
-<area shape="rect" id="node5" href="$observer_8hpp.html" title="observer.hpp" alt="" coords="1725,197,1827,227"/>
+<area shape="rect" id="node5" href="$observer_8hpp.html" title="A flexible implementation of the observer pattern with automatic lifetime management. This implementation was taken mostly (with some modifications) from https://github.com/WouterLammers/observer." alt="" coords="1725,197,1827,227"/>
 <area shape="rect" id="node40" href="$non__value__widget_8hpp.html" title="non_value_widget.hpp" alt="" coords="645,197,805,227"/>
 <area shape="rect" id="node42" href="$camera__widget__wrapper_8hpp.html" title="camera_widget_wrapper.hpp" alt="" coords="823,284,1020,313"/>
 </map>

@@ -10,5 +10,5 @@ var searchData=
   ['foldermakedir',['folderMakeDir',['../classgphoto2pp_1_1_camera_wrapper.html#ad7948df24d7ed266ca159f7b602f0bed',1,'gphoto2pp::CameraWrapper']]],
   ['folderputfile',['folderPutFile',['../classgphoto2pp_1_1_camera_wrapper.html#a98484e53611facad485b392c6df808c1',1,'gphoto2pp::CameraWrapper']]],
   ['folderremovedir',['folderRemoveDir',['../classgphoto2pp_1_1_camera_wrapper.html#a1f6e9510409818ea916d127b441c9382',1,'gphoto2pp::CameraWrapper']]],
-  ['fromstring',['FromString',['../classgphoto2pp_1_1_log.html#ad0768f29a50023b76c59e1de2605aa42',1,'gphoto2pp::Log']]]
+  ['fromstring',['FromString',['../class_log.html#a684966272ade00c32c6e9744eb6b3e9c',1,'Log']]]
 ];

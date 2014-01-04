@@ -47,11 +47,11 @@ var hierarchy =
       [ "gphoto2pp::exceptions::ValueOutOfLimits", "classgphoto2pp_1_1exceptions_1_1_value_out_of_limits.html", null ]
     ] ],
     [ "gphoto2pp::GPPortInfoListWrapper", "classgphoto2pp_1_1_g_p_port_info_list_wrapper.html", null ],
-    [ "gphoto2pp::Log< T >", "classgphoto2pp_1_1_log.html", null ],
-    [ "gphoto2pp::Log< Output2FILE >", "classgphoto2pp_1_1_log.html", [
-      [ "gphoto2pp::FILELog", "classgphoto2pp_1_1_f_i_l_e_log.html", null ]
+    [ "Log< T >", "class_log.html", null ],
+    [ "Log< Output2FILE >", "class_log.html", [
+      [ "FILELog", "class_f_i_l_e_log.html", null ]
     ] ],
-    [ "gphoto2pp::Output2FILE", "classgphoto2pp_1_1_output2_f_i_l_e.html", null ],
+    [ "Output2FILE", "class_output2_f_i_l_e.html", null ],
     [ "gphoto2pp::helper::debugging::detail::PortLoggingEventsManager", "structgphoto2pp_1_1helper_1_1debugging_1_1detail_1_1_port_logging_events_manager.html", null ],
     [ "gphoto2pp::RangeWidgetRange", "structgphoto2pp_1_1_range_widget_range.html", null ],
     [ "gphoto2pp::observer::detail::SubjectBase", "classgphoto2pp_1_1observer_1_1detail_1_1_subject_base.html", [

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tloglevel',['TLogLevel',['../namespacegphoto2pp.html#a4146e5c64dd50fb14cfc3cc6122bba0b',1,'gphoto2pp']]]
+  ['tloglevel',['TLogLevel',['../log_8h.html#a2341a2a7c04d08eb40d2cb0b18b0b778',1,'log.h']]]
 ];

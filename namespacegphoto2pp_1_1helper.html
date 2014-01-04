@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>GPhoto2pp: gphoto2pp::helper Namespace Reference</title>
+<title>gphoto2pp: gphoto2pp::helper Namespace Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,8 +27,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">GPhoto2pp
-   &#160;<span id="projectnumber">0.0.0.1</span>
+   <div id="projectname">gphoto2pp
    </div>
    <div id="projectbrief">A C++ Wrapper for libgphoto2</div>
   </td>
@@ -129,6 +128,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:af5a0c761a74baf427747c4b11a040649"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively scans the camera's filesystem and compiles a list of all folders present.  <a href="#af5a0c761a74baf427747c4b11a040649"></a><br/></td></tr>
 <tr class="memitem:a765c8bf890b18c448d0d89b66c9ff663"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegphoto2pp_1_1helper.html#a765c8bf890b18c448d0d89b66c9ff663">getAllFiles</a> (<a class="el" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a> &amp;cameraWrapper)</td></tr>
 <tr class="memdesc:a765c8bf890b18c448d0d89b66c9ff663"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively scans the camera's filesystem and compiles a list of all files present.  <a href="#a765c8bf890b18c448d0d89b66c9ff663"></a><br/></td></tr>
+<tr class="memitem:aed990ed89e2731d86d1d4865227280b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegphoto2pp_1_1helper.html#aed990ed89e2731d86d1d4865227280b9">setCanonCapture</a> (<a class="el" href="classgphoto2pp_1_1_camera_wrapper.html">CameraWrapper</a> &amp;cameraWrapper, bool <a class="el" href="namespacegphoto2pp_1_1helper.html#a73677c87dbd2cbf0faaf1c72845955c3">capture</a>)</td></tr>
+<tr class="memdesc:aed990ed89e2731d86d1d4865227280b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Canon cameras need this set to <em>true</em> to allow pictures to save to the sd card.  <a href="#aed990ed89e2731d86d1d4865227280b9"></a><br/></td></tr>
 <tr class="memitem:af47ce2166703031591b43e7aa8d757f4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegphoto2pp_1_1helper.html#af47ce2166703031591b43e7aa8d757f4">getAllWidgetsNames</a> (const <a class="el" href="classgphoto2pp_1_1_non_value_widget.html">NonValueWidget</a> &amp;parentWidget, bool showFullName=false)</td></tr>
 <tr class="memdesc:af47ce2166703031591b43e7aa8d757f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverses the widget tree (depth first pre-order) and returns all widgets.  <a href="#af47ce2166703031591b43e7aa8d757f4"></a><br/></td></tr>
 <tr class="memitem:a267101f01c56b6a5a8ff0030545417ee"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegphoto2pp_1_1helper.html#a267101f01c56b6a5a8ff0030545417ee">getAllWidgetsNamesOfType</a> (const <a class="el" href="classgphoto2pp_1_1_non_value_widget.html">NonValueWidget</a> &amp;parentWidget, const <a class="el" href="namespacegphoto2pp.html#aa2deb54a825e36e60036dffe87ff5819">CameraWidgetTypeWrapper</a> &amp;filterByWidgetType, bool showFullName=false)</td></tr>
@@ -633,13 +634,53 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aed990ed89e2731d86d1d4865227280b9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void gphoto2pp::helper::setCanonCapture </td>
+          <td>(</td>
+          <td class="paramtype">CameraWrapper &amp;&#160;</td>
+          <td class="paramname"><em>cameraWrapper</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>capture</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Canon cameras need this set to <em>true</em> to allow pictures to save to the sd card. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">cameraWrapper</td><td>instance which will be used to issue the capture command </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">GPhoto2pp::exceptions::gphoto2_exception</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacegphoto2pp.html">gphoto2pp</a></li><li class="navelem"><a class="el" href="namespacegphoto2pp_1_1helper.html">helper</a></li>
-    <li class="footer">Generated on Sun Dec 29 2013 15:30:33 for GPhoto2pp by
+    <li class="footer">Generated on Sat Jan 4 2014 15:20:50 for gphoto2pp by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

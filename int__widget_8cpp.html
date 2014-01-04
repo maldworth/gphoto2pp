@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>GPhoto2pp: gphoto2pp/src/int_widget.cpp File Reference</title>
+<title>gphoto2pp: gphoto2pp/src/int_widget.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,8 +27,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">GPhoto2pp
-   &#160;<span id="projectnumber">0.0.0.1</span>
+   <div id="projectname">gphoto2pp
    </div>
    <div id="projectbrief">A C++ Wrapper for libgphoto2</div>
   </td>
@@ -108,29 +107,41 @@ $(document).ready(function(){initNavTree('int__widget_8cpp.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="int__widget_8hpp_source.html">int_widget.hpp</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="helper__gphoto2_8hpp_source.html">helper_gphoto2.hpp</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="helper__widgets_8hpp_source.html">helper_widgets.hpp</a>&quot;</code><br/>
-<code>#include &quot;<a class="el" href="exceptions_8hpp_source.html">exceptions.hpp</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="camera__widget__type__wrapper_8hpp_source.html">camera_widget_type_wrapper.hpp</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="exceptions_8hpp_source.html">exceptions.hpp</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="log_8h_source.html">log.h</a>&quot;</code><br/>
+<code>#include &lt;gphoto2/gphoto2-widget.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for int_widget.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="int__widget_8cpp__incl.png" border="0" usemap="#gphoto2pp_2src_2int__widget_8cpp" alt=""/></div>
 <map name="gphoto2pp_2src_2int__widget_8cpp" id="gphoto2pp_2src_2int__widget_8cpp">
-<area shape="rect" id="node3" href="int__widget_8hpp.html" title="int_widget.hpp" alt="" coords="48,92,157,121"/><area shape="rect" id="node11" href="helper__widgets_8hpp.html" title="helper_widgets.hpp" alt="" coords="181,92,320,121"/><area shape="rect" id="node16" href="exceptions_8hpp.html" title="exceptions.hpp" alt="" coords="344,92,459,121"/><area shape="rect" id="node20" href="camera__widget__type__wrapper_8hpp.html" title="camera_widget_type\l_wrapper.hpp" alt="" coords="483,83,629,130"/><area shape="rect" id="node22" href="log_8h.html" title="log.h" alt="" coords="653,92,704,121"/><area shape="rect" id="node5" href="value__widget__base_8hpp.html" title="value_widget_base.hpp" alt="" coords="21,179,187,208"/><area shape="rect" id="node7" href="camera__widget__wrapper_8hpp.html" title="camera_widget_wrapper.hpp" alt="" coords="5,256,203,285"/></map>
+<area shape="rect" id="node3" href="int__widget_8hpp.html" title="int_widget.hpp" alt="" coords="35,92,144,121"/><area shape="rect" id="node11" href="helper__gphoto2_8hpp.html" title="helper_gphoto2.hpp" alt="" coords="168,92,309,121"/><area shape="rect" id="node16" href="helper__widgets_8hpp.html" title="helper_widgets.hpp" alt="" coords="333,92,472,121"/><area shape="rect" id="node20" href="camera__widget__type__wrapper_8hpp.html" title="camera_widget_type\l_wrapper.hpp" alt="" coords="496,83,643,130"/><area shape="rect" id="node22" href="exceptions_8hpp.html" title="exceptions.hpp" alt="" coords="667,92,781,121"/><area shape="rect" id="node26" href="log_8h.html" title="log.h" alt="" coords="805,92,856,121"/><area shape="rect" id="node5" href="value__widget__base_8hpp.html" title="value_widget_base.hpp" alt="" coords="15,179,180,208"/><area shape="rect" id="node7" href="camera__widget__wrapper_8hpp.html" title="camera_widget_wrapper.hpp" alt="" coords="5,256,203,285"/></map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
 Namespaces</h2></td></tr>
+<tr class="memitem:namespacegphoto2"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegphoto2.html">gphoto2</a></td></tr>
 <tr class="memitem:namespacegphoto2pp"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegphoto2pp.html">gphoto2pp</a></td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><dl class="section author"><dt>Author</dt><dd>Copyright (c) 2013 maldworth <a href="https://github.com/maldworth">https://github.com/maldworth</a></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This file is part of <a class="el" href="namespacegphoto2pp.html">gphoto2pp</a></dd>
+<dd>
+<a class="el" href="namespacegphoto2pp.html">gphoto2pp</a> is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.</dd>
+<dd>
+<a class="el" href="namespacegphoto2pp.html">gphoto2pp</a> is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.</dd>
+<dd>
+You should have received a copy of the GNU Lesser General Public License along with <a class="el" href="namespacegphoto2pp.html">gphoto2pp</a>. If not, see <a href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a> </dd></dl>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_4ff2cb11c0d4a5c2390028fe5d6db1a4.html">gphoto2pp</a></li><li class="navelem"><a class="el" href="dir_ce485bf5ab9e9ffbb6c23158138ef782.html">src</a></li><li class="navelem"><a class="el" href="int__widget_8cpp.html">int_widget.cpp</a></li>
-    <li class="footer">Generated on Sun Dec 29 2013 15:30:33 for GPhoto2pp by
+    <li class="footer">Generated on Sat Jan 4 2014 15:20:50 for gphoto2pp by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
