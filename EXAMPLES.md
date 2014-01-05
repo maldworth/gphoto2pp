@@ -17,13 +17,13 @@ Table Of Contents
 
 You can run the examples one of two ways.
 1. **gphoto2pp already installed**
-    Simply compile the example with this command:
-    ```sh
-    g++ -std=c++11 exampleX.cpp -o exampleX -lgphoto2 -lgphoto2pp
-    ```
+   Simply compile the example with this command:
+   ```sh
+   g++ -std=c++11 exampleX.cpp -o exampleX -lgphoto2 -lgphoto2pp
+   ```
 2. **without gphoto2pp installed**
-    You will need to follow the [install instructions](INSTALL.md), but most importantly when you get the the last section ([installing gphoto2pp])[INSTALL.md#installing-gphoto2pp], you don't need to run ``make install``, you can just run ``make``.
-    After that completes successfully, and then you can execute any example with the ``./bin/examples/exampleX``.
+   You will need to follow the [install instructions](INSTALL.md), but most importantly when you get the the last section ([installing gphoto2pp](INSTALL.md#installing-gphoto2pp)), you don't need to run ``make install``, you can just run ``make``.
+   After that completes successfully, and then you can execute any example with the ``./bin/examples/exampleX``.
 
 The examples should have fairly detailed comments in the source code, so I will try not to repeat myself in the following sections.
 
