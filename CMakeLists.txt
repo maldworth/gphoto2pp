@@ -4,7 +4,7 @@ project (GPHOTO2PP)
 if(CMAKE_BUILD_TYPE)
     message("Building ${CMAKE_BUILD_TYPE} build.")
 elseif(NOT CMAKE_BUILD_TYPE)
-    message(FATAL_ERROR "No build type specified. Use -DCMAKE_BUILD_TYPE=[DEBUG|RELEASE|DEV] to specify.")
+    message(FATAL_ERROR "No build type specified. Use -DCMAKE_BUILD_TYPE=[DEBUG|RELEASE] to specify.")
 endif(CMAKE_BUILD_TYPE)
 
 #set the version of our library
