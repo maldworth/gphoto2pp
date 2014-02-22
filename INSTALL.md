@@ -48,10 +48,12 @@ Also, if you'd like to generate the documentation, install ``doxygen`` and ``gra
 Installing gphoto2pp
 --------------------
 We are almost there.
-* Download gphoto2pp from here (of course), and extract it to any directory of your choosing.
-* Open a terminal and go into the ./gphoto2pp/build folder (you may need to make the folder). Then run the command ``cmake ../ -DCMAKE_BULD_TYPE=[DEBUG|RELEASE]``. I recommend you use **RELEASE**, unless you will be developing with the library and perhaps tracking down bugs, then use **DEBUG**. CMake will scan and make sure gphoto2 is linked in the system before continuing, and then it will create all the Makefile's which will be used to compile and install gphoto2pp
-* Pay attention to the output, if there's an error saying *Could NOT find CxxTest...* that's okay if you are just a User because you will not be running any unit tests
-* Now enter the command ``make``, and it will build the library and all examples.
-* Lastly, you most likely want to install, as this will copy the library and headers to your system lib paths. Run the command ``make install`` and let it do it's magic. (will probably require sudo, and the install will not be present if compiled in DEBUG mode)
+* Download gphoto2pp from here (of course), and extract it to any directory of your choosing (or clone with **git clone**)
+* Open a terminal (if not done already), and run ``./cmake_release.sh`` or ``./cmake_debug.sh``. I recommend release, unless you plan on debugging and perhaps contributing code back to the repo.
+* This shell script will simply run the cmake commands and appropriate build flag. CMake will scan and make sure gphoto2 is linked in the system before continuing, and then it will create all the Makefile's which will be used to compile and install gphoto2pp
+* Pay attention to the output, if there's an error saying *Could NOT find CxxTest...* that's okay if you aren't going to run any unit tests
+* Now browse into the appropriate folder ``cd ./build/debug/`` or ``cd ./build/release/`` and enter the command ``make``, and it will build the library.
+* **Optional** to build examples, run command ``make examples`` or ``make example[0-9]+``.
+* Lastly, you most likely want to install, which will copy the library and headers to your system lib paths. Run the command ``make install`` and let it do it's magic. (will probably require sudo, and the install will not be present if compiled in DEBUG mode)
 * You might have to use the command ``ldconfig`` to update your PATH with the new library (this is the command my OS, it might vary, and you might need to use *sudo* as well)
 * Optional, if you want to uninstall at any time, you can run ``make uninstall`` from this same directory. You will need to have the *install_manifest.txt* preserved so the uninstall know's what files to uninstall. (again, will probably require sudo)
