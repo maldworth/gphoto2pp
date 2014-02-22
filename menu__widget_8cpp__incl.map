@@ -1,10 +1,10 @@
-<map id="gphoto2pp/src/menu_widget.cpp" name="gphoto2pp/src/menu_widget.cpp">
-<area shape="rect" id="node3" href="$menu__widget_8hpp.html" title="menu_widget.hpp" alt="" coords="33,111,164,140"/>
-<area shape="rect" id="node18" href="$exceptions_8hpp.html" title="exceptions.hpp" alt="" coords="188,111,303,140"/>
-<area shape="rect" id="node22" href="$camera__widget__type__wrapper_8hpp.html" title="camera_widget_type\l_wrapper.hpp" alt="" coords="327,102,473,149"/>
-<area shape="rect" id="node24" href="$log_8h.html" title="log.h" alt="" coords="497,111,548,140"/>
-<area shape="rect" id="node5" href="$choices__widget_8hpp.html" title="choices_widget.hpp" alt="" coords="33,197,175,227"/>
-<area shape="rect" id="node7" href="$string__widget_8hpp.html" title="string_widget.hpp" alt="" coords="40,275,168,304"/>
-<area shape="rect" id="node9" href="$value__widget__base_8hpp.html" title="value_widget_base.hpp" alt="" coords="21,352,187,381"/>
-<area shape="rect" id="node11" href="$camera__widget__wrapper_8hpp.html" title="camera_widget_wrapper.hpp" alt="" coords="5,429,203,459"/>
+<map id="src/menu_widget.cpp" name="src/menu_widget.cpp">
+<area shape="rect" id="node3" href="$menu__widget_8hpp.html" title="menu_widget.hpp" alt="" coords="33,92,164,121"/>
+<area shape="rect" id="node18" href="$exceptions_8hpp.html" title="exceptions.hpp" alt="" coords="188,92,303,121"/>
+<area shape="rect" id="node22" href="$camera__widget__type__wrapper_8hpp.html" title="camera_widget_type\l_wrapper.hpp" alt="" coords="327,83,473,130"/>
+<area shape="rect" id="node24" href="$log_8h.html" title="log.h" alt="" coords="497,92,548,121"/>
+<area shape="rect" id="node5" href="$choices__widget_8hpp.html" title="choices_widget.hpp" alt="" coords="33,179,175,208"/>
+<area shape="rect" id="node7" href="$string__widget_8hpp.html" title="string_widget.hpp" alt="" coords="40,256,168,285"/>
+<area shape="rect" id="node9" href="$value__widget__base_8hpp.html" title="value_widget_base.hpp" alt="" coords="21,333,187,363"/>
+<area shape="rect" id="node11" href="$camera__widget__wrapper_8hpp.html" title="camera_widget_wrapper.hpp" alt="" coords="5,411,203,440"/>
 </map>

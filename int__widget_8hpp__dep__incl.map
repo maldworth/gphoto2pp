@@ -1,5 +1,5 @@
-<map id="gphoto2pp/include/int_widget.hpp" name="gphoto2pp/include/int_widget.hpp">
-<area shape="rect" id="node3" href="$toggle__widget_8hpp.html" title="gphoto2pp/include/toggle\l_widget.hpp" alt="" coords="5,102,184,149"/>
-<area shape="rect" id="node7" href="$int__widget_8cpp.html" title="gphoto2pp/src/int_widget.cpp" alt="" coords="208,111,408,140"/>
-<area shape="rect" id="node5" href="$toggle__widget_8cpp.html" title="gphoto2pp/src/toggle\l_widget.cpp" alt="" coords="20,198,169,245"/>
+<map id="include/int_widget.hpp" name="include/int_widget.hpp">
+<area shape="rect" id="node3" href="$toggle__widget_8hpp.html" title="include/toggle_widget.hpp" alt="" coords="5,83,187,112"/>
+<area shape="rect" id="node7" href="$int__widget_8cpp.html" title="src/int_widget.cpp" alt="" coords="211,83,341,112"/>
+<area shape="rect" id="node5" href="$toggle__widget_8cpp.html" title="src/toggle_widget.cpp" alt="" coords="19,160,173,189"/>
 </map>

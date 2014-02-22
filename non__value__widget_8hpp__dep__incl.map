@@ -1,9 +1,9 @@
-<map id="gphoto2pp/include/non_value_widget.hpp" name="gphoto2pp/include/non_value_widget.hpp">
-<area shape="rect" id="node3" href="$section__widget_8hpp.html" title="gphoto2pp/include/section\l_widget.hpp" alt="" coords="5,102,189,149"/>
-<area shape="rect" id="node7" href="$window__widget_8hpp.html" title="gphoto2pp/include/window\l_widget.hpp" alt="" coords="213,102,400,149"/>
-<area shape="rect" id="node13" href="$helper__widgets_8cpp.html" title="gphoto2pp/src/helper\l_widgets.cpp" alt="" coords="424,102,573,149"/>
-<area shape="rect" id="node15" href="$non__value__widget_8cpp.html" title="gphoto2pp/src/non_value\l_widget.cpp" alt="" coords="597,102,776,149"/>
-<area shape="rect" id="node5" href="$section__widget_8cpp.html" title="gphoto2pp/src/section\l_widget.cpp" alt="" coords="19,198,176,245"/>
-<area shape="rect" id="node9" href="$camera__wrapper_8cpp.html" title="gphoto2pp/src/camera\l_wrapper.cpp" alt="" coords="213,198,371,245"/>
-<area shape="rect" id="node11" href="$window__widget_8cpp.html" title="gphoto2pp/src/window\l_widget.cpp" alt="" coords="395,198,555,245"/>
+<map id="include/non_value_widget.hpp" name="include/non_value_widget.hpp">
+<area shape="rect" id="node3" href="$section__widget_8hpp.html" title="include/section_widget.hpp" alt="" coords="5,83,192,112"/>
+<area shape="rect" id="node7" href="$window__widget_8hpp.html" title="include/window_widget.hpp" alt="" coords="216,83,405,112"/>
+<area shape="rect" id="node13" href="$helper__widgets_8cpp.html" title="src/helper_widgets.cpp" alt="" coords="429,83,592,112"/>
+<area shape="rect" id="node15" href="$non__value__widget_8cpp.html" title="src/non_value_widget.cpp" alt="" coords="616,83,797,112"/>
+<area shape="rect" id="node5" href="$section__widget_8cpp.html" title="src/section_widget.cpp" alt="" coords="19,160,179,189"/>
+<area shape="rect" id="node9" href="$camera__wrapper_8cpp.html" title="src/camera_wrapper.cpp" alt="" coords="213,160,387,189"/>
+<area shape="rect" id="node11" href="$window__widget_8cpp.html" title="src/window_widget.cpp" alt="" coords="411,160,573,189"/>
 </map>

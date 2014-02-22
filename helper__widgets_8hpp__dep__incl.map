@@ -1,5 +1,5 @@
-<map id="gphoto2pp/include/helper_widgets.hpp" name="gphoto2pp/include/helper_widgets.hpp">
-<area shape="rect" id="node3" href="$float__widget_8cpp.html" title="gphoto2pp/src/float\l_widget.cpp" alt="" coords="5,102,144,149"/>
-<area shape="rect" id="node5" href="$helper__widgets_8cpp.html" title="gphoto2pp/src/helper\l_widgets.cpp" alt="" coords="168,102,317,149"/>
-<area shape="rect" id="node7" href="$int__widget_8cpp.html" title="gphoto2pp/src/int_widget.cpp" alt="" coords="341,111,541,140"/>
+<map id="include/helper_widgets.hpp" name="include/helper_widgets.hpp">
+<area shape="rect" id="node3" href="$float__widget_8cpp.html" title="src/float_widget.cpp" alt="" coords="5,83,147,112"/>
+<area shape="rect" id="node5" href="$helper__widgets_8cpp.html" title="src/helper_widgets.cpp" alt="" coords="171,83,333,112"/>
+<area shape="rect" id="node7" href="$int__widget_8cpp.html" title="src/int_widget.cpp" alt="" coords="357,83,488,112"/>
 </map>

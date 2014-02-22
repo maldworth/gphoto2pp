@@ -1,6 +1,6 @@
-<map id="gphoto2pp/include/helper_context.hpp" name="gphoto2pp/include/helper_context.hpp">
-<area shape="rect" id="node3" href="$camera__abilities__list__wrapper_8cpp.html" title="gphoto2pp/src/camera\l_abilities_list_wrapper.cpp" alt="" coords="5,102,187,149"/>
-<area shape="rect" id="node5" href="$camera__wrapper_8cpp.html" title="gphoto2pp/src/camera\l_wrapper.cpp" alt="" coords="211,102,368,149"/>
-<area shape="rect" id="node7" href="$helper__context_8cpp.html" title="gphoto2pp/src/helper\l_context.cpp" alt="" coords="392,102,541,149"/>
-<area shape="rect" id="node9" href="$helper__gphoto2_8cpp.html" title="gphoto2pp/src/helper\l_gphoto2.cpp" alt="" coords="565,102,715,149"/>
+<map id="include/helper_context.hpp" name="include/helper_context.hpp">
+<area shape="rect" id="node3" href="$camera__abilities__list__wrapper_8cpp.html" title="src/camera_abilities\l_list_wrapper.cpp" alt="" coords="5,83,147,130"/>
+<area shape="rect" id="node5" href="$camera__wrapper_8cpp.html" title="src/camera_wrapper.cpp" alt="" coords="171,92,344,121"/>
+<area shape="rect" id="node7" href="$helper__context_8cpp.html" title="src/helper_context.cpp" alt="" coords="368,92,525,121"/>
+<area shape="rect" id="node9" href="$helper__gphoto2_8cpp.html" title="src/helper_gphoto2.cpp" alt="" coords="549,92,712,121"/>
 </map>

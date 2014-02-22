@@ -1,7 +1,7 @@
-<map id="gphoto2pp/include/choices_widget.hpp" name="gphoto2pp/include/choices_widget.hpp">
-<area shape="rect" id="node3" href="$menu__widget_8hpp.html" title="gphoto2pp/include/menu\l_widget.hpp" alt="" coords="5,102,179,149"/>
-<area shape="rect" id="node7" href="$radio__widget_8hpp.html" title="gphoto2pp/include/radio\l_widget.hpp" alt="" coords="203,102,373,149"/>
-<area shape="rect" id="node11" href="$choices__widget_8cpp.html" title="gphoto2pp/src/choices\l_widget.cpp" alt="" coords="397,102,557,149"/>
-<area shape="rect" id="node5" href="$menu__widget_8cpp.html" title="gphoto2pp/src/menu\l_widget.cpp" alt="" coords="19,198,165,245"/>
-<area shape="rect" id="node9" href="$radio__widget_8cpp.html" title="gphoto2pp/src/radio\l_widget.cpp" alt="" coords="216,198,360,245"/>
+<map id="include/choices_widget.hpp" name="include/choices_widget.hpp">
+<area shape="rect" id="node3" href="$menu__widget_8hpp.html" title="include/menu_widget.hpp" alt="" coords="5,83,184,112"/>
+<area shape="rect" id="node7" href="$radio__widget_8hpp.html" title="include/radio_widget.hpp" alt="" coords="208,83,381,112"/>
+<area shape="rect" id="node11" href="$choices__widget_8cpp.html" title="src/choices_widget.cpp" alt="" coords="405,83,568,112"/>
+<area shape="rect" id="node5" href="$menu__widget_8cpp.html" title="src/menu_widget.cpp" alt="" coords="19,160,171,189"/>
+<area shape="rect" id="node9" href="$radio__widget_8cpp.html" title="src/radio_widget.cpp" alt="" coords="221,160,368,189"/>
 </map>
