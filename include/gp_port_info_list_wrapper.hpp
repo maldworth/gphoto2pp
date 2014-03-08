@@ -53,7 +53,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_port_info_list_lookup_path(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		int lookupPath(const std::string& path) const;
+		int lookupPath(std::string const & path) const;
 		
 		/**
 		 * \brief Finds the list index of the specified model name
@@ -61,7 +61,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_port_info_list_lookup_name(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		int lookupName(const std::string& name) const;
+		int lookupName(std::string const & name) const;
 		
 		/**
 		 * \brief Gets the number of items in the list

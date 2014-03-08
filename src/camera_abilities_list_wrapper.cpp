@@ -40,7 +40,7 @@ namespace gphoto2pp
 {
 
 	CameraAbilitiesListWrapper::CameraAbilitiesListWrapper()
-		: m_cameraAbilitiesList(nullptr)
+		: m_cameraAbilitiesList{nullptr}
 	{
 		FILE_LOG(logINFO) << "CameraAbilitiesListWrapper Constructor";
 		
@@ -63,7 +63,7 @@ namespace gphoto2pp
 	}
 	
 	CameraAbilitiesListWrapper::CameraAbilitiesListWrapper(CameraAbilitiesListWrapper&& other)
-		: m_cameraAbilitiesList(other.m_cameraAbilitiesList)
+		: m_cameraAbilitiesList{other.m_cameraAbilitiesList}
 	{
 		FILE_LOG(logINFO) << "CameraAbilitiesListWrapper move Constructor";
 		
@@ -97,10 +97,8 @@ namespace gphoto2pp
 		return m_cameraAbilitiesList;
 	}
 
-	CameraListWrapper CameraAbilitiesListWrapper::listDetect(const GPPortInfoListWrapper& portInfoList)
+	CameraListWrapper CameraAbilitiesListWrapper::listDetect(GPPortInfoListWrapper const & portInfoList)
 	{
-		FILE_LOG(logDEBUG) << "CameraAbilitiesListWrapper listDetect - portInfoList";
-		
 		auto spContext = gphoto2pp::getContext();
 		CameraListWrapper cameraList;
 		
@@ -111,8 +109,6 @@ namespace gphoto2pp
 
 	void CameraAbilitiesListWrapper::reset()
 	{
-		FILE_LOG(logDEBUG) << "CameraAbilitiesListWrapper reset";
-		
 		gphoto2pp::checkResponse(gphoto2::gp_abilities_list_reset(m_cameraAbilitiesList),"gp_abilities_list_reset");
 	}
 
@@ -124,7 +120,7 @@ namespace gphoto2pp
 	}
 
 	// Meant to return the index of the specified model, or gphoto error code
-	int CameraAbilitiesListWrapper::lookupModel(const std::string& model) const
+	int CameraAbilitiesListWrapper::lookupModel(std::string const & model) const
 	{
 		FILE_LOG(logDEBUG) << "CameraAbilitiesListWrapper lookupModel - model";
 		

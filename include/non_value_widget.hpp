@@ -52,7 +52,7 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		template<typename T>
-		T getChildByName(const std::string& name) const
+		T getChildByName(std::string const & name) const
 		{
 			auto cameraWidget = getChildByNameWrapper(name);
 			return T(cameraWidget);
@@ -66,7 +66,7 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		template<typename T>
-		T getChildByLabel(const std::string& label) const
+		T getChildByLabel(std::string const & label) const
 		{
 			auto cameraWidget = getChildByLabelWrapper(label);
 			return T(cameraWidget);
@@ -111,7 +111,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_widget_get_child_by_name(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		gphoto2::_CameraWidget* getChildByNameWrapper(const std::string& name) const;
+		gphoto2::_CameraWidget* getChildByNameWrapper(std::string const & name) const;
 		
 		/**
 		 * \brief Gets the child widget by the label passed in and returns the widget type that the user expects.
@@ -121,7 +121,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_widget_get_child_by_label(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		gphoto2::_CameraWidget* getChildByLabelWrapper(const std::string& label) const;
+		gphoto2::_CameraWidget* getChildByLabelWrapper(std::string const & label) const;
 		
 		/**
 		 * \brief Gets the child widget at the specified index and returns the widget type that the user expects.

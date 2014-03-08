@@ -70,8 +70,8 @@ namespace gphoto2pp
 		CameraWidgetWrapper& operator=(CameraWidgetWrapper&& other);
 		
 		// Copy constructor and copy assignment
-		CameraWidgetWrapper(const CameraWidgetWrapper& other);
-		CameraWidgetWrapper& operator=( const CameraWidgetWrapper& other);
+		CameraWidgetWrapper(CameraWidgetWrapper const & other);
+		CameraWidgetWrapper& operator=(CameraWidgetWrapper const & other);
 		
 		/**
 		 * \brief Gets the raw resource

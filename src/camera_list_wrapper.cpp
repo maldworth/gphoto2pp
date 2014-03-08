@@ -26,8 +26,6 @@
 
 #include "helper_gphoto2.hpp"
 
-#include "log.h"
-
 namespace gphoto2
 {
 #include <gphoto2/gphoto2-list.h>
@@ -37,17 +35,13 @@ namespace gphoto2pp
 {
 
 	CameraListWrapper::CameraListWrapper()
-		: m_cameraList(nullptr)
+		: m_cameraList{nullptr}
 	{
-		FILE_LOG(logINFO) << "CameraListWrapper Constructor";
-		
 		gphoto2pp::checkResponse(gphoto2::gp_list_new(&m_cameraList),"gp_list_new");
 	}
 
 	CameraListWrapper::~CameraListWrapper()
 	{
-		FILE_LOG(logINFO) << "~CameraListWrapper Destructor";
-		
 		if(m_cameraList != nullptr) // Added this line so the move constructor wouldn't dispose of the object if it was reassigned
 		{
 			gphoto2pp::checkResponseSilent(gphoto2::gp_list_unref(m_cameraList),"gp_list_unref");
@@ -56,23 +50,18 @@ namespace gphoto2pp
 	}
 	
 	CameraListWrapper::CameraListWrapper(CameraListWrapper&& other)
-		: m_cameraList(other.m_cameraList)
+		: m_cameraList{other.m_cameraList}
 	{
-		FILE_LOG(logINFO) << "CameraListWrapper move Constructor";
-		
 		other.m_cameraList = nullptr;
 	}
 	
 	CameraListWrapper& CameraListWrapper::operator=(CameraListWrapper&& other)
 	{
-		FILE_LOG(logINFO) << "CameraListWrapper move assignment operator";
-		
 		if(this != &other)
 		{
 			// Release current objects resource
 			if(m_cameraList != nullptr)
 			{
-				FILE_LOG(logDEBUG) << "CameraListWrapper move assignment - existing cameraList is not null";
 				gphoto2pp::checkResponse(gphoto2::gp_list_unref(m_cameraList),"gp_list_unref");
 			}
 			
@@ -85,11 +74,9 @@ namespace gphoto2pp
 		return *this;
 	}
 	
-	CameraListWrapper::CameraListWrapper(const CameraListWrapper& other)
-		: m_cameraList(other.m_cameraList)
+	CameraListWrapper::CameraListWrapper(CameraListWrapper const & other)
+		: m_cameraList{other.m_cameraList}
 	{
-		FILE_LOG(logINFO) << "CameraListWrapper copy Constructor";
-		
 		// Because we now refer to the same cameralist as "other", we need to add to it's reference count
 		if(m_cameraList != nullptr)
 		{
@@ -97,10 +84,8 @@ namespace gphoto2pp
 		}
 	}
 	
-	CameraListWrapper& CameraListWrapper::operator=(const CameraListWrapper& other)
+	CameraListWrapper& CameraListWrapper::operator=(CameraListWrapper const & other)
 	{
-		FILE_LOG(logINFO) << "CameraListWrapper copy assignment operator";
-		
 		if(this != &other)
 		{
 			// Release current objects resource
@@ -139,31 +124,31 @@ namespace gphoto2pp
 		
 		if(temp == nullptr)
 		{
-			return std::string();
+			return std::string{};
 		}
 		else
 		{
-			return std::string(temp);
+			return std::string{temp};
 		}
 	}
 
 	std::string CameraListWrapper::getValue(int index) const
 	{
-		const char* temp = nullptr;
+		char const * temp = nullptr;
 		
 		gphoto2pp::checkResponse(gphoto2::gp_list_get_value(m_cameraList, index, &temp),"gp_list_get_value");
 		
 		if(temp == nullptr) // sometimes it returns null, so we will just consider that an empty string
 		{
-			return std::string();
+			return std::string{};
 		}
 		else
 		{
-			return std::string(temp);
+			return std::string{temp};
 		}
 	}
 	
-	void CameraListWrapper::append(const std::string& name, const std::string& value)
+	void CameraListWrapper::append(std::string const & name, std::string const & value)
 	{
 		gphoto2pp::checkResponse(gphoto2::gp_list_append(m_cameraList, name.c_str(), value.c_str()),"gp_list_append");
 	}
@@ -178,7 +163,7 @@ namespace gphoto2pp
 		gphoto2pp::checkResponse(gphoto2::gp_list_sort(m_cameraList),"gp_list_sort");
 	}
 	
-	int CameraListWrapper::findByName(const std::string& name) const
+	int CameraListWrapper::findByName(std::string const & name) const
 	{
 		int index;
 		
@@ -187,12 +172,12 @@ namespace gphoto2pp
 		return index;
 	}
 	
-	void CameraListWrapper::setName(int index, const std::string& name)
+	void CameraListWrapper::setName(int index, std::string const & name)
 	{
 		gphoto2pp::checkResponse(gphoto2::gp_list_set_name(m_cameraList, index, name.c_str()),"gp_list_set_name");
 	}
 
-	void CameraListWrapper::setValue(int index, const std::string& value)
+	void CameraListWrapper::setValue(int index, std::string const & value)
 	{
 		gphoto2pp::checkResponse(gphoto2::gp_list_set_value(m_cameraList, index, value.c_str()),"gp_list_set_value");
 	}
@@ -202,7 +187,7 @@ namespace gphoto2pp
 		return std::make_pair(getName(index), getValue(index));
 	}
 		
-	std::pair<std::string, std::string> CameraListWrapper::getPairByName(const std::string& name) const
+	std::pair<std::string, std::string> CameraListWrapper::getPairByName(std::string const & name) const
 	{
 		auto index = findByName(name);
 		

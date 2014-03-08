@@ -43,7 +43,7 @@ namespace gphoto2pp
 			
 			namespace detail
 			{
-				struct PortLoggingEventsManager : observer::SubjectEvent<LogLevelWrapper, void(const LogLevelWrapper&, const std::string&, const std::string&, void*)>
+				struct PortLoggingEventsManager : observer::SubjectEvent<LogLevelWrapper, void(LogLevelWrapper const &, std::string const &, std::string const &, void*)>
 				{
 				public:
 					PortLoggingEventsManager() = default;
@@ -58,7 +58,7 @@ namespace gphoto2pp
 			void startPortLogging(const LogLevelWrapper& level);
 			void stopPortLogging();
 			
-			observer::Registration subscribeToPortLogEvents(const LogLevelWrapper& event, std::function<void(const LogLevelWrapper& level, const std::string& domain, const std::string& str, void *data)> func);
+			observer::Registration subscribeToPortLogEvents(const LogLevelWrapper& event, std::function<void(LogLevelWrapper const & level, std::string const & domain, std::string const & str, void *data)> func);
 		}
 	}
 }

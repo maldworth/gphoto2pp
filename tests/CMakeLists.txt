@@ -7,7 +7,7 @@ if(CXXTEST_FOUND)
 	include_directories(${CXXTEST_INCLUDE_DIR})
 	
 	#First copies the testing png to the ../build/tests folder where all the test runners (*.cc) files are generated. That's where ctest executes it's tests from
-	file(COPY unit_test_sample_input.jpg DESTINATION ${PROJECT_BINARY_DIR})
+	file(COPY unit_test_sample_input.jpg DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 	FILE(GLOB TESTS_SOURCE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.h")
 	foreach( testssourcefile ${TESTS_SOURCE_FILES} )
 		# I used a simple string replace, to cut off .h.

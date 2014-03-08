@@ -64,7 +64,7 @@ namespace gphoto2pp
 		/**
 		 * @brief Connects and initializes using the provided model and port.
 		 */
-		CameraWrapper(const std::string& model, const std::string& port);
+		CameraWrapper(std::string const & model, std::string const & port);
 
 		~CameraWrapper();
 		
@@ -74,7 +74,7 @@ namespace gphoto2pp
 		
 		// This is not copyable. the t_Camera object is sort of a singleton. We don't want multiple commands being issued to one t_Camera resource.
 		CameraWrapper(const CameraWrapper& other) = delete;
-		CameraWrapper& operator=( const CameraWrapper& ) = delete;
+		CameraWrapper& operator=(CameraWrapper const & other) = delete;
 		
 		/**
 		 * \brief Gets the complete summary of the currently connected camera.
@@ -101,7 +101,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_camera_capture(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		CameraFilePathWrapper capture(const CameraCaptureTypeWrapper& captureType);
+		CameraFilePathWrapper capture(CameraCaptureTypeWrapper const & captureType);
 		
 		/**
 		 * \brief Triggers the camera to take a picture (similar to a remote shutter release).
@@ -127,7 +127,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_camera_set_config(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void setConfig(const CameraWidgetWrapper& cameraWidget);
+		void setConfig(CameraWidgetWrapper const & cameraWidget);
 		
 		//Filesystem Operations
 		/**
@@ -137,7 +137,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_camera_folder_list_files(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		CameraListWrapper folderListFiles(const std::string& folder) const;
+		CameraListWrapper folderListFiles(std::string const & folder) const;
 		
 		/**
 		 * \brief Lists all folders in the provided folder
@@ -146,7 +146,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_camera_folder_list_folders(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		CameraListWrapper folderListFolders(const std::string& folder) const;
+		CameraListWrapper folderListFolders(std::string const & folder) const;
 		
 		/**
 		 * \brief Delete all files in the provided folder
@@ -154,7 +154,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_camera_folder_delete_all(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void folderDeleteAll(const std::string& folder);
+		void folderDeleteAll(std::string const & folder);
 		
 		/**
 		 * \brief Write a file in the provided folder
@@ -165,7 +165,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_camera_folder_put_file(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void folderPutFile(const std::string& folder, const std::string& fileName, const CameraFileTypeWrapper& fileType, CameraFileWrapper cameraFile);
+		void folderPutFile(std::string const & folder, std::string const & fileName, CameraFileTypeWrapper const & fileType, CameraFileWrapper cameraFile);
 		
 		/**
 		 * \brief Make a new folder in the provided directory
@@ -174,7 +174,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_camera_folder_make_dir(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void folderMakeDir(const std::string& folder, const std::string& name);
+		void folderMakeDir(std::string const & folder, std::string const & name);
 		
 		/**
 		 * \brief Remove a directory from the provided folder
@@ -183,7 +183,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_camera_folder_remove_dir(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void folderRemoveDir(const std::string& folder, const std::string& name);
+		void folderRemoveDir(std::string const & folder, std::string const & name);
 		
 		/**
 		 * \brief Retrieve a file from the camera
@@ -194,7 +194,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_camera_file_get(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		CameraFileWrapper fileGet(const std::string& folder, const std::string& fileName, const CameraFileTypeWrapper& fileType) const;
+		CameraFileWrapper fileGet(std::string const & folder, std::string const & fileName, CameraFileTypeWrapper const & fileType) const;
 		
 		/**
 		 * \brief Delete a file from the camera
@@ -203,7 +203,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_camera_file_get(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void fileDelete(const std::string& folder, const std::string& fileName) const;
+		void fileDelete(std::string const & folder, std::string const & fileName) const;
 		
 		/**
 		 * \brief Helper method used to subscribe to Camera Wait For events.
@@ -220,7 +220,7 @@ namespace gphoto2pp
 		 * \note Helper structure that wraps <tt>gp_camera_wait_for_event(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		observer::Registration subscribeToCameraEvent(const CameraEventTypeWrapper& event, std::function<void(const CameraFilePathWrapper&, const std::string&)> func);
+		observer::Registration subscribeToCameraEvent(CameraEventTypeWrapper const & event, std::function<void(const CameraFilePathWrapper&, const std::string&)> func);
 		
 		/**
 		 * \brief Starts monitoring the camera events
@@ -246,7 +246,7 @@ namespace gphoto2pp
 		 * \param[in]	model	of the camera to connect to
 		 * \param[in]	port	to find the camera and connect to it through
 		 */
-		void initialize(const std::string& model, const std::string& port);
+		void initialize(std::string const & model, std::string const & port);
 		
 		gphoto2::_Camera* m_camera = nullptr;
 		

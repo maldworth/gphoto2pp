@@ -26,10 +26,6 @@
 
 #include "helper_gphoto2.hpp"
 
-#include "log.h"
-
-//#include <chrono>
-
 namespace gphoto2
 {
 #include <gphoto2/gphoto2.h>
@@ -46,7 +42,7 @@ namespace gphoto2pp
 				static PortLoggingEventsManager PortLogEventHandler;
 				
 				// From Here http://stackoverflow.com/questions/2342162/stdstring-formatting-like-sprintf
-				inline std::string strformat(const char* fmt, va_list vl){
+				inline std::string strformat(char const * fmt, va_list vl){
 					int size = 512;
 					char* buffer = 0;
 					buffer = new char[size];
@@ -65,7 +61,7 @@ namespace gphoto2pp
 					return ret;
 				}
 				
-				inline std::string strformat(const char* fmt, ...){
+				inline std::string strformat(char const * fmt, ...){
 					va_list vl;
 					va_start(vl, fmt);
 					return strformat(fmt, vl);
@@ -116,7 +112,7 @@ namespace gphoto2pp
 					stopPortLogging();
 				}
 				
-				void PortLoggingEventsManager::startPortLogging(const LogLevelWrapper& level)
+				void PortLoggingEventsManager::startPortLogging(LogLevelWrapper const & level)
 				{
 					if(id == 0)
 					{
@@ -134,7 +130,7 @@ namespace gphoto2pp
 				}
 			}
 			
-			void startPortLogging(const LogLevelWrapper& level)
+			void startPortLogging(LogLevelWrapper const & level)
 			{
 				detail::PortLogEventHandler.startPortLogging(level);
 			}
@@ -144,7 +140,7 @@ namespace gphoto2pp
 				detail::PortLogEventHandler.stopPortLogging();
 			}
 			
-			observer::Registration subscribeToPortLogEvents(const LogLevelWrapper& event, std::function<void(const LogLevelWrapper& level, const std::string& domain, const std::string& str, void *data)> func)
+			observer::Registration subscribeToPortLogEvents(LogLevelWrapper const & event, std::function<void(LogLevelWrapper const & level, std::string const & domain, std::string const & str, void *data)> func)
 			{
 				return detail::PortLogEventHandler.registerObserver(event, std::move(func));
 			}

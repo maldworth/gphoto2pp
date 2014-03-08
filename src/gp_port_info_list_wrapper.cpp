@@ -26,8 +26,6 @@
 
 #include "helper_gphoto2.hpp"
 
-#include "log.h"
-
 namespace gphoto2
 {
 #include <gphoto2/gphoto2-port-info-list.h>
@@ -38,8 +36,6 @@ namespace gphoto2pp
 
 	GPPortInfoListWrapper::GPPortInfoListWrapper()
 	{
-		FILE_LOG(logINFO) << "GPPortInfoListWrapper Constructor";
-
 		gphoto2pp::checkResponse(gphoto2::gp_port_info_list_new(&m_portInfoList),"gp_port_info_list_new");
 		
 		gphoto2pp::checkResponse(gphoto2::gp_port_info_list_load(m_portInfoList),"gp_port_info_list_load");
@@ -47,8 +43,6 @@ namespace gphoto2pp
 
 	GPPortInfoListWrapper::~GPPortInfoListWrapper()
 	{
-		FILE_LOG(logINFO) << "GPPortInfoListWrapper Destructor";
-		
 		// Destructors should never throw exceptions. Hence the silent response
 		gphoto2pp::checkResponseSilent(gphoto2::gp_port_info_list_free(m_portInfoList),"gp_port_info_list_free");
 	}
@@ -58,17 +52,13 @@ namespace gphoto2pp
 		return m_portInfoList;
 	}
 
-	int GPPortInfoListWrapper::lookupPath(const std::string& path) const
+	int GPPortInfoListWrapper::lookupPath(std::string const & path) const
 	{
-		FILE_LOG(logDEBUG) << "GPPortInfoListWrapper lookupPath - path["<< path << "]";
-		
 		return gphoto2pp::checkResponse(gphoto2::gp_port_info_list_lookup_path(m_portInfoList, path.c_str()),"gp_port_info_list_lookup_path");
 	}
 	
-	int GPPortInfoListWrapper::lookupName(const std::string& name) const
+	int GPPortInfoListWrapper::lookupName(std::string const & name) const
 	{
-		FILE_LOG(logDEBUG) << "GPPortInfoListWrapper lookupName - name["<< name << "]";
-		
 		return gphoto2pp::checkResponse(gphoto2::gp_port_info_list_lookup_name(m_portInfoList, name.c_str()),"gp_port_info_list_lookup_name");
 	}
 	

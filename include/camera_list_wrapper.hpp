@@ -48,8 +48,8 @@ namespace gphoto2pp
 		CameraListWrapper(CameraListWrapper&& other);
 		CameraListWrapper& operator=(CameraListWrapper&& other);
 		
-		CameraListWrapper(const CameraListWrapper& other);
-		CameraListWrapper& operator=(const CameraListWrapper& other);
+		CameraListWrapper(CameraListWrapper const & other);
+		CameraListWrapper& operator=(CameraListWrapper const & other);
 		
 		gphoto2::_CameraList* getPtr() const;
 		
@@ -86,7 +86,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_list_set_name(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void setName(int index, const std::string& name);
+		void setName(int index, std::string const & name);
 		
 		/**
 		 * \brief Sets the camera port at the specified index
@@ -95,7 +95,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_list_set_value(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void setValue(int index, const std::string& value);
+		void setValue(int index, std::string const & value);
 		
 		/**
 		 * \brief Adds a new camera model and port pair
@@ -104,7 +104,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_list_append(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void append(const std::string& name, const std::string& value);
+		void append(std::string const & name, std::string const & value);
 		
 		/**
 		 * \brief Erases all model and port pairs in the current list.
@@ -126,7 +126,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_list_sort(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		int findByName(const std::string& name) const;
+		int findByName(std::string const & name) const;
 		
 		/**
 		 * \brief Gets the name (model) and value (port) pair
@@ -142,7 +142,7 @@ namespace gphoto2pp
 		 * \return the model\port pair
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		std::pair<std::string, std::string> getPairByName(const std::string& name) const;
+		std::pair<std::string, std::string> getPairByName(std::string const & name) const;
 
 	private:
 		gphoto2::_CameraList* m_cameraList;

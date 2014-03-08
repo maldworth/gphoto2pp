@@ -57,12 +57,12 @@ namespace gphoto2pp
 		/**
 		 * \note this copy constructor does not actually copy the image, but rather makes a copy of this wrapper around the gphoto2 struct CameraFile. 
 		 */
-		CameraFileWrapper(const CameraFileWrapper& other);
+		CameraFileWrapper(CameraFileWrapper const & other);
 		
 		/**
 		 * \note this copy assignments does not actually copy the image, but rather makes a copy of this wrapper around the gphoto2 struct CameraFile. 
 		 */
-		CameraFileWrapper& operator=( const CameraFileWrapper& other );
+		CameraFileWrapper& operator=( CameraFileWrapper const & other );
 		
 		gphoto2::_CameraFile* getPtr() const;
 		
@@ -81,7 +81,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_file_set_data_and_size(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void setDataAndSize(const std::vector<char>& file);
+		void setDataAndSize(std::vector<char> const & file);
 		
 		/**
 		 * \brief Gets the file's MIME type
@@ -97,7 +97,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_file_set_mime_type(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void setMimeType(const std::string& mimeType);
+		void setMimeType(std::string const & mimeType);
 		
 		/**
 		 * \brief Gets the file's name
@@ -113,7 +113,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_file_set_name(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void setFileName(const std::string& fileName);
+		void setFileName(std::string const & fileName);
 		
 		/**
 		 * \brief Detects the MIME type and updates the internal structures MIME type.
@@ -165,7 +165,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_file_get_name_by_type(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		std::string getNameByType(const std::string& baseName, const CameraFileTypeWrapper& type) const; // This command is only supported by GPhoto >= 2.5
+		std::string getNameByType(std::string const & baseName, CameraFileTypeWrapper const & type) const; // This command is only supported by GPhoto >= 2.5
 		
 		/**
 		 * \brief Saves the current file to the current executing directory with the provided filename.
@@ -173,7 +173,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_file_save(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void save(const std::string& filename) const;
+		void save(std::string const & filename) const;
 
 	private:
 		gphoto2::_CameraFile* m_cameraFile;

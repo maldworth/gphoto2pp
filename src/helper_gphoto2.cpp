@@ -93,7 +93,6 @@ namespace gphoto2pp
 		
 		if(count == 0)
 		{
-			FILE_LOG(logWARN3) << "No Cameras Found";
 			throw exceptions::NoCameraFoundError("autoDetect(multiple)");
 		}
 		
@@ -104,8 +103,6 @@ namespace gphoto2pp
 	{
 		if(result < 0)
 		{
-			FILE_LOG(logERROR) << "GPhoto result was not == 0";
-			
 			std::stringstream errorMessage;
 			errorMessage << methodName << ": failed with return code '" << result << "' and the reason is: '" << gphoto2::gp_result_as_string(result) << "'";
 			FILE_LOG(logERROR) << "Exception Message - '"<< errorMessage.str().c_str() << "'";

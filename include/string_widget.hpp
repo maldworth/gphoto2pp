@@ -54,7 +54,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_widget_set_value(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void setValue(const std::string& value) override;
+		void setValue(std::string const & value) override;
 		
 	protected:
 		StringWidget(gphoto2::_CameraWidget* cameraWidget);

@@ -24,8 +24,6 @@
 
 #include "helper_widgets.hpp"
 
-#include "log.h"
-
 #include "exceptions.hpp"
 
 #include "camera_widget_type_wrapper.hpp"
@@ -35,9 +33,9 @@ namespace gphoto2pp
 {
 	namespace helper
 	{
-		void getWidgetSummary(const NonValueWidget& currentWidget, const std::string& parentWidgetPath, std::vector<std::string>& allWidgetNames, bool showFullName, bool onlySpecificWidgetType, const CameraWidgetTypeWrapper& filterByWidgetType)
+		void getWidgetSummary(NonValueWidget const & currentWidget, std::string const & parentWidgetPath, std::vector<std::string>& allWidgetNames, bool showFullName, bool onlySpecificWidgetType, CameraWidgetTypeWrapper const & filterByWidgetType)
 		{
-			std::string currentWidgetName(currentWidget.getName());
+			std::string currentWidgetName{currentWidget.getName()};
 			
 			if(showFullName)
 			{
@@ -63,22 +61,22 @@ namespace gphoto2pp
 			}
 		}
 		
-		std::vector<std::string> getAllWidgetsNames(const NonValueWidget& parentWidget, bool showFullName /* = false */)
+		std::vector<std::string> getAllWidgetsNames(NonValueWidget const & parentWidget, bool showFullName /* = false */)
 		{
 			std::vector<std::string> allWidgetNames{};
 			
-			getWidgetSummary(parentWidget, std::string(""), allWidgetNames, showFullName, false, CameraWidgetTypeWrapper::Window); // we could have passed in anything for the widget type because it will be ignored, we just chose Window
+			getWidgetSummary(parentWidget, std::string{""}, allWidgetNames, showFullName, false, CameraWidgetTypeWrapper::Window); // we could have passed in anything for the widget type because it will be ignored, we just chose Window
 			
 			return std::move(allWidgetNames);
 			
 			//~ return getAllWidgetsNamesOfType(parentWidget, CameraWidgetTypeWrapper::Unassigned, showFullName);
 		}
 		
-		std::vector<std::string> getAllWidgetsNamesOfType(const NonValueWidget& parentWidget, const CameraWidgetTypeWrapper& filterByWidgetType, bool showFullName /* = false */)
+		std::vector<std::string> getAllWidgetsNamesOfType(NonValueWidget const & parentWidget, CameraWidgetTypeWrapper const & filterByWidgetType, bool showFullName /* = false */)
 		{
 			std::vector<std::string> allWidgetNames{};
 			
-			getWidgetSummary(parentWidget, std::string(""), allWidgetNames, showFullName, true, filterByWidgetType);
+			getWidgetSummary(parentWidget, std::string{""}, allWidgetNames, showFullName, true, filterByWidgetType);
 			
 			return std::move(allWidgetNames);
 		}

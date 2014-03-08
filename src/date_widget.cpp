@@ -29,8 +29,6 @@
 
 #include "exceptions.hpp"
 
-#include "log.h"
-
 namespace gphoto2
 {
 #include <gphoto2/gphoto2-widget.h>
@@ -40,10 +38,8 @@ namespace gphoto2pp
 {
 
 	DateWidget::DateWidget(gphoto2::_CameraWidget* cameraWidget)
-		: ValueWidgetBase(cameraWidget)
+		: ValueWidgetBase{cameraWidget}
 	{
-		FILE_LOG(logINFO) << "DateWidget constructor - widget";	
-		
 		if(this->getType() != CameraWidgetTypeWrapper::Date)
 		{
 			throw exceptions::InvalidWidgetType("The widget type must be a Date Widget");
@@ -59,7 +55,7 @@ namespace gphoto2pp
 		return static_cast<std::time_t>(temp);
 	}
 	
-	void DateWidget::setValue(const std::time_t& datetime)
+	void DateWidget::setValue(std::time_t const & datetime)
 	{
 		int temp = static_cast<int>(datetime);
 		

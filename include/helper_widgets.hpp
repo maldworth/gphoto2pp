@@ -45,7 +45,7 @@ namespace gphoto2pp
 		 * \param[in]	showFullName	indicates whether to show the full widget path (eg... true = /main/imgsettings/iso vs. false = iso)
 		 * \return the compiled list of all widgets found
 		 */
-		std::vector<std::string> getAllWidgetsNames(const NonValueWidget& parentWidget, bool showFullName = false); // Need to ask Marcus if these names are unique? So far they appear to be (I've not encountered two leaf nodes with the same name
+		std::vector<std::string> getAllWidgetsNames(NonValueWidget const & parentWidget, bool showFullName = false); // Need to ask Marcus if these names are unique? So far they appear to be (I've not encountered two leaf nodes with the same name
 
 		/**
 		 * \brief Traverses the widget tree (depth first pre-order) and returns all widgets matching the provided type
@@ -53,7 +53,7 @@ namespace gphoto2pp
 		 * \param[in]	filterByWidgetType	will only show results that match this widget type
 		 * \param[in]	showFullName	indicates whether to show the full widget path (eg... true = /main/imgsettings/iso vs. false = iso)
 		 */
-		std::vector<std::string> getAllWidgetsNamesOfType(const NonValueWidget& parentWidget, const CameraWidgetTypeWrapper& filterByWidgetType, bool showFullName = false);
+		std::vector<std::string> getAllWidgetsNamesOfType(NonValueWidget const & parentWidget, CameraWidgetTypeWrapper const & filterByWidgetType, bool showFullName = false);
 	}
 }
 

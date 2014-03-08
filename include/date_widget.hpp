@@ -54,7 +54,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for gp_widget_set_value(...)
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void setValue(const std::time_t& date) override;
+		void setValue(std::time_t const & date) override;
 
 	protected:
 		DateWidget(gphoto2::_CameraWidget* cameraWidget);

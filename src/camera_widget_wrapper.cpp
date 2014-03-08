@@ -27,8 +27,6 @@
 #include "helper_gphoto2.hpp"
 #include "camera_widget_type_wrapper.hpp"
 
-#include "log.h"
-
 namespace gphoto2
 {
 #include <gphoto2/gphoto2-widget.h>
@@ -37,14 +35,12 @@ namespace gphoto2
 namespace gphoto2pp
 {
 	CameraWidgetWrapper::CameraWidgetWrapper(gphoto2::_CameraWidget* cameraWidget)
-		: m_cameraWidget(cameraWidget)
+		: m_cameraWidget{cameraWidget}
 	{
-		FILE_LOG(logINFO) << "CameraWidgetWrapper Constructor for " << getName();
-		
 		// This call to increment the reference is correct 99% of the time when this constructor is called
 		// because it is likely being called for a child widget. However the one scenario when we call this
 		// constructor from the CameraWrapper.getConfig, it is the parent, and so we have now just incremented
-		// the reference to == 2. This is wrong, and so we unref in a special overloaded constructor in WindowWidget class
+		// the reference to == 2. This is wrong, and so we unref right after in CameraWrapper::getConfig
 		ref();
 	}
 	
@@ -52,30 +48,20 @@ namespace gphoto2pp
 	{
 		if(m_cameraWidget != nullptr)
 		{	
-			FILE_LOG(logINFO) << "~CameraWidgetWrapper Destructor for: " << getName();
-			
 			unref();
 			
 			m_cameraWidget = nullptr;
 		}
-		else
-		{
-			FILE_LOG(logINFO) << "~CameraWidgetWrapper Destructor - null Widget";
-		}
 	}
 
 	CameraWidgetWrapper::CameraWidgetWrapper(CameraWidgetWrapper&& other)
-		: m_cameraWidget(other.m_cameraWidget)
+		: m_cameraWidget{other.m_cameraWidget}
 	{
-		FILE_LOG(logINFO) << "CameraWidgetWrapper Move Constructor";
-			
 		other.m_cameraWidget = nullptr; // So when the 'other' instance calls it's destructor, it won't try to unreference.
 	}
 
 	CameraWidgetWrapper& CameraWidgetWrapper::operator=(CameraWidgetWrapper&& other)
 	{
-		FILE_LOG(logINFO) << "CameraWidgetWrapper Move Assignment";
-		
 		// Check for self assignment
 		if(this != &other)
 		{
@@ -95,17 +81,14 @@ namespace gphoto2pp
 		return *this;
 	}
 	
-	CameraWidgetWrapper::CameraWidgetWrapper(const CameraWidgetWrapper& other)
-		: m_cameraWidget(other.m_cameraWidget)
+	CameraWidgetWrapper::CameraWidgetWrapper(CameraWidgetWrapper const & other)
+		: m_cameraWidget{other.m_cameraWidget}
 	{
-		FILE_LOG(logINFO) << "CameraWidgetWrapper Copy Constructor";
 		ref();
 	}
 
-	CameraWidgetWrapper& CameraWidgetWrapper::operator=(const CameraWidgetWrapper& other)
+	CameraWidgetWrapper& CameraWidgetWrapper::operator=(CameraWidgetWrapper const & other)
 	{
-		FILE_LOG(logINFO) << "CameraWidgetWrapper Copy Assignment";
-		
 		// Check for self assignment
 		if(this != &other)
 		{
@@ -146,8 +129,6 @@ namespace gphoto2pp
 		gphoto2::CameraWidgetType temp;
 
 		gphoto2pp::checkResponse(gphoto2::gp_widget_get_type(m_cameraWidget, &temp),"gp_widget_get_type");
-		
-		FILE_LOG(logDEBUG) << "CameraWidgetType value is '" << static_cast<int>(temp) << "'";
 		
 		return static_cast<CameraWidgetTypeWrapper>(temp);
 	}

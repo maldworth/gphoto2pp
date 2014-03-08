@@ -158,9 +158,9 @@ namespace gphoto2pp
 			
 			void operator()(Params... params)
 			{
-				for (const auto& observer : observers_)
+				for (auto const & observer : observers_)
 				{
-					const FPtr fptr = std::static_pointer_cast<F>(observer);
+					FPtr const fptr = std::static_pointer_cast<F>(observer);
 					(*fptr)(params...);
 				}
 			}
@@ -183,23 +183,23 @@ namespace gphoto2pp
 			using F = std::function<Return (Params...)>;
 			using FPtr = std::shared_ptr<F>;
 
-			void operator()(const EventType& e, Params... params)
+			void operator()(EventType const & e, Params... params)
 			{
 				try
 				{
-					for (const auto& observer : this->observers_.at(e))
+					for (auto const & observer : this->observers_.at(e))
 					{
-						const FPtr fptr = std::static_pointer_cast<F>(observer);
+						FPtr const fptr = std::static_pointer_cast<F>(observer);
 						(*fptr)(params...);
 					}
 				}
-				catch(const std::out_of_range& e)
+				catch(std::out_of_range const & e)
 				{
 					// Supress this, means our std::map  .at() method doesn't have an event of this type
 				}
 			}
 			
-			Registration registerObserver(const EventType& e, F f)
+			Registration registerObserver(EventType const & e, F f)
 			{
 				FPtr fptr(new F(std::move(f)));
 				return detail::SubjectBaseEvent<EventType>::registerObserver(e, fptr);

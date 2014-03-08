@@ -52,7 +52,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for gp_widget_set_value(...)
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void setValue(const float& value) override;
+		void setValue(float const & value) override;
 		
 	protected:
 		FloatWidget(gphoto2::_CameraWidget* cameraWidget);

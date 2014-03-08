@@ -30,9 +30,6 @@
 
 #include "exceptions.hpp"
 
-
-#include "log.h"
-
 namespace gphoto2
 {
 #include <gphoto2/gphoto2-widget.h>
@@ -42,9 +39,8 @@ namespace gphoto2pp
 {
 
 	FloatWidget::FloatWidget(gphoto2::_CameraWidget* cameraWidget)
-		: ValueWidgetBase(cameraWidget)
+		: ValueWidgetBase{cameraWidget}
 	{
-		FILE_LOG(logINFO) << "FloatWidget constructor - widget";	
 	}
 	
 	float FloatWidget::getValue() const
@@ -55,7 +51,7 @@ namespace gphoto2pp
 		
 		return temp;
 	}
-	void FloatWidget::setValue(const float& value)
+	void FloatWidget::setValue(float const & value)
 	{
 		gphoto2pp::checkResponse(gphoto2::gp_widget_set_value(m_cameraWidget, &value),"gp_widget_set_value");
 	}

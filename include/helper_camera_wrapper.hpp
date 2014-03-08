@@ -46,7 +46,7 @@ namespace gphoto2pp
 		 * \param[in]	outputFilename	will be used when saving the captured image to disk
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void capturePreview(CameraWrapper& cameraWrapper, const std::string& outputFilename);
+		void capturePreview(CameraWrapper& cameraWrapper, std::string const & outputFilename);
 		
 		/**
 		 * \brief Takes a preview picture from the camera.
@@ -66,7 +66,7 @@ namespace gphoto2pp
 		 * \param[in]	fileType	indicates the type of file to capture from the camera (Raw, Normal, exif, etc...). Most modern cameras can leave this as default.
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void capture(CameraWrapper& cameraWrapper, CameraFileWrapper& cameraFile, bool autoDeleteFileFromSrc = false, const CameraCaptureTypeWrapper& captureType = CameraCaptureTypeWrapper::Image, const CameraFileTypeWrapper& fileType = CameraFileTypeWrapper::Normal);
+		void capture(CameraWrapper& cameraWrapper, CameraFileWrapper& cameraFile, bool autoDeleteFileFromSrc = false, CameraCaptureTypeWrapper const & captureType = CameraCaptureTypeWrapper::Image, CameraFileTypeWrapper const & fileType = CameraFileTypeWrapper::Normal);
 		
 		/**
 		 * \brief Captures a file from the camera.
@@ -77,7 +77,7 @@ namespace gphoto2pp
 		 * \param[in]	fileType	indicates the type of file to capture from the camera (Raw, Normal, exif, etc...). Most modern cameras can leave this as default.
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void capture(CameraWrapper& cameraWrapper, const std::string& outputFilename, bool autoDeleteFileFromSrc = false, const CameraCaptureTypeWrapper& captureType = CameraCaptureTypeWrapper::Image, const CameraFileTypeWrapper& fileType = CameraFileTypeWrapper::Normal);
+		void capture(CameraWrapper& cameraWrapper, std::string const & outputFilename, bool autoDeleteFileFromSrc = false, CameraCaptureTypeWrapper const & captureType = CameraCaptureTypeWrapper::Image, CameraFileTypeWrapper const & fileType = CameraFileTypeWrapper::Normal);
 		
 		/**
 		 * \brief Captures a file from the camera.
@@ -88,7 +88,7 @@ namespace gphoto2pp
 		 * \param[in]	fileType	indicates the type of file to capture from the camera (Raw, Normal, exif, etc...). Most modern cameras can leave this as default.
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void capture(CameraWrapper& cameraWrapper, std::ostream& outputStream, bool autoDeleteFileFromSrc = false, const CameraCaptureTypeWrapper& captureType = CameraCaptureTypeWrapper::Image, const CameraFileTypeWrapper& fileType = CameraFileTypeWrapper::Normal);
+		void capture(CameraWrapper& cameraWrapper, std::ostream& outputStream, bool autoDeleteFileFromSrc = false, CameraCaptureTypeWrapper const & captureType = CameraCaptureTypeWrapper::Image, CameraFileTypeWrapper const & fileType = CameraFileTypeWrapper::Normal);
 		
 		/**
 		 * \brief Recursively scans the camera's filesystem and compiles a list of all folders present.

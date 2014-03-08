@@ -52,7 +52,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_widget_set_value(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void setValue(const int& value) override;
+		void setValue(int const & value) override;
 		
 	protected:
 		IntWidget(gphoto2::_CameraWidget* cameraWidget);

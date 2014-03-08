@@ -24,8 +24,6 @@
 
 #include "helper_context.hpp"
 
-#include "log.h"
-
 namespace gphoto2
 {
 #include <gphoto2/gphoto2-context.h>

@@ -28,9 +28,8 @@
 #include "camera_widget_type_wrapper.hpp"
 #include "exceptions.hpp"
 
-#include "log.h"
-
 #include <algorithm>
+#include <sstream>
 
 namespace gphoto2
 {
@@ -41,10 +40,8 @@ namespace gphoto2pp
 {
 
 	ChoicesWidget::ChoicesWidget(gphoto2::_CameraWidget* cameraWidget)
-		: StringWidget(cameraWidget)
+		: StringWidget{cameraWidget}
 	{
-		FILE_LOG(logINFO) << "ChoicesWidget constructor - widget";	
-		
 		switch(this->getType())
 		{
 			case CameraWidgetTypeWrapper::Menu:
@@ -80,7 +77,7 @@ namespace gphoto2pp
 		auto choices = getChoices();
 		
 		// Finds the iterator over the choice that matches the currently set one
-		const auto item = std::find(std::begin(choices), std::end(choices), this->getValue());
+		auto const item = std::find(std::begin(choices), std::end(choices), this->getValue());
 		
 		// If the index is at the end
 		if(item == std::end(choices))
@@ -108,7 +105,7 @@ namespace gphoto2pp
 			throw exceptions::IndexOutOfRange("You are trying to get a choice index which is greater than the maximum choice index.");
 		}
 		
-		const char* temp = nullptr;
+		char const * temp = nullptr;
 		
 		gphoto2pp::checkResponse(gphoto2::gp_widget_get_choice(m_cameraWidget, index, &temp),"gp_widget_get_choice");
 		

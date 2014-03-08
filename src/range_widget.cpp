@@ -29,21 +29,19 @@
 #include "camera_widget_type_wrapper.hpp"
 #include "range_widget_range.hpp"
 
-#include "log.h"
-
 namespace gphoto2
 {
 #include <gphoto2/gphoto2-widget.h>
 }
 
+#include <sstream>
+
 namespace gphoto2pp
 {
 
 	RangeWidget::RangeWidget(gphoto2::_CameraWidget* cameraWidget)
-		: FloatWidget(cameraWidget)
+		: FloatWidget{cameraWidget}
 	{
-		FILE_LOG(logINFO) << "RangeWidget constructor - widget";	
-		
 		if(this->getType() != CameraWidgetTypeWrapper::Range)
 		{
 			throw exceptions::InvalidWidgetType("The widget type must be a Range Widget");

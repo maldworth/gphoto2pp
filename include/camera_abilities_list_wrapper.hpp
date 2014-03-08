@@ -53,8 +53,8 @@ namespace gphoto2pp
 		CameraAbilitiesListWrapper& operator=(CameraAbilitiesListWrapper&& other);
 		
 		// We cannot support copy constructor or assignment at this time
-		CameraAbilitiesListWrapper(const CameraAbilitiesListWrapper& other) = delete;
-		CameraAbilitiesListWrapper& operator=( const CameraAbilitiesListWrapper& ) = delete;
+		CameraAbilitiesListWrapper(CameraAbilitiesListWrapper const & other) = delete;
+		CameraAbilitiesListWrapper& operator=(CameraAbilitiesListWrapper const & other) = delete;
 		
 		gphoto2::_CameraAbilitiesList* getPtr() const;
 		
@@ -64,7 +64,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_abilities_list_detect(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		CameraListWrapper listDetect(const GPPortInfoListWrapper& portInfoList);
+		CameraListWrapper listDetect(GPPortInfoListWrapper const & portInfoList);
 		
 		/**
 		 * \brief Resets the abilities list
@@ -88,7 +88,7 @@ namespace gphoto2pp
 		 * \note Direct wrapper for <tt>gp_abilities_list_count(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		int lookupModel(const std::string& model) const;
+		int lookupModel(std::string const & model) const;
 		
 	private:
 		gphoto2::_CameraAbilitiesList* m_cameraAbilitiesList;

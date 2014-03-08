@@ -88,7 +88,7 @@ namespace gphoto2pp
 		return *this;
 	}
 	
-	CameraFileWrapper::CameraFileWrapper(const CameraFileWrapper& other)
+	CameraFileWrapper::CameraFileWrapper(CameraFileWrapper const & other)
 		: m_cameraFile(other.m_cameraFile)
 	{
 		FILE_LOG(logINFO) << "CameraFileWrapper copy Constructor";
@@ -100,7 +100,7 @@ namespace gphoto2pp
 		}
 	}
 
-	CameraFileWrapper& CameraFileWrapper::operator=(const CameraFileWrapper& other)
+	CameraFileWrapper& CameraFileWrapper::operator=(CameraFileWrapper const & other)
 	{
 		FILE_LOG(logINFO) << "CameraFileWrapper copy assignment operator";
 		
@@ -134,17 +134,17 @@ namespace gphoto2pp
 	{
 		FILE_LOG(logDEBUG) << "CameraFileWrapper getDataAndSize";
 		
-		const char* buffer = nullptr;
+		char const * buffer = nullptr;
 		unsigned long int size;
 		
 		gphoto2pp::checkResponse(gphoto2::gp_file_get_data_and_size(m_cameraFile,&buffer,&size),"gp_file_get_data_and_size");
 		
 		FILE_LOG(logDEBUG) << "bufferSize: '"<<size<<"'";
 		
-		return std::vector<char>(buffer, buffer+size);
+		return std::vector<char>{buffer, buffer+size};
 	}
 	
-	void CameraFileWrapper::setDataAndSize(const std::vector<char>& file)
+	void CameraFileWrapper::setDataAndSize(std::vector<char> const & file)
 	{
 		FILE_LOG(logDEBUG) << "CameraFileWrapper setDataAndSize copy";
 		
@@ -152,9 +152,12 @@ namespace gphoto2pp
 		
 		try
 		{
-			std::copy(file.begin(), file.end(), myCopy);	
-			gphoto2pp::checkResponse(gphoto2::gp_file_set_data_and_size(m_cameraFile,myCopy,file.size()),"gp_file_set_data_and_size");
-			// We don't delete myCopy because ownership was transferred to the m_cameraFile struct along with the contents
+			if(file.empty() == false)
+			{
+				std::copy(std::begin(file), std::end(file), myCopy);	
+				gphoto2pp::checkResponse(gphoto2::gp_file_set_data_and_size(m_cameraFile,myCopy,file.size()),"gp_file_set_data_and_size");
+				// We don't delete myCopy because ownership was transferred to the m_cameraFile struct along with the contents
+			}
 		}
 		catch (...)
 		{
@@ -173,7 +176,7 @@ namespace gphoto2pp
 		return std::string(temp);
 	}
 
-	void CameraFileWrapper::setMimeType(const std::string& mimeType)
+	void CameraFileWrapper::setMimeType(std::string const & mimeType)
 	{
 		gphoto2pp::checkResponse(gphoto2::gp_file_set_mime_type(m_cameraFile, mimeType.c_str()),"gp_file_set_mime_type");
 	}
@@ -187,7 +190,7 @@ namespace gphoto2pp
 		return std::string(temp);
 	}
 
-	void CameraFileWrapper::setFileName(const std::string& fileName)
+	void CameraFileWrapper::setFileName(std::string const & fileName)
 	{
 		gphoto2pp::checkResponse(gphoto2::gp_file_set_name(m_cameraFile, fileName.c_str()),"gp_file_set_name");
 	}
@@ -203,7 +206,7 @@ namespace gphoto2pp
 	}
 
 
-	std::string CameraFileWrapper::getNameByType(const std::string& baseName, const CameraFileTypeWrapper& type) const
+	std::string CameraFileWrapper::getNameByType(std::string const & baseName, CameraFileTypeWrapper const & type) const
 	{
 #ifdef GPHOTO_LESS_25
 		throw exceptions::InvalidLinkedVersionException("You are using a version of gphoto2 that doesn't support this command. Please link to gphoto 2.5 or greater");
@@ -217,7 +220,7 @@ namespace gphoto2pp
 	}
 
 
-	void CameraFileWrapper::save(const std::string& filename) const
+	void CameraFileWrapper::save(std::string const & filename) const
 	{
 		// Not sure if we should expose this. in gphoto2-file.h it mentions this method was never meant for public api usage, but it is handy and lots of people use it... I will add it now for completness
 		gphoto2pp::checkResponse(gphoto2::gp_file_save(m_cameraFile, filename.c_str()),"gp_file_save");
