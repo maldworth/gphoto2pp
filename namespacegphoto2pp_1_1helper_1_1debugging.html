@@ -121,7 +121,7 @@ Enumerations</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a93d04c3254bdd0e0f377f4e2631d14f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegphoto2pp_1_1helper_1_1debugging.html#a93d04c3254bdd0e0f377f4e2631d14f9">startPortLogging</a> (const <a class="el" href="namespacegphoto2pp_1_1helper_1_1debugging.html#ac2252ff737dcc1a1418951056ae48db0">LogLevelWrapper</a> &amp;level)</td></tr>
 <tr class="memitem:a7d59c408b8795bf602274560d78c6e8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegphoto2pp_1_1helper_1_1debugging.html#a7d59c408b8795bf602274560d78c6e8e">stopPortLogging</a> ()</td></tr>
-<tr class="memitem:a2c871fd8e5c3039f586a7d8df1322a4e"><td class="memItemLeft" align="right" valign="top">observer::Registration&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegphoto2pp_1_1helper_1_1debugging.html#a2c871fd8e5c3039f586a7d8df1322a4e">subscribeToPortLogEvents</a> (const <a class="el" href="namespacegphoto2pp_1_1helper_1_1debugging.html#ac2252ff737dcc1a1418951056ae48db0">LogLevelWrapper</a> &amp;event, std::function&lt; void(const <a class="el" href="namespacegphoto2pp_1_1helper_1_1debugging.html#ac2252ff737dcc1a1418951056ae48db0">LogLevelWrapper</a> &amp;level, const std::string &amp;domain, const std::string &amp;str, void *data)&gt; func)</td></tr>
+<tr class="memitem:a1abdcaa5f7a9fee442eecc1ab66f4484"><td class="memItemLeft" align="right" valign="top">observer::Registration&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegphoto2pp_1_1helper_1_1debugging.html#a1abdcaa5f7a9fee442eecc1ab66f4484">subscribeToPortLogEvents</a> (const <a class="el" href="namespacegphoto2pp_1_1helper_1_1debugging.html#ac2252ff737dcc1a1418951056ae48db0">LogLevelWrapper</a> &amp;event, std::function&lt; void(<a class="el" href="namespacegphoto2pp_1_1helper_1_1debugging.html#ac2252ff737dcc1a1418951056ae48db0">LogLevelWrapper</a> const &amp;level, std::string const &amp;domain, std::string const &amp;str, void *data)&gt; func)</td></tr>
 </table>
 <h2>Enumeration Type Documentation</h2>
 <a class="anchor" id="ac2252ff737dcc1a1418951056ae48db0"></a>
@@ -168,7 +168,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a2c871fd8e5c3039f586a7d8df1322a4e"></a>
+<a class="anchor" id="a1abdcaa5f7a9fee442eecc1ab66f4484"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -181,7 +181,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::function&lt; void(const LogLevelWrapper &amp;level, const std::string &amp;domain, const std::string &amp;str, void *data)&gt;&#160;</td>
+          <td class="paramtype">std::function&lt; void(LogLevelWrapper const &amp;level, std::string const &amp;domain, std::string const &amp;str, void *data)&gt;&#160;</td>
           <td class="paramname"><em>func</em>&#160;</td>
         </tr>
         <tr>
@@ -200,7 +200,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacegphoto2pp.html">gphoto2pp</a></li><li class="navelem"><a class="el" href="namespacegphoto2pp_1_1helper.html">helper</a></li><li class="navelem"><a class="el" href="namespacegphoto2pp_1_1helper_1_1debugging.html">debugging</a></li>
-    <li class="footer">Generated on Sat Feb 22 2014 11:51:05 for gphoto2pp by
+    <li class="footer">Generated on Sat Mar 8 2014 18:14:38 for gphoto2pp by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

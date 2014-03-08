@@ -1,7 +1,7 @@
 var searchData=
 [
   ['adjustnameformimetype',['adjustNameForMimeType',['../classgphoto2pp_1_1_camera_file_wrapper.html#a6bd21cd949a069e698812359b11505aa',1,'gphoto2pp::CameraFileWrapper']]],
-  ['append',['append',['../classgphoto2pp_1_1_camera_list_wrapper.html#a4ff44313ccf65bac4102554e15ed493c',1,'gphoto2pp::CameraListWrapper']]],
+  ['append',['append',['../classgphoto2pp_1_1_camera_list_wrapper.html#a9236310bcddf30d27cd4582ed3f3eba5',1,'gphoto2pp::CameraListWrapper']]],
   ['argumentexception',['ArgumentException',['../classgphoto2pp_1_1exceptions_1_1_argument_exception.html',1,'gphoto2pp::exceptions']]],
   ['argumentexception',['ArgumentException',['../classgphoto2pp_1_1exceptions_1_1_argument_exception.html#ae29475311e6d3edb6241641d60a9230c',1,'gphoto2pp::exceptions::ArgumentException']]],
   ['autodetect',['autoDetect',['../namespacegphoto2pp.html#a099598e70e20fd14ab91b66f883d4974',1,'gphoto2pp']]],

@@ -240,9 +240,9 @@ $(document).ready(function(){initNavTree('observer_8hpp_source.html','');});
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                        </div>
 <div class="line"><a name="l00159"></a><span class="lineno"><a class="code" href="structgphoto2pp_1_1observer_1_1_subject_3_01_return_07_params_8_8_8_08_4.html#af2f21dd9e203477e4d4c396f223c68ae">  159</a></span>&#160;                        <span class="keywordtype">void</span> operator()(Params... params)</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                        {</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                                <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; observer : observers_)</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                                <span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span> &amp; observer : observers_)</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                                {</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                                        <span class="keyword">const</span> FPtr fptr = std::static_pointer_cast&lt;F&gt;(observer);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                                        FPtr <span class="keyword">const</span> fptr = std::static_pointer_cast&lt;F&gt;(observer);</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                                        (*fptr)(params...);</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                                }</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                        }</div>
@@ -265,23 +265,23 @@ $(document).ready(function(){initNavTree('observer_8hpp_source.html','');});
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                        <span class="keyword">using</span> F = std::function&lt;Return (Params...)&gt;;</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                        <span class="keyword">using</span> FPtr = std::shared_ptr&lt;F&gt;;</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
-<div class="line"><a name="l00186"></a><span class="lineno"><a class="code" href="structgphoto2pp_1_1observer_1_1_subject_event_3_01_event_type_00_01_return_07_params_8_8_8_08_4.html#a3e41ffc0edd9f92319eb145df651fe50">  186</a></span>&#160;                        <span class="keywordtype">void</span> operator()(<span class="keyword">const</span> EventType&amp; e, Params... params)</div>
+<div class="line"><a name="l00186"></a><span class="lineno"><a class="code" href="structgphoto2pp_1_1observer_1_1_subject_event_3_01_event_type_00_01_return_07_params_8_8_8_08_4.html#a4a220343d6580104558eff3c408da792">  186</a></span>&#160;                        <span class="keywordtype">void</span> operator()(EventType <span class="keyword">const</span> &amp; e, Params... params)</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                        {</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                                <span class="keywordflow">try</span></div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                                {</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                                        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; observer : this-&gt;observers_.at(e))</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                                        <span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span> &amp; observer : this-&gt;observers_.at(e))</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                                        {</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                                                <span class="keyword">const</span> FPtr fptr = std::static_pointer_cast&lt;F&gt;(observer);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                                                FPtr <span class="keyword">const</span> fptr = std::static_pointer_cast&lt;F&gt;(observer);</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                                                (*fptr)(params...);</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                                        }</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                                }</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                                <span class="keywordflow">catch</span>(<span class="keyword">const</span> std::out_of_range&amp; e)</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                                <span class="keywordflow">catch</span>(std::out_of_range <span class="keyword">const</span> &amp; e)</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;                                {</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                                        <span class="comment">// Supress this, means our std::map  .at() method doesn&#39;t have an event of this type</span></div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                                }</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                        }</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                        </div>
-<div class="line"><a name="l00202"></a><span class="lineno"><a class="code" href="structgphoto2pp_1_1observer_1_1_subject_event_3_01_event_type_00_01_return_07_params_8_8_8_08_4.html#a862166fa10135e97693df22ee32494cf">  202</a></span>&#160;                        Registration registerObserver(<span class="keyword">const</span> EventType&amp; e, F f)</div>
+<div class="line"><a name="l00202"></a><span class="lineno"><a class="code" href="structgphoto2pp_1_1observer_1_1_subject_event_3_01_event_type_00_01_return_07_params_8_8_8_08_4.html#a707b4564e1b2cc29b7182455a50e7d29">  202</a></span>&#160;                        Registration registerObserver(EventType <span class="keyword">const</span> &amp; e, F f)</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                        {</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                                FPtr fptr(<span class="keyword">new</span> F(std::move(f)));</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                                <span class="keywordflow">return</span> <a class="code" href="classgphoto2pp_1_1observer_1_1detail_1_1_subject_base_event.html">detail::SubjectBaseEvent&lt;EventType&gt;::registerObserver</a>(e, fptr);</div>
@@ -297,7 +297,7 @@ $(document).ready(function(){initNavTree('observer_8hpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="observer_8hpp.html">observer.hpp</a></li>
-    <li class="footer">Generated on Sat Feb 22 2014 11:51:04 for gphoto2pp by
+    <li class="footer">Generated on Sat Mar 8 2014 18:14:38 for gphoto2pp by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

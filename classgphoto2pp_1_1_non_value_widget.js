@@ -4,10 +4,10 @@ var classgphoto2pp_1_1_non_value_widget =
     [ "countChildren", "classgphoto2pp_1_1_non_value_widget.html#a28ed79c362b8212b04422ae209371d8c", null ],
     [ "getChild", "classgphoto2pp_1_1_non_value_widget.html#ad1188eae65379b71d7cdc5c1362bb57f", null ],
     [ "getChildById", "classgphoto2pp_1_1_non_value_widget.html#a5a0218125b369329e1a02750031a5a9d", null ],
-    [ "getChildByIdWrapper", "classgphoto2pp_1_1_non_value_widget.html#a6f76e40f78a59410f1ec40469afb6bb1", null ],
-    [ "getChildByLabel", "classgphoto2pp_1_1_non_value_widget.html#ae44ab5ad94cac561059294b820d555af", null ],
-    [ "getChildByLabelWrapper", "classgphoto2pp_1_1_non_value_widget.html#a6b025795fdceb6f0f9927eecc27c7b98", null ],
-    [ "getChildByName", "classgphoto2pp_1_1_non_value_widget.html#adffa65b523bd7cb3cbd9d17ffae0a35a", null ],
-    [ "getChildByNameWrapper", "classgphoto2pp_1_1_non_value_widget.html#a4d141e028137527c2b8b627248c3e1ba", null ],
-    [ "getChildWrapper", "classgphoto2pp_1_1_non_value_widget.html#a981a1043d131b850f2b1170880ac60de", null ]
+    [ "getChildByIdWrapper", "classgphoto2pp_1_1_non_value_widget.html#a3968f5cca22376e1cb32d48c033a5807", null ],
+    [ "getChildByLabel", "classgphoto2pp_1_1_non_value_widget.html#ada73fc56c4bbfaac03919e6e030de29e", null ],
+    [ "getChildByLabelWrapper", "classgphoto2pp_1_1_non_value_widget.html#a2edf74b8afa35deb5395c42208eebdf8", null ],
+    [ "getChildByName", "classgphoto2pp_1_1_non_value_widget.html#ac3705c8ec6b60ab5f8c025b67a6b8d17", null ],
+    [ "getChildByNameWrapper", "classgphoto2pp_1_1_non_value_widget.html#a3cc33a01b91805a85e43ab553185fd3b", null ],
+    [ "getChildWrapper", "classgphoto2pp_1_1_non_value_widget.html#ac10407f6b2e19139d50e23b606e25484", null ]
 ];

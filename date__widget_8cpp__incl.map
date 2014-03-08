@@ -1,9 +1,8 @@
 <map id="src/date_widget.cpp" name="src/date_widget.cpp">
-<area shape="rect" id="node3" href="$date__widget_8hpp.html" title="date_widget.hpp" alt="" coords="68,92,191,121"/>
-<area shape="rect" id="node13" href="$helper__gphoto2_8hpp.html" title="helper_gphoto2.hpp" alt="" coords="215,92,356,121"/>
-<area shape="rect" id="node18" href="$camera__widget__type__wrapper_8hpp.html" title="camera_widget_type\l_wrapper.hpp" alt="" coords="380,83,527,130"/>
-<area shape="rect" id="node20" href="$exceptions_8hpp.html" title="exceptions.hpp" alt="" coords="551,92,665,121"/>
-<area shape="rect" id="node24" href="$log_8h.html" title="log.h" alt="" coords="689,92,740,121"/>
+<area shape="rect" id="node3" href="$date__widget_8hpp.html" title="date_widget.hpp" alt="" coords="101,92,224,121"/>
+<area shape="rect" id="node13" href="$helper__gphoto2_8hpp.html" title="helper_gphoto2.hpp" alt="" coords="248,92,389,121"/>
+<area shape="rect" id="node18" href="$camera__widget__type__wrapper_8hpp.html" title="camera_widget_type\l_wrapper.hpp" alt="" coords="413,83,560,130"/>
+<area shape="rect" id="node20" href="$exceptions_8hpp.html" title="exceptions.hpp" alt="" coords="584,92,699,121"/>
 <area shape="rect" id="node5" href="$value__widget__base_8hpp.html" title="value_widget_base.hpp" alt="" coords="5,179,171,208"/>
 <area shape="rect" id="node7" href="$camera__widget__wrapper_8hpp.html" title="camera_widget_wrapper.hpp" alt="" coords="20,256,217,285"/>
 </map>

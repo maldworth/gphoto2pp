@@ -133,23 +133,23 @@ $(document).ready(function(){initNavTree('camera__file__wrapper_8hpp_source.html
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <a class="code" href="classgphoto2pp_1_1_camera_file_wrapper.html">CameraFileWrapper</a>&amp; operator=(<a class="code" href="classgphoto2pp_1_1_camera_file_wrapper.html">CameraFileWrapper</a>&amp;&amp; other);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="comment">// Copy constructor and copy assignment</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment"></span>                <a class="code" href="classgphoto2pp_1_1_camera_file_wrapper.html">CameraFileWrapper</a>(<span class="keyword">const</span> <a class="code" href="classgphoto2pp_1_1_camera_file_wrapper.html">CameraFileWrapper</a>&amp; other);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment"></span>                <a class="code" href="classgphoto2pp_1_1_camera_file_wrapper.html">CameraFileWrapper</a>(<a class="code" href="classgphoto2pp_1_1_camera_file_wrapper.html">CameraFileWrapper</a> <span class="keyword">const</span> &amp; other);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <a class="code" href="classgphoto2pp_1_1_camera_file_wrapper.html">CameraFileWrapper</a>&amp; operator=( <span class="keyword">const</span> <a class="code" href="classgphoto2pp_1_1_camera_file_wrapper.html">CameraFileWrapper</a>&amp; other );</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <a class="code" href="classgphoto2pp_1_1_camera_file_wrapper.html">CameraFileWrapper</a>&amp; operator=( <a class="code" href="classgphoto2pp_1_1_camera_file_wrapper.html">CameraFileWrapper</a> <span class="keyword">const</span> &amp; other );</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                gphoto2::_CameraFile* getPtr() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                std::vector&lt;char&gt; getDataAndSize() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                <span class="keywordtype">void</span> setDataAndSize(<span class="keyword">const</span> std::vector&lt;char&gt;&amp; file);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                <span class="keywordtype">void</span> setDataAndSize(std::vector&lt;char&gt; <span class="keyword">const</span> &amp; file);</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                </div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                std::string getMimeType() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                <span class="keywordtype">void</span> setMimeType(<span class="keyword">const</span> std::string&amp; mimeType);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                <span class="keywordtype">void</span> setMimeType(std::string <span class="keyword">const</span> &amp; mimeType);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                </div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                std::string getFileName() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                <span class="keywordtype">void</span> setFileName(<span class="keyword">const</span> std::string&amp; fileName);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                <span class="keywordtype">void</span> setFileName(std::string <span class="keyword">const</span> &amp; fileName);</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                </div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                <span class="keywordtype">void</span> detectMimeType() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                </div>
@@ -159,9 +159,9 @@ $(document).ready(function(){initNavTree('camera__file__wrapper_8hpp_source.html
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                </div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                <span class="keywordtype">void</span> setMtime(std::time_t mtime);</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                std::string getNameByType(<span class="keyword">const</span> std::string&amp; baseName, <span class="keyword">const</span> <a class="code" href="namespacegphoto2pp.html#a89862c4686a8ed59eb7461e6b032087b">CameraFileTypeWrapper</a>&amp; type) <span class="keyword">const</span>; <span class="comment">// This command is only supported by GPhoto &gt;= 2.5</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                std::string getNameByType(std::string <span class="keyword">const</span> &amp; baseName, <a class="code" href="namespacegphoto2pp.html#a89862c4686a8ed59eb7461e6b032087b">CameraFileTypeWrapper</a> <span class="keyword">const</span> &amp; type) <span class="keyword">const</span>; <span class="comment">// This command is only supported by GPhoto &gt;= 2.5</span></div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                <span class="keywordtype">void</span> save(<span class="keyword">const</span> std::string&amp; filename) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                <span class="keywordtype">void</span> save(std::string <span class="keyword">const</span> &amp; filename) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                gphoto2::_CameraFile* m_cameraFile;</div>
@@ -177,7 +177,7 @@ $(document).ready(function(){initNavTree('camera__file__wrapper_8hpp_source.html
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="camera__file__wrapper_8hpp.html">camera_file_wrapper.hpp</a></li>
-    <li class="footer">Generated on Sat Feb 22 2014 11:51:04 for gphoto2pp by
+    <li class="footer">Generated on Sat Mar 8 2014 18:14:38 for gphoto2pp by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

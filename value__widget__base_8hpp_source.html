@@ -119,11 +119,11 @@ $(document).ready(function(){initNavTree('value__widget__base_8hpp_source.html',
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <span class="keyword">virtual</span> T <a class="code" href="classgphoto2pp_1_1_value_widget_base.html#a664b87bc993dd248c1cae2bebc06b2a7" title="Gets the widget&#39;s value in terms of T.">getValue</a>() <span class="keyword">const</span> = 0;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classgphoto2pp_1_1_value_widget_base.html#a998ca955db9a6dc927ceb07b7752ade8" title="Sets the widget&#39;s value in terms of T.">setValue</a>(<span class="keyword">const</span> T&amp; value) = 0;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classgphoto2pp_1_1_value_widget_base.html#a2f29ed3da6a5ca18a682f4fd8558d69d" title="Sets the widget&#39;s value in terms of T.">setValue</a>(T <span class="keyword">const</span> &amp; value) = 0;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                </div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00056"></a><span class="lineno"><a class="code" href="classgphoto2pp_1_1_value_widget_base.html#ad2be7796b66d34adb01b91c27d6a9406">   56</a></span>&#160;                <a class="code" href="classgphoto2pp_1_1_value_widget_base.html#ad2be7796b66d34adb01b91c27d6a9406">ValueWidgetBase</a>(gphoto2::_CameraWidget* cameraWidget)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                : <a class="code" href="classgphoto2pp_1_1_camera_widget_wrapper.html">CameraWidgetWrapper</a>(cameraWidget)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                : <a class="code" href="classgphoto2pp_1_1_camera_widget_wrapper.html">CameraWidgetWrapper</a>{cameraWidget}</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                {</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                        <span class="comment">// Empty Constructor</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                }</div>
@@ -138,7 +138,7 @@ $(document).ready(function(){initNavTree('value__widget__base_8hpp_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="value__widget__base_8hpp.html">value_widget_base.hpp</a></li>
-    <li class="footer">Generated on Sat Feb 22 2014 11:51:04 for gphoto2pp by
+    <li class="footer">Generated on Sat Mar 8 2014 18:14:38 for gphoto2pp by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
