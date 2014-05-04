@@ -43,6 +43,7 @@
 namespace gphoto2
 {
 #include <gphoto2/gphoto2-camera.h>
+#include <gphoto2/gphoto2-port-info-list.h>
 #ifndef GPHOTO_LESS_25
 #include <gphoto2/gphoto2-abilities-list.h> // Only needed for the pre 2.5 initialize method (because _autodetect doesn't exist)
 #endif
@@ -161,10 +162,36 @@ namespace gphoto2pp
 		}
 		return *this;
 	}
+	
+	std::string CameraWrapper::getModel() const
+	{
+		return m_model;
+	}
+		
+	std::string CameraWrapper::getPort() const
+	{
+		return m_port;
+	}
 
 	void CameraWrapper::initialize()
 	{
+		// Connects to first camera found
 		gphoto2pp::checkResponse(gphoto2::gp_camera_init(m_camera, m_context.get()),"gp_camera_init");
+		
+		// Now that the camera is connected to, this will populate our m_model and m_port with the connected camera details
+		gphoto2::GPPortInfo portInfo;
+		gphoto2pp::checkResponse(gphoto2::gp_camera_get_port_info(m_camera, &portInfo),"gp_camera_get_port_info");
+		
+		gphoto2::CameraAbilities cameraAbilities;
+		gphoto2pp::checkResponse(gphoto2::gp_camera_get_abilities(m_camera, &cameraAbilities),"gp_camera_get_abilities");
+		
+		// Now we get the model and port and assign to our local variables
+		char * temp = nullptr;
+		
+		m_model = std::string(cameraAbilities.model);
+		
+		gphoto2pp::checkResponse(gphoto2::gp_port_info_get_path(portInfo, &temp),"gp_port_info_get_path");
+		m_port = std::string(temp);
 	}
 
 	void CameraWrapper::initialize(std::string const & model, std::string const & port)

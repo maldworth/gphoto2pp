@@ -86,6 +86,18 @@ namespace gphoto2pp
 		std::string getSummary() const;
 		
 		/**
+		 * \brief Gets the camera model currently connected to.
+		 * \return the model name
+		 */
+		std::string getModel() const;
+		
+		/**
+		 * \brief Gets the computer port currently connected to the camera.
+		 * \return the port name
+		 */
+		std::string getPort() const;
+		
+		/**
 		 * \brief Captures a preview image from the camera.
 		 * This capture type might not be supported by all cameras (requires a live view/mirror lockup mode for continuous captures). The image does not persist on the camera.
 		 * \return the image captured
