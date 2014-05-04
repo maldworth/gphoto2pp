@@ -43,7 +43,6 @@
 namespace gphoto2
 {
 #include <gphoto2/gphoto2-camera.h>
-#include <gphoto2/gphoto2-port-info-list.h>
 #ifndef GPHOTO_LESS_25
 #include <gphoto2/gphoto2-abilities-list.h> // Only needed for the pre 2.5 initialize method (because _autodetect doesn't exist)
 #endif
