@@ -36,7 +36,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"date__widget_8hpp_source.html"
+"date__widget_8cpp.html"
 ];
 
 var navTreeSubIndices = new Array();

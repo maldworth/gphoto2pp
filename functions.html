@@ -303,6 +303,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>getMimeType()
 : <a class="el" href="classgphoto2pp_1_1_camera_file_wrapper.html#acf6eb54942eaaaa05205bafd18fde777">gphoto2pp::CameraFileWrapper</a>
 </li>
+<li>getModel()
+: <a class="el" href="classgphoto2pp_1_1_camera_wrapper.html#ac4145556d5c7d8d07df823ca3aee7ef9">gphoto2pp::CameraWrapper</a>
+</li>
 <li>getMtime()
 : <a class="el" href="classgphoto2pp_1_1_camera_file_wrapper.html#a12e27fb367d395e7ca6bb66d53b049a7">gphoto2pp::CameraFileWrapper</a>
 </li>
@@ -325,12 +328,15 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>getParentDefault()
 : <a class="el" href="classgphoto2pp_1_1_camera_widget_wrapper.html#ae0b7dbda2e7388beab95e8543312444f">gphoto2pp::CameraWidgetWrapper</a>
 </li>
+<li>getPort()
+: <a class="el" href="classgphoto2pp_1_1_camera_wrapper.html#a6b185b9f58edcce2dcf40f697c894c7c">gphoto2pp::CameraWrapper</a>
+</li>
 <li>getPtr()
-: <a class="el" href="classgphoto2pp_1_1_g_p_port_info_list_wrapper.html#aeebf16af16caafa166572c3519c9f226">gphoto2pp::GPPortInfoListWrapper</a>
+: <a class="el" href="classgphoto2pp_1_1_camera_widget_wrapper.html#a19384fd1782cabb30f25050b4e5cf19a">gphoto2pp::CameraWidgetWrapper</a>
+, <a class="el" href="classgphoto2pp_1_1_g_p_port_info_list_wrapper.html#aeebf16af16caafa166572c3519c9f226">gphoto2pp::GPPortInfoListWrapper</a>
+, <a class="el" href="classgphoto2pp_1_1_camera_list_wrapper.html#a282e7823f5ac5b1db29d552520499d66">gphoto2pp::CameraListWrapper</a>
 , <a class="el" href="classgphoto2pp_1_1_camera_abilities_list_wrapper.html#ab7f15e5f0459e8f2376bd021e6dea6de">gphoto2pp::CameraAbilitiesListWrapper</a>
 , <a class="el" href="classgphoto2pp_1_1_camera_file_wrapper.html#a2cc3e0e8072a7fa7b373f042b8692506">gphoto2pp::CameraFileWrapper</a>
-, <a class="el" href="classgphoto2pp_1_1_camera_list_wrapper.html#a282e7823f5ac5b1db29d552520499d66">gphoto2pp::CameraListWrapper</a>
-, <a class="el" href="classgphoto2pp_1_1_camera_widget_wrapper.html#a19384fd1782cabb30f25050b4e5cf19a">gphoto2pp::CameraWidgetWrapper</a>
 </li>
 <li>getRange()
 : <a class="el" href="classgphoto2pp_1_1_range_widget.html#aa91d0676c7a3566196fefe1b8f6fd89f">gphoto2pp::RangeWidget</a>
@@ -351,12 +357,12 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="classgphoto2pp_1_1_camera_widget_wrapper.html#a5630b6b5c209038af0496c3a696fb1f9">gphoto2pp::CameraWidgetWrapper</a>
 </li>
 <li>getValue()
-: <a class="el" href="classgphoto2pp_1_1_float_widget.html#a3ed71167cfa5a34ede6cd5829184beb7">gphoto2pp::FloatWidget</a>
-, <a class="el" href="classgphoto2pp_1_1_value_widget_base.html#a664b87bc993dd248c1cae2bebc06b2a7">gphoto2pp::ValueWidgetBase&lt; T &gt;</a>
-, <a class="el" href="classgphoto2pp_1_1_camera_list_wrapper.html#abeb65f8769e79dfcbe8041706c6d9cec">gphoto2pp::CameraListWrapper</a>
-, <a class="el" href="classgphoto2pp_1_1_date_widget.html#ab7a00e6b77fb33723272a28581de58ac">gphoto2pp::DateWidget</a>
-, <a class="el" href="classgphoto2pp_1_1_string_widget.html#a4cd8a1f1ca7831de0e04de92a5303450">gphoto2pp::StringWidget</a>
+: <a class="el" href="classgphoto2pp_1_1_camera_list_wrapper.html#abeb65f8769e79dfcbe8041706c6d9cec">gphoto2pp::CameraListWrapper</a>
 , <a class="el" href="classgphoto2pp_1_1_int_widget.html#ab2c3d1a7f8ef8b09b3448c94b7b1b173">gphoto2pp::IntWidget</a>
+, <a class="el" href="classgphoto2pp_1_1_value_widget_base.html#a664b87bc993dd248c1cae2bebc06b2a7">gphoto2pp::ValueWidgetBase&lt; T &gt;</a>
+, <a class="el" href="classgphoto2pp_1_1_float_widget.html#a3ed71167cfa5a34ede6cd5829184beb7">gphoto2pp::FloatWidget</a>
+, <a class="el" href="classgphoto2pp_1_1_string_widget.html#a4cd8a1f1ca7831de0e04de92a5303450">gphoto2pp::StringWidget</a>
+, <a class="el" href="classgphoto2pp_1_1_date_widget.html#ab7a00e6b77fb33723272a28581de58ac">gphoto2pp::DateWidget</a>
 </li>
 <li>gphoto2_exception()
 : <a class="el" href="classgphoto2pp_1_1exceptions_1_1gphoto2__exception.html#abcb722e51110c81de14e477cd4439703">gphoto2pp::exceptions::gphoto2_exception</a>
@@ -659,7 +665,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Mar 8 2014 18:14:38 for gphoto2pp by
+    <li class="footer">Generated on Sun May 4 2014 19:22:06 for gphoto2pp by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

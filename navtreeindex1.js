@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"date__widget_8cpp.html":[2,0,1,6],
+"date__widget_8hpp.html":[2,0,0,12],
 "date__widget_8hpp_source.html":[2,0,0,12],
 "dir_68267d1309a1af8e8297ef4c3efbcdba.html":[2,0,1],
 "dir_d44c64559bbebec7f509842c48db8b23.html":[2,0,0],
@@ -105,8 +107,8 @@ var NAVTREEINDEX1 =
 "menu__widget_8cpp.html":[2,0,1,15],
 "menu__widget_8hpp.html":[2,0,0,23],
 "menu__widget_8hpp_source.html":[2,0,0,23],
-"namespacegphoto2.html":[0,0,0],
 "namespacegphoto2.html":[1,0,0],
+"namespacegphoto2.html":[0,0,0],
 "namespacegphoto2pp.html":[0,0,1],
 "namespacegphoto2pp.html":[1,0,1],
 "namespacegphoto2pp_1_1context.html":[1,0,1,0],

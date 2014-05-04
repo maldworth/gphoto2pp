@@ -16,6 +16,8 @@ var classgphoto2pp_1_1_camera_wrapper =
     [ "folderPutFile", "classgphoto2pp_1_1_camera_wrapper.html#a47f9c23a6e2395a0556286c001f01902", null ],
     [ "folderRemoveDir", "classgphoto2pp_1_1_camera_wrapper.html#a3dc71d1eaf8f2f4e372dd2c32fe5b1c1", null ],
     [ "getConfig", "classgphoto2pp_1_1_camera_wrapper.html#a5b908c1c810cbb0915d5aa32cc419401", null ],
+    [ "getModel", "classgphoto2pp_1_1_camera_wrapper.html#ac4145556d5c7d8d07df823ca3aee7ef9", null ],
+    [ "getPort", "classgphoto2pp_1_1_camera_wrapper.html#a6b185b9f58edcce2dcf40f697c894c7c", null ],
     [ "getSummary", "classgphoto2pp_1_1_camera_wrapper.html#a04fbe32b74b7691f499a6a912ddfdbfd", null ],
     [ "operator=", "classgphoto2pp_1_1_camera_wrapper.html#a5e23bc211ffd2801c1d72a88ee8644b5", null ],
     [ "operator=", "classgphoto2pp_1_1_camera_wrapper.html#acd50b81805966c531e5e22999f4e2bb8", null ],
