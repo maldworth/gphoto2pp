@@ -32,13 +32,23 @@ namespace gphoto2pp
 	namespace exceptions
 	{
 		/**
+		 * \class GPhoto2ppException
+		 * Base class for all exceptions in this library
+		 */
+		class GPhoto2ppException : public std::runtime_error
+		{
+		public:
+			GPhoto2ppException(std::string&& message) : std::runtime_error(message) { }
+		};
+		
+		/**
 		 * \class gphoto2_exception
 		 * Represents any error received from a gphoto2 method call with a value < 0
 		 */
-		class gphoto2_exception : public std::runtime_error
+		class gphoto2_exception : public GPhoto2ppException
 		{
 		public:
-			gphoto2_exception(int result, std::string&& gp_result_string) : std::runtime_error(gp_result_string),m_resultCode(result) { }
+			gphoto2_exception(int result, std::string&& gp_result_string) : GPhoto2ppException(std::move(gp_result_string)),m_resultCode(result) { }
 			
 			/**
 			 * \brief The error code received from the gphoto2 method
@@ -50,12 +60,6 @@ namespace gphoto2pp
 		private:
 			const int m_resultCode;
 			
-		};
-		
-		class GPhoto2ppException : public std::runtime_error
-		{
-		public:
-			GPhoto2ppException(std::string&& message) : std::runtime_error(message) { }
 		};
 		
 		class InvalidLinkedVersionException : public GPhoto2ppException
