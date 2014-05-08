@@ -34,10 +34,10 @@ var hierarchy =
       ] ]
     ] ],
     [ "gphoto2pp::CameraWrapper", "classgphoto2pp_1_1_camera_wrapper.html", null ],
-    [ "gphoto2pp::exceptions::gphoto2_exception", "classgphoto2pp_1_1exceptions_1_1gphoto2__exception.html", null ],
     [ "gphoto2pp::exceptions::GPhoto2ppException", "classgphoto2pp_1_1exceptions_1_1_g_photo2pp_exception.html", [
       [ "gphoto2pp::exceptions::ArgumentException", "classgphoto2pp_1_1exceptions_1_1_argument_exception.html", null ],
       [ "gphoto2pp::exceptions::CameraWrapperException", "classgphoto2pp_1_1exceptions_1_1_camera_wrapper_exception.html", null ],
+      [ "gphoto2pp::exceptions::gphoto2_exception", "classgphoto2pp_1_1exceptions_1_1gphoto2__exception.html", null ],
       [ "gphoto2pp::exceptions::HelperException", "classgphoto2pp_1_1exceptions_1_1_helper_exception.html", null ],
       [ "gphoto2pp::exceptions::IndexOutOfRange", "classgphoto2pp_1_1exceptions_1_1_index_out_of_range.html", null ],
       [ "gphoto2pp::exceptions::InvalidLinkedVersionException", "classgphoto2pp_1_1exceptions_1_1_invalid_linked_version_exception.html", null ],

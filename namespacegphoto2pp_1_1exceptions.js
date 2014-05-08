@@ -1,7 +1,7 @@
 var namespacegphoto2pp_1_1exceptions =
 [
-    [ "gphoto2_exception", "classgphoto2pp_1_1exceptions_1_1gphoto2__exception.html", "classgphoto2pp_1_1exceptions_1_1gphoto2__exception" ],
     [ "GPhoto2ppException", "classgphoto2pp_1_1exceptions_1_1_g_photo2pp_exception.html", "classgphoto2pp_1_1exceptions_1_1_g_photo2pp_exception" ],
+    [ "gphoto2_exception", "classgphoto2pp_1_1exceptions_1_1gphoto2__exception.html", "classgphoto2pp_1_1exceptions_1_1gphoto2__exception" ],
     [ "InvalidLinkedVersionException", "classgphoto2pp_1_1exceptions_1_1_invalid_linked_version_exception.html", "classgphoto2pp_1_1exceptions_1_1_invalid_linked_version_exception" ],
     [ "CameraWrapperException", "classgphoto2pp_1_1exceptions_1_1_camera_wrapper_exception.html", "classgphoto2pp_1_1exceptions_1_1_camera_wrapper_exception" ],
     [ "HelperException", "classgphoto2pp_1_1exceptions_1_1_helper_exception.html", "classgphoto2pp_1_1exceptions_1_1_helper_exception" ],
