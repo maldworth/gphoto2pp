@@ -4,11 +4,15 @@ Development and Testing
 Table Of Contents
 -----------------
 * todo - Naming Scheme with libgphoto2
-* todo - Running unit tests
+* [Running Unit Tests](#running-unit-tests)
   * todo - Explain each test and what it does
 * todo - Building doxygen documentation and committing to gh-pages
 * [Debugging gphoto2pp](#debugging-gphoto2pp)
 * [Debugging libgphoto2](#debugging-libgphoto2)
+
+Running Unit Tests
+------------------
+After running the ./cmake_debug.sh, you then must navigate to the build/debug folder and run **make**. Then run ``ctest -VV``.
 
 Debugging gphoto2pp
 -------------------
