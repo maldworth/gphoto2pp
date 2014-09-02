@@ -185,12 +185,14 @@ namespace gphoto2pp
 		gphoto2pp::checkResponse(gphoto2::gp_camera_get_abilities(m_camera, &cameraAbilities),"gp_camera_get_abilities");
 		
 		// Now we get the model and port and assign to our local variables
-		char * temp = nullptr;
-		
 		m_model = std::string(cameraAbilities.model);
 		
+#if GPHOTO_LESS_25
+		m_port = portInfo.path;
+#else
 		gphoto2pp::checkResponse(gphoto2::gp_port_info_get_path(portInfo, &temp),"gp_port_info_get_path");
 		m_port = std::string(temp);
+#endif
 	}
 
 	void CameraWrapper::initialize(std::string const & model, std::string const & port)
