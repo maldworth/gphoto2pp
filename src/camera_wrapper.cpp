@@ -190,6 +190,7 @@ namespace gphoto2pp
 #if GPHOTO_LESS_25
 		m_port = portInfo.path;
 #else
+		char * temp = nullptr;
 		gphoto2pp::checkResponse(gphoto2::gp_port_info_get_path(portInfo, &temp),"gp_port_info_get_path");
 		m_port = std::string(temp);
 #endif
