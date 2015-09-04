@@ -22,11 +22,11 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "helper_gphoto2.hpp"
-#include "helper_debugging.hpp"
-#include "exceptions.hpp"
+#include <gphoto2pp/helper_gphoto2.hpp>
+#include <gphoto2pp/helper_debugging.hpp>
+#include <gphoto2pp/exceptions.hpp>
 
-#include "log.h"
+#include <gphoto2pp/log.h>
 
 #include <iostream>
 #include <chrono>

@@ -25,7 +25,7 @@
 #ifndef CHOICESWIDGET_HPP
 #define CHOICESWIDGET_HPP
 
-#include "string_widget.hpp"
+#include <gphoto2pp/string_widget.hpp>
 
 #include <vector>
 

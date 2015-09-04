@@ -22,7 +22,7 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "helper_gphoto2.hpp"
+#include <gphoto2pp/helper_gphoto2.hpp>
 
 #include <iostream>
 

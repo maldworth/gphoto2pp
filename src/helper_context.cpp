@@ -22,7 +22,7 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "helper_context.hpp"
+#include <gphoto2pp/helper_context.hpp>
 
 namespace gphoto2
 {

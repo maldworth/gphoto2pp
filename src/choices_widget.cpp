@@ -22,11 +22,11 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "choices_widget.hpp"
+#include <gphoto2pp/choices_widget.hpp>
 
-#include "helper_gphoto2.hpp"
-#include "camera_widget_type_wrapper.hpp"
-#include "exceptions.hpp"
+#include <gphoto2pp/helper_gphoto2.hpp>
+#include <gphoto2pp/camera_widget_type_wrapper.hpp>
+#include <gphoto2pp/exceptions.hpp>
 
 #include <algorithm>
 #include <sstream>

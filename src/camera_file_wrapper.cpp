@@ -22,16 +22,16 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "camera_file_wrapper.hpp"
+#include <gphoto2pp/camera_file_wrapper.hpp>
 
-#include "helper_gphoto2.hpp"
-#include "camera_file_type_wrapper.hpp"
+#include <gphoto2pp/helper_gphoto2.hpp>
+#include <gphoto2pp/camera_file_type_wrapper.hpp>
 
 #ifdef GPHOTO_LESS_25
-#include "exceptions.hpp"
+#include <gphoto2pp/exceptions.hpp>
 #endif
 
-#include "log.h"
+#include <gphoto2pp/log.h>
 
 namespace gphoto2
 {

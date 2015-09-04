@@ -22,42 +22,25 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#ifndef INTWIDGET_HPP
-#define INTWIDGET_HPP
+#ifndef MENUWIDGET_HPP
+#define MENUWIDGET_HPP
 
-#include "value_widget_base.hpp"
+#include <gphoto2pp/choices_widget.hpp>
 
 namespace gphoto2pp
 {
 	/**
-	 * \class IntWidget
-	 * A class representing gphoto2 widgets which have a value that is meaningfully represented by an int
+	 * \class MenuWidget
+	 * A class representing gphoto2 widgets which are of the widget type GPhoto2pp::CameraWidgetTypeWrapper::Menu
 	 */
-	class IntWidget: public ValueWidgetBase<int>
+	class MenuWidget: public ChoicesWidget
 	{
 	friend class NonValueWidget;
-
-	public:
-		/**
-		 * \brief Gets the widget's value in terms of int
-		 * \return the widget's int value
-		 * \note Direct wrapper for <tt>gp_widget_get_value(...)</tt>
-		 * \throw GPhoto2pp::exceptions::gphoto2_exception
-		 */
-		int getValue() const override;
-		
-		/**
-		 * \brief Sets the widget's value in terms of int
-		 * \param[in]	value	to set the widget to
-		 * \note Direct wrapper for <tt>gp_widget_set_value(...)</tt>
-		 * \throw GPhoto2pp::exceptions::gphoto2_exception
-		 */
-		void setValue(int const & value) override;
-		
+	
 	protected:
-		IntWidget(gphoto2::_CameraWidget* cameraWidget);
+		MenuWidget(gphoto2::_CameraWidget* cameraWidget);
 	};
 
 }
 
-#endif // INTWIDGET_HPP
+#endif // MENUWIDGET_HPP

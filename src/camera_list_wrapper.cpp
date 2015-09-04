@@ -22,9 +22,9 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "camera_list_wrapper.hpp"
+#include <gphoto2pp/camera_list_wrapper.hpp>
 
-#include "helper_gphoto2.hpp"
+#include <gphoto2pp/helper_gphoto2.hpp>
 
 namespace gphoto2
 {

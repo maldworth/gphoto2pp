@@ -22,24 +22,25 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#ifndef TOGGLEWIDGET_HPP
-#define TOGGLEWIDGET_HPP
+#ifndef TEXTWIDGET_HPP
+#define TEXTWIDGET_HPP
 
-#include "int_widget.hpp"
+#include <gphoto2pp/string_widget.hpp>
 
 namespace gphoto2pp
 {
 	/**
-	 * \class ToggleWidget
-	 * A class representing gphoto2 widgets which are of the widget type GPhoto2pp::CameraWidgetTypeWrapper::Toggle
+	 * \class TextWidget
+	 * A class representing gphoto2 widgets which are of the widget type GPhoto2pp::CameraWidgetTypeWrapper::Text
 	 */
-	class ToggleWidget: public IntWidget
+	class TextWidget: public StringWidget
 	{
 	friend class NonValueWidget;
 	
 	protected:
-		ToggleWidget(gphoto2::_CameraWidget* cameraWidget);
+		TextWidget(gphoto2::_CameraWidget* cameraWidget);
 	};
+
 }
 
-#endif // TOGGLEWIDGET_HPP
+#endif // TEXTWIDGET_HPP

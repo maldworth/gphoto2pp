@@ -22,25 +22,42 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#ifndef TEXTWIDGET_HPP
-#define TEXTWIDGET_HPP
+#ifndef INTWIDGET_HPP
+#define INTWIDGET_HPP
 
-#include "string_widget.hpp"
+#include <gphoto2pp/value_widget_base.hpp>
 
 namespace gphoto2pp
 {
 	/**
-	 * \class TextWidget
-	 * A class representing gphoto2 widgets which are of the widget type GPhoto2pp::CameraWidgetTypeWrapper::Text
+	 * \class IntWidget
+	 * A class representing gphoto2 widgets which have a value that is meaningfully represented by an int
 	 */
-	class TextWidget: public StringWidget
+	class IntWidget: public ValueWidgetBase<int>
 	{
 	friend class NonValueWidget;
-	
+
+	public:
+		/**
+		 * \brief Gets the widget's value in terms of int
+		 * \return the widget's int value
+		 * \note Direct wrapper for <tt>gp_widget_get_value(...)</tt>
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		int getValue() const override;
+		
+		/**
+		 * \brief Sets the widget's value in terms of int
+		 * \param[in]	value	to set the widget to
+		 * \note Direct wrapper for <tt>gp_widget_set_value(...)</tt>
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		void setValue(int const & value) override;
+		
 	protected:
-		TextWidget(gphoto2::_CameraWidget* cameraWidget);
+		IntWidget(gphoto2::_CameraWidget* cameraWidget);
 	};
 
 }
 
-#endif // TEXTWIDGET_HPP
+#endif // INTWIDGET_HPP

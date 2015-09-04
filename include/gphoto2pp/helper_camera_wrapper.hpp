@@ -25,8 +25,8 @@
 #ifndef HELPERCAMERAWRAPPER_HPP
 #define HELPERCAMERAWRAPPER_HPP
 
-#include "camera_file_type_wrapper.hpp"
-#include "camera_capture_type_wrapper.hpp"
+#include <gphoto2pp/camera_file_type_wrapper.hpp>
+#include <gphoto2pp/camera_capture_type_wrapper.hpp>
 
 #include <string>
 #include <vector>

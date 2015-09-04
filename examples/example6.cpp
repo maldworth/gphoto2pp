@@ -22,17 +22,17 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "exceptions.hpp"
-#include "camera_wrapper.hpp"
+#include <gphoto2pp/exceptions.hpp>
+#include <gphoto2pp/camera_wrapper.hpp>
 
 //Widget types
-#include "date_widget.hpp"
-#include "toggle_widget.hpp"
-#include "range_widget.hpp"
-#include "menu_widget.hpp"
-#include "radio_widget.hpp"
-#include "text_widget.hpp"
-#include "window_widget.hpp"
+#include <gphoto2pp/date_widget.hpp>
+#include <gphoto2pp/toggle_widget.hpp>
+#include <gphoto2pp/range_widget.hpp>
+#include <gphoto2pp/menu_widget.hpp>
+#include <gphoto2pp/radio_widget.hpp>
+#include <gphoto2pp/text_widget.hpp>
+#include <gphoto2pp/window_widget.hpp>
 
 #include <iostream>
 #include <sstream>

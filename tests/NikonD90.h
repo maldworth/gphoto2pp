@@ -24,23 +24,23 @@
 
 #include <cxxtest/TestSuite.h>
 
-#include "helper_gphoto2.hpp"
-#include "helper_widgets.hpp" // for the getAllWidgetsOfType
-#include "camera_wrapper.hpp"
+#include <gphoto2pp/helper_gphoto2.hpp>
+#include <gphoto2pp/helper_widgets.hpp> // for the getAllWidgetsOfType
+#include <gphoto2pp/camera_wrapper.hpp>
 
-#include "camera_widget_type_wrapper.hpp"
-#include "window_widget.hpp"
-#include "radio_widget.hpp"
-#include "toggle_widget.hpp"
-#include "range_widget.hpp"
-#include "text_widget.hpp"
-#include "menu_widget.hpp"
+#include <gphoto2pp/camera_widget_type_wrapper.hpp>
+#include <gphoto2pp/window_widget.hpp>
+#include <gphoto2pp/radio_widget.hpp>
+#include <gphoto2pp/toggle_widget.hpp>
+#include <gphoto2pp/range_widget.hpp>
+#include <gphoto2pp/text_widget.hpp>
+#include <gphoto2pp/menu_widget.hpp>
 
-#include "camera_capture_type_wrapper.hpp"
-#include "camera_file_path_wrapper.hpp"
+#include <gphoto2pp/camera_capture_type_wrapper.hpp>
+#include <gphoto2pp/camera_file_path_wrapper.hpp>
 
-#include "exceptions.hpp"
-#include "log.h"
+#include <gphoto2pp/exceptions.hpp>
+#include <gphoto2pp/log.h>
 
 class NikonD90 : public CxxTest::TestSuite 
 {
@@ -239,9 +239,7 @@ public:
 	{
 		auto actionWidget = _camera.getConfig().getChildByName<gphoto2pp::NonValueWidget>("actions");
 		
-		TS_ASSERT_LESS_THAN_EQUALS(actionWidget.countChildren(), 4); // (because 2.4.14 has 3 children, and 2.5 or greater has 4 children)
-		
-		TS_ASSERT_DIFFERS(actionWidget.countChildren(), 0); // But also make sure it's not zero
+		TS_ASSERT_LESS_THAN_EQUALS(3, actionWidget.countChildren()); // (because 2.4.14 has 3 children, and 2.5 or greater has 4 children, actually 2.5.3 has 5 children)
 	}
 	
 	// This is the test that sets the capturetarget widget to SD instead of internal memory

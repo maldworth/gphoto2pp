@@ -22,12 +22,12 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "range_widget.hpp"
+#include <gphoto2pp/range_widget.hpp>
 
-#include "helper_gphoto2.hpp"
-#include "exceptions.hpp"
-#include "camera_widget_type_wrapper.hpp"
-#include "range_widget_range.hpp"
+#include <gphoto2pp/helper_gphoto2.hpp>
+#include <gphoto2pp/exceptions.hpp>
+#include <gphoto2pp/camera_widget_type_wrapper.hpp>
+#include <gphoto2pp/range_widget_range.hpp>
 
 namespace gphoto2
 {

@@ -22,24 +22,23 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#ifndef WINDOWWIDGET_HPP
-#define WINDOWWIDGET_HPP
+#ifndef SECTIONWIDGET_HPP
+#define SECTIONWIDGET_HPP
 
-#include "non_value_widget.hpp"
+#include <gphoto2pp/non_value_widget.hpp>
 
 namespace gphoto2pp
 {
 	/**
-	 * \class WindowWidget
-	 * A class representing gphoto2 widgets which are of the widget type GPhoto2pp::CameraWidgetTypeWrapper::Window
+	 * \class SectionWidget
+	 * A class representing gphoto2 widgets which are of the widget type GPhoto2pp::CameraWidgetTypeWrapper::Section
 	 */
-	class WindowWidget : public NonValueWidget
+	class SectionWidget: public NonValueWidget
 	{
-	friend class CameraWrapper;
-
 	protected:
-		WindowWidget(gphoto2::_CameraWidget* cameraWidget);
+		SectionWidget(gphoto2::_CameraWidget* cameraWidget);
 	};
+
 }
 
-#endif // WINDOWWIDGET_HPP
+#endif // SECTIONWIDGET_HPP

@@ -22,23 +22,23 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "camera_wrapper.hpp"
+#include <gphoto2pp/camera_wrapper.hpp>
 
-#include "exceptions.hpp"
+#include <gphoto2pp/exceptions.hpp>
 
-#include "helper_gphoto2.hpp"
-#include "helper_context.hpp"
-#include "window_widget.hpp"
-#include "camera_abilities_list_wrapper.hpp"
-#include "camera_list_wrapper.hpp"
-#include "gp_port_info_list_wrapper.hpp"
+#include <gphoto2pp/helper_gphoto2.hpp>
+#include <gphoto2pp/helper_context.hpp>
+#include <gphoto2pp/window_widget.hpp>
+#include <gphoto2pp/camera_abilities_list_wrapper.hpp>
+#include <gphoto2pp/camera_list_wrapper.hpp>
+#include <gphoto2pp/gp_port_info_list_wrapper.hpp>
 
-#include "camera_file_wrapper.hpp"
-#include "camera_file_path_wrapper.hpp"
-#include "camera_event_type_wrapper.hpp"
-#include "camera_capture_type_wrapper.hpp"
+#include <gphoto2pp/camera_file_wrapper.hpp>
+#include <gphoto2pp/camera_file_path_wrapper.hpp>
+#include <gphoto2pp/camera_event_type_wrapper.hpp>
+#include <gphoto2pp/camera_capture_type_wrapper.hpp>
 
-#include "log.h"
+#include <gphoto2pp/log.h>
 
 namespace gphoto2
 {

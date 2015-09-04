@@ -24,13 +24,13 @@
 
 #include <cxxtest/TestSuite.h>
 
-#include "camera_wrapper.hpp"
-#include "camera_file_path_wrapper.hpp"
-#include "camera_capture_type_wrapper.hpp"
-#include "camera_file_type_wrapper.hpp"
-#include "camera_file_wrapper.hpp"
-#include "exceptions.hpp"
-#include "log.h"
+#include <gphoto2pp/camera_wrapper.hpp>
+#include <gphoto2pp/camera_file_path_wrapper.hpp>
+#include <gphoto2pp/camera_capture_type_wrapper.hpp>
+#include <gphoto2pp/camera_file_type_wrapper.hpp>
+#include <gphoto2pp/camera_file_wrapper.hpp>
+#include <gphoto2pp/exceptions.hpp>
+#include <gphoto2pp/log.h>
 
 #include <fstream>
 

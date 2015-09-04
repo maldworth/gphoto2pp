@@ -22,42 +22,24 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#ifndef FLOATWIDGET_HPP
-#define FLOATWIDGET_HPP
+#ifndef TOGGLEWIDGET_HPP
+#define TOGGLEWIDGET_HPP
 
-#include "value_widget_base.hpp"
+#include <gphoto2pp/int_widget.hpp>
 
 namespace gphoto2pp
 {
 	/**
-	 * \class FloatWidget
-	 * A class representing gphoto2 widgets which have a value that is meaningfully represented by a float
+	 * \class ToggleWidget
+	 * A class representing gphoto2 widgets which are of the widget type GPhoto2pp::CameraWidgetTypeWrapper::Toggle
 	 */
-	class FloatWidget: public ValueWidgetBase<float>
+	class ToggleWidget: public IntWidget
 	{
 	friend class NonValueWidget;
-
-	public:
-		/**
-		 * \brief Gets the widget's value in terms of float
-		 * \return the widget's float value
-		 * \note Direct wrapper for gp_widget_get_value(...)
-		 * \throw GPhoto2pp::exceptions::gphoto2_exception
-		 */
-		float getValue() const override;
-		
-		/**
-		 * \brief Sets the widget's value in terms of float
-		 * \param[in]	value	to set for widget
-		 * \note Direct wrapper for gp_widget_set_value(...)
-		 * \throw GPhoto2pp::exceptions::gphoto2_exception
-		 */
-		void setValue(float const & value) override;
-		
+	
 	protected:
-		FloatWidget(gphoto2::_CameraWidget* cameraWidget);
+		ToggleWidget(gphoto2::_CameraWidget* cameraWidget);
 	};
-
 }
 
-#endif // FLOATWIDGET_HPP
+#endif // TOGGLEWIDGET_HPP

@@ -22,10 +22,10 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "non_value_widget.hpp"
+#include <gphoto2pp/non_value_widget.hpp>
 
-#include "helper_gphoto2.hpp"
-#include "exceptions.hpp"
+#include <gphoto2pp/helper_gphoto2.hpp>
+#include <gphoto2pp/exceptions.hpp>
 
 namespace gphoto2
 {

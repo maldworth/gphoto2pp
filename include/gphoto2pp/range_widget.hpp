@@ -22,43 +22,43 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#ifndef DATEWIDGET_HPP
-#define DATEWIDGET_HPP
+#ifndef RANGEWIDGET_HPP
+#define RANGEWIDGET_HPP
 
-#include "value_widget_base.hpp"
-
-#include <ctime>
+#include <gphoto2pp/float_widget.hpp>
 
 namespace gphoto2pp
 {
+	struct RangeWidgetRange;
+	
 	/**
-	 * \class DateWidget
-	 * A class representing gphoto2 widgets which are of the widget type GPhoto2pp::CameraWidgetTypeWrapper::Date
+	 * \class RangeWidget
+	 * A class representing gphoto2 widgets which are of the widget type GPhoto2pp::CameraWidgetTypeWrapper::Range
 	 */
-	class DateWidget: public ValueWidgetBase<std::time_t>
+	class RangeWidget: public FloatWidget
 	{
 	friend class NonValueWidget;
 
 	public:
 		/**
-		 * \brief Gets the widget's value in terms of std::time_t
-		 * \return the widget's std::time_t value
-		 * \note Direct wrapper for <tt>gp_widget_get_value(...)</tt>
+		 * \brief Gets the widget's range.
+		 * \return the widget's range
+		 * \note Direct wrapper for <tt>gp_widget_get_range(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		std::time_t getValue() const override;
+		RangeWidgetRange getRange() const;
 		
 		/**
-		 * \brief Sets the widget's value in terms of std::time_t
-		 * \param[in]	date	to set for the widget
-		 * \note Direct wrapper for gp_widget_set_value(...)
+		 * \brief Gets the widget's range and returns their values in a user friendly string.
+		 * \return the widget's range
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		void setValue(std::time_t const & date) override;
+		std::string ToString() const;
 
 	protected:
-		DateWidget(gphoto2::_CameraWidget* cameraWidget);
+		RangeWidget(gphoto2::_CameraWidget* cameraWidget);
 	};
+
 }
 
-#endif // DATEWIDGET_HPP
+#endif // RANGEWIDGET_HPP

@@ -25,7 +25,7 @@
 #ifndef HELPERDEBUGGING_HPP
 #define HELPERDEBUGGING_HPP
 
-#include "observer.hpp"
+#include <gphoto2pp/observer.hpp>
 
 namespace gphoto2pp
 {

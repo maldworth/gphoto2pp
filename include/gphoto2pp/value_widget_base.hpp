@@ -25,7 +25,7 @@
 #ifndef VALUEWIDGETBASE_HPP
 #define VALUEWIDGETBASE_HPP
 
-#include "camera_widget_wrapper.hpp"
+#include <gphoto2pp/camera_widget_wrapper.hpp>
 
 namespace gphoto2pp
 {

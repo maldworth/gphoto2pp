@@ -25,7 +25,7 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
-#include "observer.hpp"
+#include <gphoto2pp/observer.hpp>
 
 #include <string>
 #include <iosfwd>

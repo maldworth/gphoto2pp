@@ -22,9 +22,9 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "helper_camera_wrapper.hpp"
-#include "exceptions.hpp"
-#include "camera_wrapper.hpp"
+#include <gphoto2pp/helper_camera_wrapper.hpp>
+#include <gphoto2pp/exceptions.hpp>
+#include <gphoto2pp/camera_wrapper.hpp>
 
 #include <iostream>
 #include <sstream>

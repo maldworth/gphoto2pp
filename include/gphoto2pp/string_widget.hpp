@@ -22,43 +22,44 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#ifndef RANGEWIDGET_HPP
-#define RANGEWIDGET_HPP
+#ifndef STRINGWIDGET_HPP
+#define STRINGWIDGET_HPP
 
-#include "float_widget.hpp"
+#include <gphoto2pp/value_widget_base.hpp>
+
+#include <string>
 
 namespace gphoto2pp
 {
-	struct RangeWidgetRange;
-	
 	/**
-	 * \class RangeWidget
-	 * A class representing gphoto2 widgets which are of the widget type GPhoto2pp::CameraWidgetTypeWrapper::Range
+	 * \class StringWidget
+	 * A class representing gphoto2 widgets which have a value that is meaningfully represented by a string
 	 */
-	class RangeWidget: public FloatWidget
+	class StringWidget : public ValueWidgetBase<std::string>
 	{
 	friend class NonValueWidget;
 
 	public:
 		/**
-		 * \brief Gets the widget's range.
-		 * \return the widget's range
-		 * \note Direct wrapper for <tt>gp_widget_get_range(...)</tt>
+		 * \brief Gets the widget's value in terms of std::string
+		 * \return the widget's std::string value
+		 * \note Direct wrapper for gp_widget_get_value(...)
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		RangeWidgetRange getRange() const;
+		std::string getValue() const override;
 		
 		/**
-		 * \brief Gets the widget's range and returns their values in a user friendly string.
-		 * \return the widget's range
+		 * \brief Sets the widget's value in terms of std::string
+		 * \param[in]	value	to set for the widget
+		 * \note Direct wrapper for <tt>gp_widget_set_value(...)</tt>
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
-		std::string ToString() const;
-
+		void setValue(std::string const & value) override;
+		
 	protected:
-		RangeWidget(gphoto2::_CameraWidget* cameraWidget);
+		StringWidget(gphoto2::_CameraWidget* cameraWidget);
 	};
 
 }
 
-#endif // RANGEWIDGET_HPP
+#endif // STRINGWIDGET_HPP

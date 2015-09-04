@@ -24,11 +24,11 @@
 
 #include <cxxtest/TestSuite.h>
 
-#include "camera_wrapper.hpp"
-#include "camera_widget_type_wrapper.hpp"
-#include "window_widget.hpp"
-#include "exceptions.hpp"
-#include "log.h"
+#include <gphoto2pp/camera_wrapper.hpp>
+#include <gphoto2pp/camera_widget_type_wrapper.hpp>
+#include <gphoto2pp/window_widget.hpp>
+#include <gphoto2pp/exceptions.hpp>
+#include <gphoto2pp/log.h>
 
 class CameraWidgetWrapper_Generic : public CxxTest::TestSuite 
 {

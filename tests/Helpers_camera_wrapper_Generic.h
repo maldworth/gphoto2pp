@@ -24,12 +24,12 @@
 
 #include <cxxtest/TestSuite.h>
 
-#include "helper_camera_wrapper.hpp"
-#include "camera_wrapper.hpp"
-#include "camera_file_wrapper.hpp"
-#include "camera_list_wrapper.hpp"
-#include "exceptions.hpp"
-#include "log.h"
+#include <gphoto2pp/helper_camera_wrapper.hpp>
+#include <gphoto2pp/camera_wrapper.hpp>
+#include <gphoto2pp/camera_file_wrapper.hpp>
+#include <gphoto2pp/camera_list_wrapper.hpp>
+#include <gphoto2pp/exceptions.hpp>
+#include <gphoto2pp/log.h>
 
 class Helpers_gphoto2_Generic : public CxxTest::TestSuite 
 {

@@ -25,7 +25,7 @@
 #ifndef NONVALUEWIDGET_HPP
 #define NONVALUEWIDGET_HPP
 
-#include "camera_widget_wrapper.hpp"
+#include <gphoto2pp/camera_widget_wrapper.hpp>
 
 namespace gphoto2pp
 {

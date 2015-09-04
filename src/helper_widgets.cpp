@@ -22,12 +22,12 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "helper_widgets.hpp"
+#include <gphoto2pp/helper_widgets.hpp>
 
-#include "exceptions.hpp"
+#include <gphoto2pp/exceptions.hpp>
 
-#include "camera_widget_type_wrapper.hpp"
-#include "non_value_widget.hpp"
+#include <gphoto2pp/camera_widget_type_wrapper.hpp>
+#include <gphoto2pp/non_value_widget.hpp>
 
 namespace gphoto2pp
 {

@@ -22,16 +22,16 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "helper_camera_wrapper.hpp"
-#include "camera_wrapper.hpp"
+#include <gphoto2pp/helper_camera_wrapper.hpp>
+#include <gphoto2pp/camera_wrapper.hpp>
 
-#include "window_widget.hpp"
-#include "range_widget.hpp"
-#include "radio_widget.hpp"
-#include "toggle_widget.hpp"
-#include "range_widget_range.hpp"
+#include <gphoto2pp/window_widget.hpp>
+#include <gphoto2pp/range_widget.hpp>
+#include <gphoto2pp/radio_widget.hpp>
+#include <gphoto2pp/toggle_widget.hpp>
+#include <gphoto2pp/range_widget_range.hpp>
 
-#include "exceptions.hpp"
+#include <gphoto2pp/exceptions.hpp>
 
 #include <iostream>
 #include <chrono>

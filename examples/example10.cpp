@@ -22,17 +22,17 @@
  * If not, see http://www.gnu.org/licenses
  */
 
-#include "camera_wrapper.hpp"
-#include "camera_file_wrapper.hpp"
-#include "camera_file_type_wrapper.hpp"
-#include "camera_file_path_wrapper.hpp"
-#include "camera_event_type_wrapper.hpp" // For the subscribeToCameraEvent(...) method
+#include <gphoto2pp/camera_wrapper.hpp>
+#include <gphoto2pp/camera_file_wrapper.hpp>
+#include <gphoto2pp/camera_file_type_wrapper.hpp>
+#include <gphoto2pp/camera_file_path_wrapper.hpp>
+#include <gphoto2pp/camera_event_type_wrapper.hpp> // For the subscribeToCameraEvent(...) method
 
-#include "helper_camera_wrapper.hpp"
+#include <gphoto2pp/helper_camera_wrapper.hpp>
 
-#include "exceptions.hpp"
+#include <gphoto2pp/exceptions.hpp>
 
-#include "log.h"
+#include <gphoto2pp/log.h>
 
 #include <iostream>
 #include <functional>
