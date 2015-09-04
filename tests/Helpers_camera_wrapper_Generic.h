@@ -31,6 +31,9 @@
 #include <gphoto2pp/exceptions.hpp>
 #include <gphoto2pp/log.h>
 
+#include <chrono>
+#include <thread>
+
 class Helpers_gphoto2_Generic : public CxxTest::TestSuite 
 {
 	gphoto2pp::CameraWrapper _camera;
@@ -60,6 +63,12 @@ public:
 	
 	void testCaptureNoAutoDelete()
 	{
+		// I updated libgphoto to 2.5.8.1 and then this test started failing with
+		// error -110 (I/O in progress), and I suspect it's because the previous test might
+		// not have been finished with the card, or I have a slow SD card,
+		// so I just added in a sleep and it's working again.
+		std::this_thread::sleep_for(std::chrono::seconds(2));
+
 		gphoto2pp::CameraFileWrapper cameraFile;
 		TS_ASSERT_THROWS_NOTHING(gphoto2pp::helper::capture(_camera, cameraFile, false));
 		
