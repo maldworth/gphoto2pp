@@ -59,6 +59,7 @@ set(GPHOTO2PP_SOURCES ${GPHOTO2PP_SOURCE_FILES})
 set(GPHOTO2PP_HEADERS ${GPHOTO2PP_HPPHEADER_FILES} ${GPHOTO2PP_HEADER_FILES})
 
 add_library( gphoto2pp SHARED ${GPHOTO2PP_SOURCES})
+target_link_libraries(gphoto2pp pthread)
 
 include_directories("include")
 
