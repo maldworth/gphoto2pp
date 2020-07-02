@@ -8,5 +8,5 @@ Description: @PROJECT_DESCRIPTION@
 Version: @MYLIB_VERSION_STRING@
 
 Requires:
-Libs: -L${libdir} -lgphoto2pp
+Libs: -L${libdir} -lgphoto2pp -lgphoto2
 Cflags: -I${includedir}
