@@ -7,7 +7,7 @@ set -e
 if [ -d "./build/release/" ]; then
 	echo "Release build found, cleaning up..."
 	cd ./build/
-	rm -rf -- debug/
+	rm -rf -- release/
 	mkdir release
 	cd release
 	cmake -DCMAKE_BUILD_TYPE=RELEASE ../../
