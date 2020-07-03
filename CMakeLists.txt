@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.8.3)
-project (GPHOTO2PP)
+project (GPHOTO2PP DESCRIPTION "A C++ wrapper for libgphoto2")
 
 if(CMAKE_BUILD_TYPE)
     message("Building ${CMAKE_BUILD_TYPE} build.")
@@ -21,7 +21,7 @@ find_package( Gphoto2 REQUIRED )
 if(GPHOTO2_FOUND)
 	include_directories(${Gphoto2_INCLUDE_DIRS})
 	list(APPEND LIBS ${Gphoto2_LIBRARIES})
-	
+
 	# Gphoto 2.5 had breaking api changes that weren't compatable with older versions.
 	# Although I'm developing with the latest in mind, there's no reason this wrapper
 	# shouldn't work for versions less than 2.5 (as most linux distros still use 2.4.14)
@@ -29,6 +29,8 @@ if(GPHOTO2_FOUND)
 		add_definitions("-DGPHOTO_LESS_25")
 	endif()
 endif()
+
+include(GNUInstallDirs)
 
 if(UNIX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
@@ -49,7 +51,7 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/libs)
 
 ############
-# gphoto2pp 
+# gphoto2pp
 ############
 FILE(GLOB GPHOTO2PP_SOURCE_FILES "src/*.cpp")
 FILE(GLOB GPHOTO2PP_HPPHEADER_FILES "include/gphoto2pp/*.hpp")
@@ -67,12 +69,18 @@ include_directories("include")
 # http://cmake.3232098.n2.nabble.com/Version-in-name-of-shared-library-td7581530.html
 set_target_properties( gphoto2pp PROPERTIES VERSION ${MYLIB_VERSION_STRING} SOVERSION ${MYLIB_VERSION_MAJOR} )
 
+# create pkg-config files for configuration in non-cmake projects
+configure_file(gphoto2pp.pc.in gphoto2pp.pc @ONLY)
+
 # only offer install option if they compiled with release mode
 if(CMAKE_BUILD_TYPE MATCHES "RELEASE")
 	# adds the 'make install' targets to copy the shared library to /usr/local/lib/ directory
-	install( TARGETS gphoto2pp DESTINATION lib )
+	install( TARGETS gphoto2pp DESTINATION ${CMAKE_INSTALL_LIBDIR} )
 	# adds all the relevant headers to /usr/local/include/gphoto2pp when ``make install`` is executed
-	install( FILES ${GPHOTO2PP_HEADERS} DESTINATION include/gphoto2pp )
+	install( FILES ${GPHOTO2PP_HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gphoto2pp )
+
+	# install the pkg-config config to system folder
+	install(FILES ${CMAKE_BINARY_DIR}/gphoto2pp.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
 endif(CMAKE_BUILD_TYPE MATCHES "RELEASE")
 
 ###########
