@@ -271,6 +271,7 @@ namespace gphoto2pp
 		
 		std::atomic<bool> m_listenForEvents;
 		std::future<bool> m_listenForEventSignalFuture;
+		std::mutex m_eventListenerMutex;
 		
 		mutable std::mutex m_cameraIOMutex;
 	};

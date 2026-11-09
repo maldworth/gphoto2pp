@@ -51,6 +51,7 @@ namespace gphoto2
 
 #include <fstream>
 #include <utility>
+#include <chrono>
 
 namespace gphoto2pp
 {
@@ -301,12 +302,14 @@ namespace gphoto2pp
 
 	bool CameraWrapper::startListeningForEvents()
 	{
-		if(m_listenForEventSignalFuture.valid() == true)
+		std::lock_guard<std::mutex> lock{m_eventListenerMutex};
+		if(m_listenForEventSignalFuture.valid() &&
+			m_listenForEventSignalFuture.wait_for(std::chrono::seconds(0)) != std::future_status::ready)
 		{
-			// This means we already have a promise and so the thread must already be started
 			FILE_LOG(logWARN1) << "Already listening to events";
 			return true;
 		}
+		m_listenForEventSignalFuture = std::future<bool>{};
 		
 		// Set to true so our thread loop will repeat until set back
 		m_listenForEvents = true;
@@ -326,6 +329,7 @@ namespace gphoto2pp
 				}
 				catch (...)
 				{
+					m_listenForEvents = false;
 					FILE_LOG(logCRITICAL) << "An Exception was thrown when waiting for camera events. The Camera possibly lost connection with the computer";					
 					return false;
 				}
@@ -382,15 +386,15 @@ namespace gphoto2pp
 	
 	void CameraWrapper::stopListeningForEvents()
 	{
+		std::lock_guard<std::mutex> lock{m_eventListenerMutex};
+		m_listenForEvents = false;
 		if(m_listenForEventSignalFuture.valid())
 		{
 			FILE_LOG(logDEBUG) << "listener is running, we will signal it to stop";
 			
-			// We are already listening to events, and so we signal them to stop
-			m_listenForEvents = false;
-			
 			// TODO probably make this a wait_for with a timeout, so we cannot freeze anything...
 			m_listenForEventSignalFuture.wait();
+			m_listenForEventSignalFuture = std::future<bool>{};
 			
 			FILE_LOG(logDEBUG) << "listener just stopped";
 		}
