@@ -309,14 +309,21 @@ namespace gphoto2pp
 	CameraWrapper::~CameraWrapper()
 	{
 		FILE_LOG(logINFO) << "~CameraWrapper Destructor";
-		
+
 		stopListeningForEvents();
-		
+
 		if(m_camera != nullptr)
 		{
 			FILE_LOG(logINFO) << "CameraWrapper exit";
+			if (m_cameraInitialized)
+			{
+				gphoto2pp::checkResponseSilent(
+					gphoto2::gp_camera_exit(m_camera, m_context.getPtr()),
+					"gp_camera_exit");
+			}
 			gphoto2pp::checkResponse(gphoto2::gp_camera_unref(m_camera),"gp_camera_unref");
 			m_camera = nullptr;
+			m_cameraInitialized = false;
 		}
 	}
 
@@ -333,6 +340,7 @@ namespace gphoto2pp
 	CameraWrapper::CameraWrapper(CameraWrapper&& other)
 		: m_camera{other.m_camera}
 		, m_context{std::move(other.m_context)}
+		, m_cameraInitialized{other.m_cameraInitialized}
 		, m_model{std::move(other.m_model)}
 		, m_port{std::move(other.m_port)}
 		, m_listenForEvents{other.m_listenForEvents.load()}
@@ -353,6 +361,7 @@ namespace gphoto2pp
 		}
 		
 		other.m_camera = nullptr;
+		other.m_cameraInitialized = false;
 	}
 	
 	CameraWrapper& CameraWrapper::operator=(CameraWrapper&& other)
@@ -367,12 +376,19 @@ namespace gphoto2pp
 			// Release current objects resource
 			if(m_camera != nullptr)
 			{
+				if (m_cameraInitialized)
+				{
+					gphoto2pp::checkResponseSilent(
+						gphoto2::gp_camera_exit(m_camera, m_context.getPtr()),
+						"gp_camera_exit");
+				}
 				gphoto2pp::checkResponse(gphoto2::gp_camera_unref(m_camera),"gp_camera_unref");
 			}
 			
 			// Steal or "move" the other objects resource
 			m_camera = other.m_camera;
 			m_context = std::move(other.m_context);
+			m_cameraInitialized = other.m_cameraInitialized;
 			m_model = std::move(other.m_model);
 			m_port = std::move(other.m_port);
 			
@@ -391,6 +407,7 @@ namespace gphoto2pp
 			
 			// Unreference the other objects resource, so it's destructor doesn't unreference it
 			other.m_camera = nullptr;
+			other.m_cameraInitialized = false;
 		}
 		return *this;
 	}
@@ -421,10 +438,31 @@ namespace gphoto2pp
 			"gp_camera_set_port_speed");
 	}
 
+	void CameraWrapper::exit()
+	{
+		if (m_camera == nullptr)
+		{
+			throw exceptions::CameraWrapperException(
+				"Camera wrapper is not initialized");
+		}
+		if (!m_cameraInitialized)
+		{
+			throw exceptions::CameraWrapperException(
+				"Camera is not initialized");
+		}
+		stopListeningForEvents();
+		std::lock_guard<std::mutex> lock{m_cameraIOMutex};
+		gphoto2pp::checkResponse(
+			gphoto2::gp_camera_exit(m_camera, m_context.getPtr()),
+			"gp_camera_exit");
+		m_cameraInitialized = false;
+	}
+
 	void CameraWrapper::initialize()
 	{
 		// Connects to first camera found
 		gphoto2pp::checkResponse(gphoto2::gp_camera_init(m_camera, m_context.getPtr()),"gp_camera_init");
+		m_cameraInitialized = true;
 		
 		// Now that the camera is connected to, this will populate our m_model and m_port with the connected camera details
 		gphoto2::GPPortInfo portInfo;
@@ -499,6 +537,7 @@ namespace gphoto2pp
 		
 		// Finally, init the camera
 		gphoto2pp::checkResponse(gphoto2::gp_camera_init(m_camera, m_context.getPtr()),"gp_camera_init");
+		m_cameraInitialized = true;
 	}
 
 	std::string CameraWrapper::getSummary() const

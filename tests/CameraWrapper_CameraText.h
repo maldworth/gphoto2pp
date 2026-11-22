@@ -12,6 +12,7 @@ namespace gphoto2 {
 #include <cstring>
 #include <memory>
 #include <stdexcept>
+#include <utility>
 
 namespace {
 
@@ -19,6 +20,8 @@ enum class text_result { valid, unterminated, unsupported };
 
 text_result next_text_result = text_result::valid;
 gphoto2::GPPortInfo fake_port = nullptr;
+int exit_calls = 0;
+int exit_result = GP_OK;
 
 int write_text(gphoto2::CameraText *text, const char *value) {
     if (next_text_result == text_result::unsupported) {
@@ -38,6 +41,11 @@ namespace gphoto2 {
 
 extern "C" int gp_camera_init(Camera *, GPContext *) {
     return GP_OK;
+}
+
+extern "C" int gp_camera_exit(Camera *, GPContext *) {
+    ++exit_calls;
+    return exit_result;
 }
 
 extern "C" int gp_camera_get_port_info(Camera *, GPPortInfo *info) {
@@ -71,6 +79,9 @@ class CameraWrapper_CameraText : public CxxTest::TestSuite {
 
 public:
     void setUp() {
+        next_text_result = text_result::valid;
+        exit_calls = 0;
+        exit_result = GP_OK;
         if (gphoto2::gp_port_info_list_new(&m_ports) != GP_OK ||
             gphoto2::gp_port_info_new(&fake_port) != GP_OK ||
             gphoto2::gp_port_info_set_name(fake_port, "Synthetic port") != GP_OK ||
@@ -114,5 +125,36 @@ public:
             rejected = true;
         }
         TS_ASSERT(rejected);
+    }
+
+    void testExplicitExitAndMovedFromCamera() {
+        m_camera->exit();
+        TS_ASSERT_EQUALS(exit_calls, 1);
+        bool rejected = false;
+        try {
+            m_camera->exit();
+        } catch (const gphoto2pp::exceptions::CameraWrapperException &) {
+            rejected = true;
+        }
+        TS_ASSERT(rejected);
+
+        exit_result = GP_ERROR_IO;
+        gphoto2pp::CameraWrapper new_camera;
+        bool error_preserved = false;
+        try {
+            new_camera.exit();
+        } catch (const gphoto2pp::exceptions::gphoto2_exception &error) {
+            error_preserved = error.getResultCode() == GP_ERROR_IO;
+        }
+        TS_ASSERT(error_preserved);
+
+        gphoto2pp::CameraWrapper moved(std::move(new_camera));
+        bool moved_rejected = false;
+        try {
+            new_camera.exit();
+        } catch (const gphoto2pp::exceptions::CameraWrapperException &) {
+            moved_rejected = true;
+        }
+        TS_ASSERT(moved_rejected);
     }
 };

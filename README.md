@@ -11,6 +11,7 @@ Table Of Contents
 * [Camera information text](#camera-information-text)
 * [Camera port speed](#camera-port-speed)
 * [Port information](#port-information)
+* [Camera lifecycle](#camera-lifecycle)
 * [GPPort I/O](#gpport-io)
 * [Context callbacks](#context-callbacks)
 * [Camera abilities](#camera-abilities)
@@ -165,6 +166,14 @@ previously compiled shallow copies remain unsafe. A moved-from wrapper may be
 destroyed or assigned to, but cannot be used for lookups or enumeration.
 `PortLibraryVersion()` reports the linked libgphoto2_port version; pass `true`
 for verbose build information. `LibraryVersion()` reports libgphoto2's version.
+
+Camera lifecycle
+----------------
+`CameraWrapper::exit()` explicitly disconnects an initialized camera and stops
+camera event listening before serialized I/O. The camera object remains usable
+for destruction or a future reinitialization path. Repeated exit calls and
+calls on a moved-from wrapper are rejected. Destruction also releases a camera
+that remains initialized.
 
 GPPort I/O
 ----------

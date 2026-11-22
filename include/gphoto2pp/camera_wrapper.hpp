@@ -147,6 +147,16 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		void setPortSpeed(int speed);
+
+		/**
+		 * \brief Releases the initialized camera connection.
+		 * \note Event listening is stopped before camera I/O. The camera object
+		 * remains valid and may be initialized again with init-equivalent
+		 * constructors or a future reinitialize API.
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception on libgphoto2 failure
+		 * \throw GPhoto2pp::exceptions::CameraWrapperException if moved from
+		 */
+		void exit();
 		
 		/**
 		 * \brief Captures a preview image from the camera.
@@ -475,6 +485,7 @@ namespace gphoto2pp
 		gphoto2::_Camera* m_camera = nullptr;
 		
 		ContextWrapper m_context;
+		bool m_cameraInitialized = false;
 
 		std::string m_model;
 		std::string m_port;
