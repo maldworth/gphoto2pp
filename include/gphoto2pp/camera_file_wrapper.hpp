@@ -127,6 +127,16 @@ namespace gphoto2pp
 		void setDataAndSize(std::vector<char> const & file);
 
 		/**
+		 * \brief Opens a local file into this wrapper.
+		 * \param[in] filename local path, without embedded NUL bytes
+		 * \warning This API is retained for compatibility; gp_file_open is
+		 * marked legacy by libgphoto2 and may not be available in future ABI.
+		 * \throw GPhoto2pp::exceptions::ArgumentException for embedded NUL
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		void open(std::string const & filename);
+
+		/**
 		 * \brief Clears names and data according to the file access type.
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */

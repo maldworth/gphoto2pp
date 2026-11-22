@@ -13,6 +13,7 @@ namespace gphoto2 {
 #include <cstring>
 #include <fcntl.h>
 #include <unistd.h>
+#include <cstdio>
 #include <vector>
 
 class CameraFileWrapper_Data : public CxxTest::TestSuite {
@@ -108,5 +109,26 @@ public:
         file.setDataAndSize({'x', 'y', 'z'});
         TS_ASSERT_EQUALS(written,
             (std::vector<char>{'x', 'y', 'z'}));
+    }
+
+    void testOpenFromLocalFilenameAndRejectsNul() {
+        char path[] = "/tmp/gphoto2pp-open-XXXXXX";
+        const int fd = mkstemp(path);
+        TS_ASSERT(fd >= 0);
+        if (fd < 0) {
+            return;
+        }
+        const char data[] = "legacy";
+        TS_ASSERT_EQUALS(write(fd, data, 6), 6);
+        close(fd);
+
+        gphoto2pp::CameraFileWrapper file;
+        TS_ASSERT_THROWS_NOTHING(file.open(path));
+        TS_ASSERT_EQUALS(file.getDataAndSize(),
+            (std::vector<char>{'l', 'e', 'g', 'a', 'c', 'y'}));
+        TS_ASSERT_THROWS(file.open(
+            std::string("bad\0path", 8)),
+            const gphoto2pp::exceptions::ArgumentException &);
+        unlink(path);
     }
 };

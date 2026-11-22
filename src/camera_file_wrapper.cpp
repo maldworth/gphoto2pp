@@ -366,6 +366,19 @@ namespace gphoto2pp
 		copy.release();
 	}
 
+	void CameraFileWrapper::open(std::string const & filename)
+	{
+		if (filename.find('\0') != std::string::npos)
+		{
+			throw exceptions::ArgumentException(
+				"Camera file filename must not contain embedded NUL");
+		}
+		gphoto2pp::checkResponse(
+			gphoto2::gp_file_open(m_cameraFile, filename.c_str()),
+			"gp_file_open");
+		m_callerOwnedData = false;
+	}
+
 	void CameraFileWrapper::clear()
 	{
 		gphoto2pp::checkResponse(

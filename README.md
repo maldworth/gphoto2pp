@@ -257,6 +257,9 @@ exceptions are converted to libgphoto2 error codes.
 `clear()` resets the file object, and `copyFrom()` copies metadata and data
 between compatible file objects. Copy semantics preserve libgphoto2 reference
 sharing until the wrapper lifecycle ends.
+`open(filename)` imports a local file through the legacy libgphoto2 API and
+rejects embedded NUL paths. It is retained for compatibility, not as the
+camera-download path.
 
 Camera file metadata
 --------------------
