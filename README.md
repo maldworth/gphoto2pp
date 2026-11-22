@@ -21,6 +21,7 @@ Table Of Contents
 * [Camera storage metadata](#camera-storage-metadata)
 * [Camera lists](#camera-lists)
 * [Button widgets](#button-widgets)
+* [Widget metadata mutation](#widget-metadata-mutation)
 * [Installation](INSTALL.md#installation)
   * [User Prerequisites](INSTALL.md#user-prerequisites)
   * [Dev/Test/Contributor
@@ -271,6 +272,15 @@ widgets, and duplicate widget names are rejected. Button actions are not
 configuration values and should not be sent with `setConfig()` or
 `setSingleConfig()`. Callbacks may immediately change camera state, so use
 them only when their camera-specific behavior is understood.
+
+Widget metadata mutation
+------------------------
+`CameraWidgetWrapper::setName()`, `setInfo()`, `setReadOnly()`, and
+`setChanged()` expose libgphoto2's metadata mutations for existing widgets.
+Names and info strings reject embedded NUL bytes and fixed-buffer overflow;
+read-only and changed values accept only 0 or 1. `isChanged()` reports the
+current libgphoto2 changed flag. Labels remain read-only because libgphoto2
+does not expose a public label setter.
 
 Installation
 ------------

@@ -139,6 +139,23 @@ namespace gphoto2pp
 		return detail::copyWidgetString(temp, maxLength, "name");
 	}
 
+	void CameraWidgetWrapper::setName(std::string const & name)
+	{
+		if (name.find('\0') != std::string::npos)
+		{
+			throw exceptions::ArgumentException(
+				"Camera widget name must not contain embedded NUL");
+		}
+		if (name.size() >= 256)
+		{
+			throw exceptions::ArgumentException(
+				"Camera widget name exceeds libgphoto2 fixed limit");
+		}
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_set_name(m_cameraWidget, name.c_str()),
+			"gp_widget_set_name");
+	}
+
 	CameraWidgetTypeWrapper CameraWidgetWrapper::getType() const
 	{
 		gphoto2::CameraWidgetType temp;
@@ -182,6 +199,23 @@ namespace gphoto2pp
 		
 		return std::string(temp);
 	}
+
+	void CameraWidgetWrapper::setInfo(std::string const & info)
+	{
+		if (info.find('\0') != std::string::npos)
+		{
+			throw exceptions::ArgumentException(
+				"Camera widget info must not contain embedded NUL");
+		}
+		if (info.size() >= 1024)
+		{
+			throw exceptions::ArgumentException(
+				"Camera widget info exceeds libgphoto2 fixed limit");
+		}
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_set_info(m_cameraWidget, info.c_str()),
+			"gp_widget_set_info");
+	}
 	
 	int CameraWidgetWrapper::getId() const
 	{
@@ -201,6 +235,38 @@ namespace gphoto2pp
 			"gp_widget_get_readonly");
 
 		return readOnly;
+	}
+
+	void CameraWidgetWrapper::setReadOnly(int readOnly)
+	{
+		if (readOnly != 0 && readOnly != 1)
+		{
+			throw exceptions::ArgumentException(
+				"Camera widget read-only flag must be 0 or 1");
+		}
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_set_readonly(m_cameraWidget, readOnly),
+			"gp_widget_set_readonly");
+	}
+
+	bool CameraWidgetWrapper::isChanged() const
+	{
+		const int changed = gphoto2pp::checkResponse(
+			gphoto2::gp_widget_changed(m_cameraWidget),
+			"gp_widget_changed");
+		return changed != 0;
+	}
+
+	void CameraWidgetWrapper::setChanged(int changed)
+	{
+		if (changed != 0 && changed != 1)
+		{
+			throw exceptions::ArgumentException(
+				"Camera widget changed state must be 0 or 1");
+		}
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_set_changed(m_cameraWidget, changed),
+			"gp_widget_set_changed");
 	}
 	
 	CameraWidgetWrapper CameraWidgetWrapper::getRoot() const

@@ -105,6 +105,15 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		std::string getName(std::size_t maxLength) const;
+
+		/**
+		 * \brief Sets the widget name.
+		 * \param[in] name new name, without embedded NUL bytes
+		 * \throw GPhoto2pp::exceptions::ArgumentException for embedded NUL
+		 * or a name exceeding libgphoto2's 255-byte field
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		void setName(std::string const & name);
 		
 		/**
 		 * \brief Gets the widget's type
@@ -138,6 +147,15 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		std::string getInfo() const;
+
+		/**
+		 * \brief Sets the widget information text.
+		 * \param[in] info new info text, without embedded NUL bytes
+		 * \throw GPhoto2pp::exceptions::ArgumentException for embedded NUL
+		 * or text exceeding libgphoto2's 1023-byte field
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		void setInfo(std::string const & info);
 		
 		/**
 		 * \brief Gets the widget's unique id
@@ -154,6 +172,29 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		int getReadOnly() const;
+
+		/**
+		 * \brief Sets the widget read-only flag.
+		 * \param[in] readOnly 0 or 1
+		 * \throw GPhoto2pp::exceptions::ArgumentException for another value
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		void setReadOnly(int readOnly);
+
+		/**
+		 * \brief Gets whether the widget reports a changed state.
+		 * \return true if libgphoto2 reports changed, false otherwise
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		bool isChanged() const;
+
+		/**
+		 * \brief Sets the widget changed state.
+		 * \param[in] changed 0 or 1
+		 * \throw GPhoto2pp::exceptions::ArgumentException for another value
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		void setChanged(int changed);
 		
 		/**
 		 * \brief Gets the widget's Root.

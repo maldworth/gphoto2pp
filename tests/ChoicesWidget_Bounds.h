@@ -76,4 +76,30 @@ public:
         TS_ASSERT(setChoiceThrowsOutOfRange(-1));
         TS_ASSERT(setChoiceThrowsOutOfRange(2));
     }
+
+    void testMetadataAndChangedStateMutations() {
+        m_choices->setName("UpdatedChoices");
+        m_choices->setInfo("Synthetic menu information");
+        TS_ASSERT_EQUALS(m_choices->getName(), "UpdatedChoices");
+        TS_ASSERT_EQUALS(m_choices->getInfo(),
+            "Synthetic menu information");
+
+        m_choices->setReadOnly(1);
+        TS_ASSERT_EQUALS(m_choices->getReadOnly(), 1);
+        m_choices->setChanged(1);
+        TS_ASSERT(m_choices->isChanged());
+        m_choices->setChanged(0);
+        TS_ASSERT(!m_choices->isChanged());
+
+        TS_ASSERT_THROWS(m_choices->setName(
+            std::string("bad\0name", 8)),
+            const gphoto2pp::exceptions::ArgumentException &);
+        TS_ASSERT_THROWS(m_choices->setInfo(
+            std::string("bad\0info", 9)),
+            const gphoto2pp::exceptions::ArgumentException &);
+        TS_ASSERT_THROWS(m_choices->setReadOnly(2),
+            const gphoto2pp::exceptions::ArgumentException &);
+        TS_ASSERT_THROWS(m_choices->setChanged(-1),
+            const gphoto2pp::exceptions::ArgumentException &);
+    }
 };
