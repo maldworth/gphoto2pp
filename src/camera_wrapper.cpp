@@ -505,6 +505,101 @@ namespace gphoto2pp
 		return m_port;
 	}
 
+	PortInfoSnapshot CameraWrapper::getPortInfo() const
+	{
+		if (m_camera == nullptr)
+		{
+			throw exceptions::CameraWrapperException(
+				"Camera wrapper is not initialized");
+		}
+		std::lock_guard<std::mutex> lock{m_cameraIOMutex};
+		gphoto2::GPPortInfo portInfo = nullptr;
+		gphoto2pp::checkResponse(
+			gphoto2::gp_camera_get_port_info(m_camera, &portInfo),
+			"gp_camera_get_port_info");
+		if (portInfo == nullptr)
+		{
+			throw std::runtime_error(
+				"Camera returned a null port information entry");
+		}
+		char *name = nullptr;
+		char *path = nullptr;
+		gphoto2::GPPortType type = gphoto2::GP_PORT_NONE;
+		gphoto2pp::checkResponse(
+			gphoto2::gp_port_info_get_name(portInfo, &name),
+			"gp_port_info_get_name");
+		gphoto2pp::checkResponse(
+			gphoto2::gp_port_info_get_path(portInfo, &path),
+			"gp_port_info_get_path");
+		gphoto2pp::checkResponse(
+			gphoto2::gp_port_info_get_type(portInfo, &type),
+			"gp_port_info_get_type");
+		if (name == nullptr || path == nullptr)
+		{
+			throw std::runtime_error(
+				"Camera returned incomplete port information");
+		}
+		PortInfoSnapshot snapshot;
+		snapshot.name = name;
+		snapshot.path = path;
+		snapshot.type = static_cast<GPPortTypeWrapper>(type);
+		return snapshot;
+	}
+
+	void CameraWrapper::setPortInfo(PortInfoSnapshot const & info)
+	{
+		if (m_camera == nullptr)
+		{
+			throw exceptions::CameraWrapperException(
+				"Camera wrapper is not initialized");
+		}
+		if (info.name.find('\0') != std::string::npos ||
+			info.path.find('\0') != std::string::npos)
+		{
+			throw exceptions::ArgumentException(
+				"Port information strings must not contain embedded NUL");
+		}
+		gphoto2::GPPortInfo portInfo = nullptr;
+		gphoto2::GPPortInfoList *list = nullptr;
+		try
+		{
+			gphoto2pp::checkResponse(
+				gphoto2::gp_port_info_list_new(&list),
+				"gp_port_info_list_new");
+			gphoto2pp::checkResponse(
+				gphoto2::gp_port_info_new(&portInfo),
+				"gp_port_info_new");
+			gphoto2pp::checkResponse(
+				gphoto2::gp_port_info_set_name(portInfo, info.name.c_str()),
+				"gp_port_info_set_name");
+			gphoto2pp::checkResponse(
+				gphoto2::gp_port_info_set_path(portInfo, info.path.c_str()),
+				"gp_port_info_set_path");
+			gphoto2pp::checkResponse(
+				gphoto2::gp_port_info_set_type(
+					portInfo, static_cast<gphoto2::GPPortType>(info.type)),
+				"gp_port_info_set_type");
+			gphoto2pp::checkResponse(
+				gphoto2::gp_port_info_list_append(list, portInfo),
+				"gp_port_info_list_append");
+			std::lock_guard<std::mutex> lock{m_cameraIOMutex};
+			gphoto2pp::checkResponse(
+				gphoto2::gp_camera_set_port_info(m_camera, portInfo),
+				"gp_camera_set_port_info");
+		}
+		catch (...)
+		{
+			if (list != nullptr)
+			{
+				gphoto2::gp_port_info_list_free(list);
+			}
+			throw;
+		}
+		gphoto2pp::checkResponseSilent(
+			gphoto2::gp_port_info_list_free(list),
+			"gp_port_info_list_free");
+	}
+
 	int CameraWrapper::getPortSpeed() const
 	{
 		std::lock_guard<std::mutex> lock{m_cameraIOMutex};

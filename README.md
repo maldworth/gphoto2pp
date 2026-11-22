@@ -162,6 +162,8 @@ Port information
 `GPPortInfoListWrapper` enumerates available port entries. `getInfo(index)`
 returns an owned `PortInfoSnapshot` containing the port name, path, and type;
 the copied values remain valid after the list is destroyed.
+`CameraWrapper::getPortInfo()` and `setPortInfo()` expose the port information
+assigned to a connected camera through the same owned snapshot type.
 The list wrapper is move-only: code that previously copied it must instead
 move it or pass it by reference. Rebuild consumers against the updated header;
 previously compiled shallow copies remain unsafe. A moved-from wrapper may be

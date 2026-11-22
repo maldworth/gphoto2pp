@@ -2,6 +2,7 @@
 
 #include <gphoto2pp/camera_wrapper.hpp>
 #include <gphoto2pp/exceptions.hpp>
+#include <gphoto2pp/gp_port_info_list_wrapper.hpp>
 
 namespace gphoto2 {
 #include <gphoto2/gphoto2-camera.h>
@@ -26,6 +27,8 @@ int exit_result = GP_OK;
 int set_abilities_calls = 0;
 int set_abilities_result = GP_OK;
 gphoto2::CameraAbilities last_abilities{};
+int set_port_info_calls = 0;
+int set_port_info_result = GP_OK;
 
 int write_text(gphoto2::CameraText *text, const char *value) {
     if (next_text_result == text_result::unsupported) {
@@ -84,6 +87,24 @@ extern "C" int gp_camera_set_abilities(
     return set_abilities_result;
 }
 
+extern "C" int gp_camera_set_port_info(
+    Camera *, GPPortInfo info) {
+    ++set_port_info_calls;
+    if (set_port_info_result == GP_OK) {
+        char *name = nullptr;
+        char *path = nullptr;
+        gphoto2::GPPortType type = gphoto2::GP_PORT_NONE;
+        if (gphoto2::gp_port_info_get_name(info, &name) == GP_OK &&
+            gphoto2::gp_port_info_get_path(info, &path) == GP_OK &&
+            gphoto2::gp_port_info_get_type(info, &type) == GP_OK) {
+            gphoto2::gp_port_info_set_name(fake_port, name);
+            gphoto2::gp_port_info_set_path(fake_port, path);
+            gphoto2::gp_port_info_set_type(fake_port, type);
+        }
+    }
+    return set_port_info_result;
+}
+
 extern "C" int gp_camera_get_summary(Camera *, CameraText *text, GPContext *) {
     return write_text(text, "summary");
 }
@@ -110,6 +131,8 @@ public:
         set_abilities_calls = 0;
         set_abilities_result = GP_OK;
         last_abilities = {};
+        set_port_info_calls = 0;
+        set_port_info_result = GP_OK;
         if (gphoto2::gp_port_info_list_new(&m_ports) != GP_OK ||
             gphoto2::gp_port_info_new(&fake_port) != GP_OK ||
             gphoto2::gp_port_info_set_name(fake_port, "Synthetic port") != GP_OK ||
@@ -128,6 +151,36 @@ public:
             m_ports = nullptr;
         }
         fake_port = nullptr;
+    }
+
+    void testCameraPortInfoRoundTrip() {
+        const auto initial = m_camera->getPortInfo();
+        TS_ASSERT_EQUALS(initial.name, "Synthetic port");
+        TS_ASSERT_EQUALS(initial.path, "fake:no-usb");
+        TS_ASSERT_EQUALS(initial.type, gphoto2pp::GPPortTypeWrapper::USB);
+
+        gphoto2pp::PortInfoSnapshot updated;
+        updated.name = "Updated port";
+        updated.path = "usb:002";
+        updated.type = gphoto2pp::GPPortTypeWrapper::USB;
+        m_camera->setPortInfo(updated);
+        TS_ASSERT_EQUALS(set_port_info_calls, 1);
+        const auto retrieved = m_camera->getPortInfo();
+        TS_ASSERT_EQUALS(retrieved.name, "Updated port");
+        TS_ASSERT_EQUALS(retrieved.path, "usb:002");
+
+        set_port_info_result = GP_ERROR_IO;
+        bool preserved_error = false;
+        try {
+            m_camera->setPortInfo(updated);
+        } catch (const gphoto2pp::exceptions::gphoto2_exception &error) {
+            preserved_error = error.getResultCode() == GP_ERROR_IO;
+        }
+        TS_ASSERT(preserved_error);
+
+        updated.name = std::string("bad\0name", 8);
+        TS_ASSERT_THROWS(m_camera->setPortInfo(updated),
+            const gphoto2pp::exceptions::ArgumentException &);
     }
 
     void testCameraInformationText() {

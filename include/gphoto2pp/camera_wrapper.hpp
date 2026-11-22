@@ -53,6 +53,7 @@ namespace gphoto2pp
 	enum class CameraCaptureTypeWrapper : int;
 	
 	struct CameraFilePathWrapper;
+	struct PortInfoSnapshot;
 	
 	class ButtonWidget;
 	class CameraFileWrapper;
@@ -130,6 +131,22 @@ namespace gphoto2pp
 		 * \return the port name
 		 */
 		std::string getPort() const;
+
+		/**
+		 * \brief Gets the port information assigned to the connected camera.
+		 * \return Owned port name, path and type snapshot.
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 * \throw std::runtime_error for incomplete port information
+		 */
+		PortInfoSnapshot getPortInfo() const;
+
+		/**
+		 * \brief Sets camera port information.
+		 * \param[in] info port name, path and type
+		 * \throw GPhoto2pp::exceptions::ArgumentException for embedded NUL
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		void setPortInfo(PortInfoSnapshot const & info);
 
 		/**
 		 * \brief Gets the current camera port speed.
