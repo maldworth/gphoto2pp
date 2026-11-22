@@ -5,6 +5,7 @@
 
 namespace gphoto2 {
 #include <gphoto2/gphoto2-camera.h>
+#include <gphoto2/gphoto2-abilities-list.h>
 #include <gphoto2/gphoto2-port-info-list.h>
 }
 
@@ -22,6 +23,9 @@ text_result next_text_result = text_result::valid;
 gphoto2::GPPortInfo fake_port = nullptr;
 int exit_calls = 0;
 int exit_result = GP_OK;
+int set_abilities_calls = 0;
+int set_abilities_result = GP_OK;
+gphoto2::CameraAbilities last_abilities{};
 
 int write_text(gphoto2::CameraText *text, const char *value) {
     if (next_text_result == text_result::unsupported) {
@@ -56,7 +60,28 @@ extern "C" int gp_camera_get_port_info(Camera *, GPPortInfo *info) {
 extern "C" int gp_camera_get_abilities(Camera *, CameraAbilities *abilities) {
     std::memset(abilities, 0, sizeof(*abilities));
     std::snprintf(abilities->model, sizeof(abilities->model), "%s", "Synthetic camera");
+    abilities->status = gphoto2::GP_DRIVER_STATUS_TESTING;
+    abilities->port = gphoto2::GP_PORT_USB;
+    abilities->speed[0] = 9600;
+    abilities->speed[1] = 115200;
+    abilities->operations = gphoto2::GP_OPERATION_CAPTURE_IMAGE;
+    abilities->file_operations = gphoto2::GP_FILE_OPERATION_DELETE;
+    abilities->folder_operations = gphoto2::GP_FOLDER_OPERATION_MAKE_DIR;
+    abilities->usb_vendor = 0x1234;
+    abilities->usb_product = 0x5678;
+    abilities->device_type = gphoto2::GP_DEVICE_STILL_CAMERA;
+    std::snprintf(abilities->library, sizeof(abilities->library),
+        "%s", "synthetic.so");
+    std::snprintf(abilities->id, sizeof(abilities->id),
+        "%s", "Synthetic ID");
     return GP_OK;
+}
+
+extern "C" int gp_camera_set_abilities(
+    Camera *, CameraAbilities abilities) {
+    ++set_abilities_calls;
+    last_abilities = abilities;
+    return set_abilities_result;
 }
 
 extern "C" int gp_camera_get_summary(Camera *, CameraText *text, GPContext *) {
@@ -82,6 +107,9 @@ public:
         next_text_result = text_result::valid;
         exit_calls = 0;
         exit_result = GP_OK;
+        set_abilities_calls = 0;
+        set_abilities_result = GP_OK;
+        last_abilities = {};
         if (gphoto2::gp_port_info_list_new(&m_ports) != GP_OK ||
             gphoto2::gp_port_info_new(&fake_port) != GP_OK ||
             gphoto2::gp_port_info_set_name(fake_port, "Synthetic port") != GP_OK ||
@@ -125,6 +153,36 @@ public:
             rejected = true;
         }
         TS_ASSERT(rejected);
+    }
+
+    void testCameraAbilitiesRoundTrip() {
+        const auto snapshot = m_camera->getAbilities();
+        TS_ASSERT_EQUALS(snapshot.model, "Synthetic camera");
+        TS_ASSERT_EQUALS(snapshot.status,
+            gphoto2pp::CameraDriverStatus::Testing);
+        TS_ASSERT_EQUALS(snapshot.port,
+            static_cast<std::uint32_t>(gphoto2::GP_PORT_USB));
+        TS_ASSERT_EQUALS(snapshot.speeds.size(), 2U);
+        TS_ASSERT_EQUALS(snapshot.speeds[0], 9600);
+        TS_ASSERT_EQUALS(snapshot.speeds[1], 115200);
+        TS_ASSERT_EQUALS(snapshot.usbVendor, 0x1234);
+        TS_ASSERT_EQUALS(snapshot.usbProduct, 0x5678);
+        TS_ASSERT_EQUALS(snapshot.library, "synthetic.so");
+        TS_ASSERT_EQUALS(snapshot.id, "Synthetic ID");
+
+        m_camera->setAbilities(snapshot);
+        TS_ASSERT_EQUALS(set_abilities_calls, 1);
+        TS_ASSERT_EQUALS(std::string(last_abilities.model),
+            "Synthetic camera");
+
+        set_abilities_result = GP_ERROR_IO;
+        bool preserved_error = false;
+        try {
+            m_camera->setAbilities(snapshot);
+        } catch (const gphoto2pp::exceptions::gphoto2_exception &error) {
+            preserved_error = error.getResultCode() == GP_ERROR_IO;
+        }
+        TS_ASSERT(preserved_error);
     }
 
     void testExplicitExitAndMovedFromCamera() {

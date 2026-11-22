@@ -1,25 +1,24 @@
-/** \file 
+/**
+ * \file camera_abilities_list_wrapper.cpp
+ *
  * \author Copyright (c) 2013 maldworth <https://github.com/maldworth>
  *
- * \note
- * This file is part of gphoto2pp
- * 
- * \note
- * gphoto2pp is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
+ * \author Copyright (c) 2026 Vitor Fonseca <https://github.com/VSF1>
  *
- * \note
- * gphoto2pp is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * \note This file is part of gphoto2pp
  *
- * \note
- * You should have received a copy of the GNU Lesser General Public
- * License along with gphoto2pp.
- * If not, see http://www.gnu.org/licenses
+ * \note gphoto2pp is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * \note gphoto2pp is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+ * for more details.
+ *
+ * \note You should have received a copy of the GNU Lesser General Public
+ * License along with gphoto2pp. If not, see http://www.gnu.org/licenses
  */
 
 #include <gphoto2pp/camera_abilities_list_wrapper.hpp>
@@ -78,12 +77,15 @@ namespace gphoto2pp
 
 		if(m_cameraAbilitiesList != nullptr)
 		{
-			gphoto2pp::checkResponseSilent(gphoto2::gp_abilities_list_free(m_cameraAbilitiesList),"gp_abilities_list_free");
+			gphoto2pp::checkResponseSilent(
+                gphoto2::gp_abilities_list_free(m_cameraAbilitiesList),
+                "gp_abilities_list_free");
 			m_cameraAbilitiesList = nullptr;
 		}
 	}
 	
-	CameraAbilitiesListWrapper::CameraAbilitiesListWrapper(CameraAbilitiesListWrapper&& other)
+	CameraAbilitiesListWrapper::CameraAbilitiesListWrapper(
+        CameraAbilitiesListWrapper&& other)
 		: m_cameraAbilitiesList{other.m_cameraAbilitiesList}
 	{
 		FILE_LOG(logINFO) << "CameraAbilitiesListWrapper move Constructor";
@@ -91,7 +93,8 @@ namespace gphoto2pp
 		other.m_cameraAbilitiesList = nullptr;
 	}
 	
-	CameraAbilitiesListWrapper& CameraAbilitiesListWrapper::operator=(CameraAbilitiesListWrapper&& other)
+	CameraAbilitiesListWrapper& CameraAbilitiesListWrapper::operator=(
+        CameraAbilitiesListWrapper&& other)
 	{
 		FILE_LOG(logINFO) << "CameraAbilitiesListWrapper move assignment operator";
 
@@ -253,7 +256,8 @@ namespace gphoto2pp
 			"gp_abilities_list_append");
 	}
 
-	CameraListWrapper CameraAbilitiesListWrapper::listDetect(GPPortInfoListWrapper const & portInfoList)
+	CameraListWrapper CameraAbilitiesListWrapper::listDetect(
+        GPPortInfoListWrapper const & portInfoList)
 	{
 		auto *list = this->requireList();
 		ContextWrapper context;

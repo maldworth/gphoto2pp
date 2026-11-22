@@ -1,25 +1,24 @@
-/** \file 
+/**
+ * \file camera_wrapper.cpp
+ *
  * \author Copyright (c) 2013 maldworth <https://github.com/maldworth>
  *
- * \note
- * This file is part of gphoto2pp
- * 
- * \note
- * gphoto2pp is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
+ * \author Copyright (c) 2026 Vitor Fonseca <https://github.com/VSF1>
  *
- * \note
- * gphoto2pp is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * \note This file is part of gphoto2pp
  *
- * \note
- * You should have received a copy of the GNU Lesser General Public
- * License along with gphoto2pp.
- * If not, see http://www.gnu.org/licenses
+ * \note gphoto2pp is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * \note gphoto2pp is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+ * for more details.
+ *
+ * \note You should have received a copy of the GNU Lesser General Public
+ * License along with gphoto2pp. If not, see http://www.gnu.org/licenses
  */
 
 #include <gphoto2pp/camera_wrapper.hpp>
@@ -241,6 +240,90 @@ namespace gphoto2pp
 #endif
 	}
 
+	CameraAbilitiesSnapshot cameraAbilitiesToSnapshot(
+		gphoto2::CameraAbilities const & source)
+	{
+		CameraAbilitiesSnapshot snapshot;
+		snapshot.model = metadataString(source.model, "camera abilities model");
+		snapshot.status = static_cast<CameraDriverStatus>(source.status);
+		snapshot.port = static_cast<std::uint32_t>(source.port);
+		for (int speed : source.speed)
+		{
+			if (speed == 0)
+			{
+				break;
+			}
+			snapshot.speeds.push_back(speed);
+		}
+		snapshot.operations =
+			static_cast<std::uint32_t>(source.operations);
+		snapshot.fileOperations =
+			static_cast<std::uint32_t>(source.file_operations);
+		snapshot.folderOperations =
+			static_cast<std::uint32_t>(source.folder_operations);
+		snapshot.usbVendor = source.usb_vendor;
+		snapshot.usbProduct = source.usb_product;
+		snapshot.usbClass = source.usb_class;
+		snapshot.usbSubclass = source.usb_subclass;
+		snapshot.usbProtocol = source.usb_protocol;
+		snapshot.library = metadataString(
+			source.library, "camera abilities library");
+		snapshot.id = metadataString(source.id, "camera abilities id");
+		snapshot.deviceType =
+			static_cast<GphotoDeviceType>(source.device_type);
+		return snapshot;
+	}
+
+	gphoto2::CameraAbilities snapshotToCameraAbilities(
+		CameraAbilitiesSnapshot const & snapshot)
+	{
+		if (snapshot.model.find('\0') != std::string::npos ||
+			snapshot.library.find('\0') != std::string::npos ||
+			snapshot.id.find('\0') != std::string::npos)
+		{
+			throw exceptions::ArgumentException(
+				"Camera abilities strings must not contain embedded NUL");
+		}
+		if (snapshot.model.size() >= sizeof(gphoto2::CameraAbilities::model) ||
+			snapshot.library.size() >= sizeof(gphoto2::CameraAbilities::library) ||
+			snapshot.id.size() >= sizeof(gphoto2::CameraAbilities::id) ||
+			snapshot.speeds.size() >=
+				sizeof(gphoto2::CameraAbilities::speed) / sizeof(int))
+		{
+			throw exceptions::ArgumentException(
+				"Camera abilities snapshot exceeds libgphoto2 fixed limits");
+		}
+		gphoto2::CameraAbilities result{};
+		std::memcpy(result.model, snapshot.model.c_str(),
+			snapshot.model.size());
+		result.status = static_cast<gphoto2::CameraDriverStatus>(
+			snapshot.status);
+		result.port = static_cast<gphoto2::GPPortType>(snapshot.port);
+		for (std::size_t i = 0; i < snapshot.speeds.size(); ++i)
+		{
+			result.speed[i] = snapshot.speeds[i];
+		}
+		result.operations =
+			static_cast<gphoto2::CameraOperation>(snapshot.operations);
+		result.file_operations =
+			static_cast<gphoto2::CameraFileOperation>(
+				snapshot.fileOperations);
+		result.folder_operations =
+			static_cast<gphoto2::CameraFolderOperation>(
+				snapshot.folderOperations);
+		result.usb_vendor = snapshot.usbVendor;
+		result.usb_product = snapshot.usbProduct;
+		result.usb_class = snapshot.usbClass;
+		result.usb_subclass = snapshot.usbSubclass;
+		result.usb_protocol = snapshot.usbProtocol;
+		std::memcpy(result.library, snapshot.library.c_str(),
+			snapshot.library.size());
+		std::memcpy(result.id, snapshot.id.c_str(), snapshot.id.size());
+		result.device_type =
+			static_cast<gphoto2::GphotoDeviceType>(snapshot.deviceType);
+		return result;
+	}
+
 	static_assert(static_cast<unsigned>(CameraFileInfoField::Type) == gphoto2::GP_FILE_INFO_TYPE &&
 		static_cast<unsigned>(CameraFileInfoField::Size) == gphoto2::GP_FILE_INFO_SIZE &&
 		static_cast<unsigned>(CameraFileInfoField::Width) == gphoto2::GP_FILE_INFO_WIDTH &&
@@ -438,6 +521,37 @@ namespace gphoto2pp
 			"gp_camera_set_port_speed");
 	}
 
+	CameraAbilitiesSnapshot CameraWrapper::getAbilities() const
+	{
+		if (m_camera == nullptr)
+		{
+			throw exceptions::CameraWrapperException(
+				"Camera wrapper is not initialized");
+		}
+		std::lock_guard<std::mutex> lock{m_cameraIOMutex};
+		gphoto2::CameraAbilities source{};
+		gphoto2pp::checkResponse(
+			gphoto2::gp_camera_get_abilities(m_camera, &source),
+			"gp_camera_get_abilities");
+		return cameraAbilitiesToSnapshot(source);
+	}
+
+	void CameraWrapper::setAbilities(
+		CameraAbilitiesSnapshot const & abilities)
+	{
+		if (m_camera == nullptr)
+		{
+			throw exceptions::CameraWrapperException(
+				"Camera wrapper is not initialized");
+		}
+		const gphoto2::CameraAbilities source =
+			snapshotToCameraAbilities(abilities);
+		std::lock_guard<std::mutex> lock{m_cameraIOMutex};
+		gphoto2pp::checkResponse(
+			gphoto2::gp_camera_set_abilities(m_camera, source),
+			"gp_camera_set_abilities");
+	}
+
 	void CameraWrapper::exit()
 	{
 		if (m_camera == nullptr)
@@ -468,11 +582,10 @@ namespace gphoto2pp
 		gphoto2::GPPortInfo portInfo;
 		gphoto2pp::checkResponse(gphoto2::gp_camera_get_port_info(m_camera, &portInfo),"gp_camera_get_port_info");
 		
-		gphoto2::CameraAbilities cameraAbilities;
-		gphoto2pp::checkResponse(gphoto2::gp_camera_get_abilities(m_camera, &cameraAbilities),"gp_camera_get_abilities");
-		
+		const auto cameraAbilities = this->getAbilities();
+
 		// Now we get the model and port and assign to our local variables
-		m_model = std::string(cameraAbilities.model);
+		m_model = cameraAbilities.model;
 		
 #if GPHOTO_LESS_25
 		m_port = portInfo.path;
@@ -495,39 +608,8 @@ namespace gphoto2pp
 		
 		const auto abilities =
 			cameraAbilitiesList.getAbilities(model_index);
-		gphoto2::CameraAbilities cameraAbilities{};
-		std::snprintf(cameraAbilities.model, sizeof(cameraAbilities.model),
-			"%s", abilities.model.c_str());
-		cameraAbilities.status =
-			static_cast<gphoto2::CameraDriverStatus>(abilities.status);
-		cameraAbilities.port =
-			static_cast<gphoto2::GPPortType>(abilities.port);
-		for (std::size_t i = 0; i < abilities.speeds.size(); ++i)
-		{
-			cameraAbilities.speed[i] = abilities.speeds[i];
-		}
-		cameraAbilities.operations =
-			static_cast<gphoto2::CameraOperation>(abilities.operations);
-		cameraAbilities.file_operations =
-			static_cast<gphoto2::CameraFileOperation>(
-				abilities.fileOperations);
-		cameraAbilities.folder_operations =
-			static_cast<gphoto2::CameraFolderOperation>(
-				abilities.folderOperations);
-		cameraAbilities.usb_vendor = abilities.usbVendor;
-		cameraAbilities.usb_product = abilities.usbProduct;
-		cameraAbilities.usb_class = abilities.usbClass;
-		cameraAbilities.usb_subclass = abilities.usbSubclass;
-		cameraAbilities.usb_protocol = abilities.usbProtocol;
-		std::snprintf(cameraAbilities.library, sizeof(cameraAbilities.library),
-			"%s", abilities.library.c_str());
-		std::snprintf(cameraAbilities.id, sizeof(cameraAbilities.id),
-			"%s", abilities.id.c_str());
-		cameraAbilities.device_type =
-			static_cast<gphoto2::GphotoDeviceType>(abilities.deviceType);
-
 		// Sets camera abilities, probably should make this a member method
-		gphoto2pp::checkResponse(gphoto2::gp_camera_set_abilities(m_camera, cameraAbilities),"gp_camera_set_abilities");
+		this->setAbilities(abilities);
 		
 		gphoto2::GPPortInfo portInfo;
 		gphoto2pp::checkResponse(gphoto2::gp_port_info_list_get_info(portInfoList.getPtr(), port_index, &portInfo),"gp_port_info_list_get_info");

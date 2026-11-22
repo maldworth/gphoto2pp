@@ -30,6 +30,7 @@
 #include <gphoto2pp/camera_storage_info.hpp>
 #include <gphoto2pp/camera_widget_wrapper.hpp>
 #include <gphoto2pp/helper_context.hpp>
+#include <gphoto2pp/camera_abilities_list_wrapper.hpp>
 
 #include <string>
 #include <iosfwd>
@@ -147,6 +148,23 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		void setPortSpeed(int speed);
+
+		/**
+		 * \brief Gets the abilities assigned to the connected camera.
+		 * \return Owned camera abilities snapshot.
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception on libgphoto2 failure
+		 * \throw std::runtime_error for unterminated fixed strings
+		 */
+		CameraAbilitiesSnapshot getAbilities() const;
+
+		/**
+		 * \brief Sets camera abilities.
+		 * \param[in] abilities snapshot to pass to libgphoto2
+		 * \throw GPhoto2pp::exceptions::ArgumentException for embedded NUL,
+		 * oversized fixed strings, or more than 64 serial speeds
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception on libgphoto2 failure
+		 */
+		void setAbilities(CameraAbilitiesSnapshot const & abilities);
 
 		/**
 		 * \brief Releases the initialized camera connection.

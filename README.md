@@ -219,6 +219,8 @@ camera model and its supported ports, serial speeds, operations, USB identity,
 and device type. `loadDirectory()` loads modules from an explicit directory,
 and `append()` adds a synthetic or custom abilities entry. Fixed-string limits
 and embedded-NUL restrictions are enforced before libgphoto2 calls.
+`CameraWrapper::getAbilities()` reads the abilities assigned to a connected
+camera, and `setAbilities()` applies a validated snapshot.
 
 Streaming camera file reads
 ---------------------------
