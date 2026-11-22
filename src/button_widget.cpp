@@ -8,6 +8,12 @@
 
 #include <gphoto2pp/camera_widget_type_wrapper.hpp>
 #include <gphoto2pp/exceptions.hpp>
+#include <gphoto2pp/helper_gphoto2.hpp>
+
+namespace gphoto2
+{
+#include <gphoto2/gphoto2-widget.h>
+}
 
 namespace gphoto2pp
 {
@@ -20,4 +26,26 @@ namespace gphoto2pp
 				"A ButtonWidget can only wrap a button widget");
 		}
 	}
+
+	bool ButtonWidget::hasCallback() const
+	{
+		gphoto2::CameraWidgetCallback callback = nullptr;
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_get_value(m_cameraWidget, &callback),
+			"gp_widget_get_value");
+		return callback != nullptr;
+	}
+
+	void ButtonWidget::setCallback(void const * callback)
+	{
+		if (callback == nullptr)
+		{
+			throw exceptions::NullWidget(
+				"Button widget callback must not be null");
+		}
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_set_value(m_cameraWidget, callback),
+			"gp_widget_set_value");
+	}
+
 }

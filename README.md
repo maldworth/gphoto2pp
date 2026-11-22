@@ -291,6 +291,10 @@ widgets, and duplicate widget names are rejected. Button actions are not
 configuration values and should not be sent with `setConfig()` or
 `setSingleConfig()`. Callbacks may immediately change camera state, so use
 them only when their camera-specific behavior is understood.
+`ButtonWidget::hasCallback()` reports whether a callback is assigned;
+`setCallback()` assigns a libgphoto2-compatible callback pointer. Clearing a
+callback is not exposed because `gp_widget_set_value()` rejects a null value;
+use a new standalone widget or keep the callback absent.
 
 Widget metadata mutation
 ------------------------

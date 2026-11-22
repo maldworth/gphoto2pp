@@ -204,6 +204,10 @@ public:
         TS_ASSERT_EQUALS(button.getName(), "execute");
         TS_ASSERT_EQUALS(button.getType(),
             gphoto2pp::CameraWidgetTypeWrapper::Button);
+        TS_ASSERT(button.hasCallback());
+        button.setCallback(reinterpret_cast<const void *>(
+            synthetic_button_callback));
+        TS_ASSERT(button.hasCallback());
     }
 
     void testCameraWrapperExposesContext() {

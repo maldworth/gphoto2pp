@@ -39,6 +39,22 @@ namespace gphoto2pp
 		friend class NonValueWidget;
 		friend class CameraWidgetWrapper;
 
+	public:
+		/**
+		 * \brief Reports whether libgphoto2 assigned a button callback.
+		 * \return true when gp_widget_get_value contains a non-null callback
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		bool hasCallback() const;
+
+		/**
+		 * \brief Assigns a libgphoto2-compatible callback pointer.
+		 * \param[in] callback function pointer cast to const void*
+		 * \throw GPhoto2pp::exceptions::NullWidget for a null callback
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		void setCallback(void const * callback);
+
 	protected:
 		explicit ButtonWidget(gphoto2::_CameraWidget *cameraWidget);
 	};
