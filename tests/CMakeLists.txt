@@ -20,5 +20,10 @@ if(CXXTEST_FOUND)
 			target_compile_definitions (${testname} PRIVATE
 				GPHOTO2PP_HAVE_PORT_INIT_LOCALEDIR)
 		endif ()
+		if (testname STREQUAL "Helpers_LibraryVersion" AND
+			GPHOTO2PP_HAVE_INIT_LOCALEDIR)
+			target_compile_definitions (${testname} PRIVATE
+				GPHOTO2PP_HAVE_INIT_LOCALEDIR)
+		endif ()
 	endforeach( testssourcefile ${TESTS_SOURCE_FILES} )
 endif(CXXTEST_FOUND)

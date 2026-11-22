@@ -224,11 +224,13 @@ sense and data buffers. It is intended for supported low-level USB-SCSI ports
 and remains hardware-dependent.
 `PortMessageCodeset()` queries the current libgphoto2_port message codeset;
 `PortMessageCodeset(codeset)` changes it and returns the previous value.
-`InitializePortLocaleDirectory()` selects the compiled-in locale directory,
-or the overload taking a path selects a custom directory. Initialize the
-directory before any other port-library initialization; libgphoto2_port may
-ignore later changes. Builds linked against versions without
-`gp_port_init_localedir()` report an unsupported-version exception.
+`InitializeLocaleDirectory()` configures libgphoto2's gettext locale directory,
+and `InitializePortLocaleDirectory()` configures libgphoto2_port's directory.
+The no-argument overload selects the compiled-in path; the overload taking a
+path selects a custom directory. Call each function before the first
+non-initialization operation on its library; subsequent calls may be ignored.
+Builds linked against libgphoto2 versions before 2.5.31 or libgphoto2_port
+versions before 0.12.1 report an unsupported-version exception.
 
 Context callbacks
 -----------------

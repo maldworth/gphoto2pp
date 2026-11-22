@@ -80,6 +80,9 @@ check_cxx_symbol_exists (gp_camera_get_single_config "gphoto2/gphoto2-camera.h"
 	GPHOTO2PP_HAVE_CAMERA_GET_SINGLE_CONFIG)
 check_cxx_symbol_exists (gp_camera_set_single_config "gphoto2/gphoto2-camera.h"
 	GPHOTO2PP_HAVE_CAMERA_SET_SINGLE_CONFIG)
+check_cxx_symbol_exists (gp_init_localedir
+	"gphoto2/gphoto2-abilities-list.h"
+	GPHOTO2PP_HAVE_INIT_LOCALEDIR)
 check_cxx_symbol_exists (gp_port_init_localedir
 	"gphoto2/gphoto2-port-info-list.h"
 	GPHOTO2PP_HAVE_PORT_INIT_LOCALEDIR)
@@ -92,6 +95,9 @@ if (GPHOTO2PP_HAVE_CAMERA_GET_SINGLE_CONFIG)
 endif ()
 if (GPHOTO2PP_HAVE_CAMERA_SET_SINGLE_CONFIG)
 	target_compile_definitions (gphoto2pp PRIVATE GPHOTO2PP_HAVE_CAMERA_SET_SINGLE_CONFIG)
+endif ()
+if (GPHOTO2PP_HAVE_INIT_LOCALEDIR)
+	target_compile_definitions (gphoto2pp PRIVATE GPHOTO2PP_HAVE_INIT_LOCALEDIR)
 endif ()
 if (GPHOTO2PP_HAVE_PORT_INIT_LOCALEDIR)
 	target_compile_definitions (gphoto2pp PRIVATE GPHOTO2PP_HAVE_PORT_INIT_LOCALEDIR)

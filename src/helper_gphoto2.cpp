@@ -44,6 +44,7 @@ namespace gphoto2
 #include <gphoto2/gphoto2-result.h> // used for gp_result_as_string
 #include <gphoto2/gphoto2-context.h>
 #endif
+#include <gphoto2/gphoto2-abilities-list.h>
 #include <gphoto2/gphoto2-version.h>
 #include <gphoto2/gphoto2-port-result.h>
 #include <gphoto2/gphoto2-port-info-list.h>
@@ -212,6 +213,36 @@ namespace gphoto2pp
 				"libgphoto2_port returned a null message codeset");
 		}
 		return std::string(current);
+	}
+
+	void InitializeLocaleDirectory(std::string const & directory)
+	{
+		if (directory.find('\0') != std::string::npos)
+		{
+			throw exceptions::ArgumentException(
+				"Locale directory must not contain embedded NUL bytes");
+		}
+#ifdef GPHOTO2PP_HAVE_INIT_LOCALEDIR
+		gphoto2pp::checkResponse(
+			gphoto2::gp_init_localedir(directory.c_str()),
+			"gp_init_localedir");
+#else
+		throw exceptions::InvalidLinkedVersionException(
+			"Initializing the locale directory requires "
+			"gp_init_localedir (libgphoto2 2.5.31 or greater)");
+#endif
+	}
+
+	void InitializeLocaleDirectory()
+	{
+#ifdef GPHOTO2PP_HAVE_INIT_LOCALEDIR
+		gphoto2pp::checkResponse(
+			gphoto2::gp_init_localedir(nullptr), "gp_init_localedir");
+#else
+		throw exceptions::InvalidLinkedVersionException(
+			"Initializing the locale directory requires "
+			"gp_init_localedir (libgphoto2 2.5.31 or greater)");
+#endif
 	}
 
 	void InitializePortLocaleDirectory(std::string const & directory)

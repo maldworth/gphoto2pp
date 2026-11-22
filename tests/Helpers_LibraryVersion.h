@@ -7,6 +7,7 @@ namespace gphoto2 {
 #include <gphoto2/gphoto2-version.h>
 #include <gphoto2/gphoto2-port-result.h>
 #include <gphoto2/gphoto2-port-info-list.h>
+#include <gphoto2/gphoto2-abilities-list.h>
 }
 
 #include <stdexcept>
@@ -22,7 +23,10 @@ bool null_port_version = false;
 bool null_camera_version = false;
 bool null_port_result = false;
 bool null_port_codeset = false;
+int locale_result = GP_OK;
 int port_locale_result = GP_OK;
+std::string initialized_localedir;
+bool localedir_was_null = false;
 std::string current_port_codeset = "UTF-8";
 std::string previous_port_codeset;
 std::string initialized_port_localedir;
@@ -67,6 +71,12 @@ extern "C" int gp_port_init_localedir(const char *localedir) {
     initialized_port_localedir = localedir == nullptr ? "" : localedir;
     return port_locale_result;
 }
+
+extern "C" int gp_init_localedir(const char *localedir) {
+    localedir_was_null = localedir == nullptr;
+    initialized_localedir = localedir == nullptr ? "" : localedir;
+    return locale_result;
+}
 }
 
 class Helpers_LibraryVersion : public CxxTest::TestSuite {
@@ -76,7 +86,10 @@ public:
         null_camera_version = false;
         null_port_result = false;
         null_port_codeset = false;
+        locale_result = GP_OK;
         port_locale_result = GP_OK;
+        initialized_localedir.clear();
+        localedir_was_null = false;
         current_port_codeset = "UTF-8";
         previous_port_codeset.clear();
         initialized_port_localedir.clear();
@@ -131,6 +144,46 @@ public:
         null_port_codeset = true;
         TS_ASSERT_THROWS(gphoto2pp::PortMessageCodeset(),
             const std::runtime_error &);
+    }
+
+    void testLocaleDirectoryInitializationAndErrors() {
+#ifdef GPHOTO2PP_HAVE_INIT_LOCALEDIR
+        gphoto2pp::InitializeLocaleDirectory("/tmp/gphoto-locale");
+        TS_ASSERT_EQUALS(initialized_localedir, "/tmp/gphoto-locale");
+        TS_ASSERT(!localedir_was_null);
+
+        gphoto2pp::InitializeLocaleDirectory();
+        TS_ASSERT(localedir_was_null);
+
+        std::string invalid_directory = "/tmp/locale";
+        invalid_directory.push_back('\0');
+        invalid_directory += "suffix";
+        TS_ASSERT_THROWS(
+            gphoto2pp::InitializeLocaleDirectory(invalid_directory),
+            const gphoto2pp::exceptions::ArgumentException &);
+
+        locale_result = GP_ERROR_NO_MEMORY;
+        bool preserved_error = false;
+        try {
+            gphoto2pp::InitializeLocaleDirectory("/tmp/other");
+        } catch (const gphoto2pp::exceptions::gphoto2_exception &error) {
+            preserved_error =
+                error.getResultCode() == GP_ERROR_NO_MEMORY;
+        }
+        TS_ASSERT(preserved_error);
+#else
+        std::string invalid_directory = "/tmp/locale";
+        invalid_directory.push_back('\0');
+        invalid_directory += "suffix";
+        TS_ASSERT_THROWS(
+            gphoto2pp::InitializeLocaleDirectory(invalid_directory),
+            const gphoto2pp::exceptions::ArgumentException &);
+        TS_ASSERT_THROWS(gphoto2pp::InitializeLocaleDirectory(),
+            const gphoto2pp::exceptions::InvalidLinkedVersionException &);
+        TS_ASSERT_THROWS(
+            gphoto2pp::InitializeLocaleDirectory("/tmp/gphoto-locale"),
+            const gphoto2pp::exceptions::InvalidLinkedVersionException &);
+#endif
     }
 
     void testPortLocaleDirectoryInitializationAndErrors() {

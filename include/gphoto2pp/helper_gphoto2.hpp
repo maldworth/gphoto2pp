@@ -119,6 +119,29 @@ namespace gphoto2pp
 	std::string PortMessageCodeset();
 
 	/**
+	 * \brief Initializes libgphoto2's gettext locale directory.
+	 * \param[in] directory root directory of localization files, without
+	 * embedded NUL bytes
+	 * \note Call before any non-initialization libgphoto2 function. The first
+	 * initialization wins; later calls may be ignored.
+	 * \throw gphoto2pp::exceptions::InvalidLinkedVersionException when the
+	 * linked libgphoto2 lacks this API
+	 * \throw gphoto2pp::exceptions::ArgumentException for embedded NUL bytes
+	 * \throw gphoto2pp::exceptions::gphoto2_exception on library failure
+	 */
+	void InitializeLocaleDirectory(std::string const & directory);
+
+	/**
+	 * \brief Initializes libgphoto2's compiled-in gettext locale directory.
+	 * \note Call before any non-initialization libgphoto2 function. The first
+	 * initialization wins; later calls may be ignored.
+	 * \throw gphoto2pp::exceptions::InvalidLinkedVersionException when the
+	 * linked libgphoto2 lacks this API
+	 * \throw gphoto2pp::exceptions::gphoto2_exception on library failure
+	 */
+	void InitializeLocaleDirectory();
+
+	/**
 	 * \brief Initializes libgphoto2_port's gettext locale directory.
 	 * \note Call before any other libgphoto2_port initialization. The first
 	 * initialization wins; later calls may be ignored by the library.
