@@ -192,6 +192,16 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::CameraWrapperException if moved from
 		 */
 		void exit();
+
+		/**
+		 * \brief Reinitializes a camera after an explicit exit.
+		 * \note Redetects and initializes the first usable camera. The wrapper
+		 * refreshes model and port values after success.
+		 * \throw GPhoto2pp::exceptions::CameraWrapperException if moved from
+		 * or already initialized
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception on initialization
+		 */
+		void reinitialize();
 		
 		/**
 		 * \brief Captures a preview image from the camera.

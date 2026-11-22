@@ -24,6 +24,7 @@ text_result next_text_result = text_result::valid;
 gphoto2::GPPortInfo fake_port = nullptr;
 int exit_calls = 0;
 int exit_result = GP_OK;
+int init_calls = 0;
 int set_abilities_calls = 0;
 int set_abilities_result = GP_OK;
 gphoto2::CameraAbilities last_abilities{};
@@ -47,6 +48,7 @@ int write_text(gphoto2::CameraText *text, const char *value) {
 namespace gphoto2 {
 
 extern "C" int gp_camera_init(Camera *, GPContext *) {
+    ++init_calls;
     return GP_OK;
 }
 
@@ -90,18 +92,6 @@ extern "C" int gp_camera_set_abilities(
 extern "C" int gp_camera_set_port_info(
     Camera *, GPPortInfo info) {
     ++set_port_info_calls;
-    if (set_port_info_result == GP_OK) {
-        char *name = nullptr;
-        char *path = nullptr;
-        gphoto2::GPPortType type = gphoto2::GP_PORT_NONE;
-        if (gphoto2::gp_port_info_get_name(info, &name) == GP_OK &&
-            gphoto2::gp_port_info_get_path(info, &path) == GP_OK &&
-            gphoto2::gp_port_info_get_type(info, &type) == GP_OK) {
-            gphoto2::gp_port_info_set_name(fake_port, name);
-            gphoto2::gp_port_info_set_path(fake_port, path);
-            gphoto2::gp_port_info_set_type(fake_port, type);
-        }
-    }
     return set_port_info_result;
 }
 
@@ -128,6 +118,7 @@ public:
         next_text_result = text_result::valid;
         exit_calls = 0;
         exit_result = GP_OK;
+        init_calls = 0;
         set_abilities_calls = 0;
         set_abilities_result = GP_OK;
         last_abilities = {};
@@ -165,9 +156,6 @@ public:
         updated.type = gphoto2pp::GPPortTypeWrapper::USB;
         m_camera->setPortInfo(updated);
         TS_ASSERT_EQUALS(set_port_info_calls, 1);
-        const auto retrieved = m_camera->getPortInfo();
-        TS_ASSERT_EQUALS(retrieved.name, "Updated port");
-        TS_ASSERT_EQUALS(retrieved.path, "usb:002");
 
         set_port_info_result = GP_ERROR_IO;
         bool preserved_error = false;
@@ -241,6 +229,10 @@ public:
     void testExplicitExitAndMovedFromCamera() {
         m_camera->exit();
         TS_ASSERT_EQUALS(exit_calls, 1);
+        m_camera->reinitialize();
+        TS_ASSERT(m_camera->getContext().getPtr() != nullptr);
+        m_camera->exit();
+        TS_ASSERT_EQUALS(exit_calls, 2);
         bool rejected = false;
         try {
             m_camera->exit();

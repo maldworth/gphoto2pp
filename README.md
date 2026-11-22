@@ -178,6 +178,9 @@ camera event listening before serialized I/O. The camera object remains usable
 for destruction or a future reinitialization path. Repeated exit calls and
 calls on a moved-from wrapper are rejected. Destruction also releases a camera
 that remains initialized.
+`CameraWrapper::reinitialize()` reconnects after exit using first-camera
+recovery and refreshes model/port values; it rejects already initialized and
+moved-from wrappers.
 
 GPPort I/O
 ----------

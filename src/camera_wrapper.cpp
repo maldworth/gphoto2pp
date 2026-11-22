@@ -667,6 +667,22 @@ namespace gphoto2pp
 		m_cameraInitialized = false;
 	}
 
+	void CameraWrapper::reinitialize()
+	{
+		if (m_camera == nullptr)
+		{
+			throw exceptions::CameraWrapperException(
+				"Camera wrapper is not initialized");
+		}
+		if (m_cameraInitialized)
+		{
+			throw exceptions::CameraWrapperException(
+				"Camera is already initialized");
+		}
+		stopListeningForEvents();
+		this->initialize();
+	}
+
 	void CameraWrapper::initialize()
 	{
 		// Connects to first camera found
