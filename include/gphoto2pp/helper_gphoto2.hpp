@@ -101,6 +101,44 @@ namespace gphoto2pp
 	 * \throw std::runtime_error if libgphoto2_port returns null
 	 */
 	std::string PortResultString(int result);
+
+	/**
+	 * \brief Sets or queries libgphoto2_port's gettext message codeset.
+	 * \param[in] codeset codeset to set, without embedded NUL bytes
+	 * \return The previously configured codeset.
+	 * \throw gphoto2pp::exceptions::ArgumentException for embedded NUL bytes
+	 * \throw std::runtime_error if libgphoto2_port returns no codeset string
+	 */
+	std::string PortMessageCodeset(std::string const & codeset);
+
+	/**
+	 * \brief Queries libgphoto2_port's current gettext message codeset.
+	 * \return The current codeset.
+	 * \throw std::runtime_error if libgphoto2_port returns no codeset string
+	 */
+	std::string PortMessageCodeset();
+
+	/**
+	 * \brief Initializes libgphoto2_port's gettext locale directory.
+	 * \note Call before any other libgphoto2_port initialization. The first
+	 * initialization wins; later calls may be ignored by the library.
+	 * \throw gphoto2pp::exceptions::InvalidLinkedVersionException when the
+	 * linked libgphoto2_port lacks this API
+	 * \throw gphoto2pp::exceptions::ArgumentException for embedded NUL bytes
+	 * in the directory
+	 * \throw gphoto2pp::exceptions::gphoto2_exception on library failure
+	 */
+	void InitializePortLocaleDirectory(std::string const & directory);
+
+	/**
+	 * \brief Initializes libgphoto2_port's compiled-in locale directory.
+	 * \note Call before any other libgphoto2_port initialization. The first
+	 * initialization wins; later calls may be ignored by the library.
+	 * \throw gphoto2pp::exceptions::InvalidLinkedVersionException when the
+	 * linked libgphoto2_port lacks this API
+	 * \throw gphoto2pp::exceptions::gphoto2_exception on library failure
+	 */
+	void InitializePortLocaleDirectory();
 }
 
 #endif // HELPERGPHOTO2_HPP

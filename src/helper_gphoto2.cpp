@@ -46,6 +46,7 @@ namespace gphoto2
 #endif
 #include <gphoto2/gphoto2-version.h>
 #include <gphoto2/gphoto2-port-result.h>
+#include <gphoto2/gphoto2-port-info-list.h>
 }
 
 #include <sstream>
@@ -183,5 +184,64 @@ namespace gphoto2pp
 				"libgphoto2_port returned a null result string");
 		}
 		return std::string(text);
+	}
+
+	std::string PortMessageCodeset(std::string const & codeset)
+	{
+		if (codeset.find('\0') != std::string::npos)
+		{
+			throw exceptions::ArgumentException(
+				"Port message codeset must not contain embedded NUL bytes");
+		}
+		const char *previous =
+			gphoto2::gp_port_message_codeset(codeset.c_str());
+		if (previous == nullptr)
+		{
+			throw std::runtime_error(
+				"libgphoto2_port returned a null message codeset");
+		}
+		return std::string(previous);
+	}
+
+	std::string PortMessageCodeset()
+	{
+		const char *current = gphoto2::gp_port_message_codeset(nullptr);
+		if (current == nullptr)
+		{
+			throw std::runtime_error(
+				"libgphoto2_port returned a null message codeset");
+		}
+		return std::string(current);
+	}
+
+	void InitializePortLocaleDirectory(std::string const & directory)
+	{
+		if (directory.find('\0') != std::string::npos)
+		{
+			throw exceptions::ArgumentException(
+				"Port locale directory must not contain embedded NUL bytes");
+		}
+#ifdef GPHOTO2PP_HAVE_PORT_INIT_LOCALEDIR
+		gphoto2pp::checkResponse(
+			gphoto2::gp_port_init_localedir(directory.c_str()),
+			"gp_port_init_localedir");
+#else
+		throw exceptions::InvalidLinkedVersionException(
+			"Initializing the port locale directory requires "
+			"gp_port_init_localedir (libgphoto2_port 0.12.1 or greater)");
+#endif
+	}
+
+	void InitializePortLocaleDirectory()
+	{
+#ifdef GPHOTO2PP_HAVE_PORT_INIT_LOCALEDIR
+		gphoto2pp::checkResponse(
+			gphoto2::gp_port_init_localedir(nullptr),
+			"gp_port_init_localedir");
+#else
+		throw exceptions::InvalidLinkedVersionException(
+			"Initializing the port locale directory requires "
+			"gp_port_init_localedir (libgphoto2_port 0.12.1 or greater)");
+#endif
 	}
 }
