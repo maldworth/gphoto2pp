@@ -194,6 +194,9 @@ must be used only with port types that support them.
 USB discovery and standard, interface and class control transfers are also
 available. Their data buffers are owned by C++ vectors and physical USB support
 remains unverified.
+SCSI command transfer is exposed through `sendSCSICommand()` with owned command,
+sense and data buffers. It is intended for supported low-level USB-SCSI ports
+and remains hardware-dependent.
 
 Context callbacks
 -----------------

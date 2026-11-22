@@ -57,6 +57,7 @@ int usb_find_vendor = 0;
 int usb_find_product = 0;
 int usb_class_calls = 0;
 int usb_msg_calls = 0;
+int scsi_calls = 0;
 }
 
 namespace gphoto2 {
@@ -226,6 +227,21 @@ extern "C" int gp_port_usb_msg_class_read(
     return gp_port_usb_msg_read(nullptr, 0, 0, 0, data, size);
 }
 
+extern "C" int gp_port_send_scsi_cmd(
+    GPPort *, int, char *command, int command_size,
+    char *sense, int sense_size, char *data, int data_size) {
+    ++scsi_calls;
+    (void)command;
+    (void)command_size;
+    if (sense != nullptr && sense_size > 0) {
+        std::memcpy(sense, "s", sense_size > 1 ? 1 : sense_size);
+    }
+    if (data != nullptr && data_size > 0) {
+        std::memcpy(data, "d", data_size > 1 ? 1 : data_size);
+    }
+    return GP_OK;
+}
+
 extern "C" int gp_port_set_error(GPPort *, const char *format, ...) {
     (void)format;
     port_error = "Synthetic port error";
@@ -336,6 +352,7 @@ public:
         usb_find_product = 0;
         usb_class_calls = 0;
         usb_msg_calls = 0;
+        scsi_calls = 0;
     }
 
     void testLifecycleIoAndTimeout() {
@@ -440,6 +457,18 @@ public:
         port.writeUSBClassMessage(0x21, 1, 0, payload);
         TS_ASSERT_EQUALS(port.readUSBClassMessage(
             0xa1, 1, 0, 5).size(), 3U);
+    }
+
+    void testScsiCommand() {
+        gphoto2pp::GPPortWrapper port;
+        std::vector<char> command = {0x12, 0x00};
+        std::vector<char> sense(1);
+        std::vector<char> data(1);
+        TS_ASSERT_EQUALS(
+            port.sendSCSICommand(true, command, sense, data), GP_OK);
+        TS_ASSERT_EQUALS(scsi_calls, 1);
+        TS_ASSERT_EQUALS(sense[0], 's');
+        TS_ASSERT_EQUALS(data[0], 'd');
     }
 
     void testPortErrorState() {

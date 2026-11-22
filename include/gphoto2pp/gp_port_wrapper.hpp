@@ -140,6 +140,9 @@ namespace gphoto2pp
 			std::vector<char> const & data);
 		std::vector<char> readUSBClassMessage(int request, int value,
 			int index, std::size_t size);
+		int sendSCSICommand(bool toDevice,
+			std::vector<char> const & command,
+			std::vector<char> & sense, std::vector<char> & data);
 
 	private:
 		gphoto2::_GPPort* requirePort() const;

@@ -637,4 +637,31 @@ namespace gphoto2pp
 		data.resize(static_cast<std::size_t>(result));
 		return data;
 	}
+
+	int GPPortWrapper::sendSCSICommand(bool toDevice,
+		std::vector<char> const & command,
+		std::vector<char> & sense, std::vector<char> & data)
+	{
+		if (command.size() >
+			static_cast<std::size_t>((std::numeric_limits<int>::max)()) ||
+			sense.size() >
+			static_cast<std::size_t>((std::numeric_limits<int>::max)()) ||
+			data.size() >
+			static_cast<std::size_t>((std::numeric_limits<int>::max)()))
+		{
+			throw exceptions::ArgumentException(
+				"GPPort SCSI buffer size exceeds libgphoto2_port int limit");
+		}
+		std::vector<char> commandCopy = command;
+		const int result = gphoto2::gp_port_send_scsi_cmd(
+			this->requirePort(), toDevice ? 1 : 0,
+			commandCopy.data(),
+			static_cast<int>(commandCopy.size()),
+			sense.empty() ? nullptr : sense.data(),
+			static_cast<int>(sense.size()),
+			data.empty() ? nullptr : data.data(),
+			static_cast<int>(data.size()));
+		gphoto2pp::checkResponse(result, "gp_port_send_scsi_cmd");
+		return result;
+	}
 }
