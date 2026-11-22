@@ -47,6 +47,15 @@ namespace gphoto2pp
 	{
 	public:
 		CameraFileWrapper();
+		/**
+		 * \brief Creates a file wrapper owning an open UNIX file descriptor.
+		 * \param[in] fd file descriptor transferred to libgphoto2 on success
+		 * \warning Ownership transfers only on successful construction;
+		 * libgphoto2 closes the descriptor when this wrapper is released.
+		 * \throw GPhoto2pp::exceptions::ArgumentException for a negative fd
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception on construction failure
+		 */
+		explicit CameraFileWrapper(int fd);
 		~CameraFileWrapper();
 		
 		// Move constructor and move assignment
@@ -93,6 +102,19 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		void setDataAndSize(std::vector<char> const & file);
+
+		/**
+		 * \brief Clears names and data according to the file access type.
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		void clear();
+
+		/**
+		 * \brief Copies generic metadata and data from another CameraFile.
+		 * \param[in] source file whose metadata and data are copied
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		void copyFrom(CameraFileWrapper const & source);
 		
 		/**
 		 * \brief Gets the file's MIME type

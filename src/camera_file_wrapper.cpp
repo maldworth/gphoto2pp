@@ -51,6 +51,20 @@ namespace gphoto2pp
 		gphoto2pp::checkResponse(gphoto2::gp_file_new(&m_cameraFile),"gp_file_new");
 	}
 
+	CameraFileWrapper::CameraFileWrapper(int fd)
+		: m_cameraFile(nullptr)
+	{
+		FILE_LOG(logINFO) << "CameraFileWrapper FD Constructor";
+		if (fd < 0)
+		{
+			throw exceptions::ArgumentException(
+				"Camera file descriptor must be nonnegative");
+		}
+		gphoto2pp::checkResponse(
+			gphoto2::gp_file_new_from_fd(&m_cameraFile, fd),
+			"gp_file_new_from_fd");
+	}
+
 	CameraFileWrapper::~CameraFileWrapper()
 	{
 		FILE_LOG(logINFO) << "CameraFileWrapper Destructor";
@@ -199,6 +213,30 @@ namespace gphoto2pp
 			static_cast<unsigned long int>(file.size())),
 			"gp_file_set_data_and_size");
 		copy.release();
+	}
+
+	void CameraFileWrapper::clear()
+	{
+		gphoto2pp::checkResponse(
+			gphoto2::gp_file_clean(m_cameraFile),
+			"gp_file_clean");
+	}
+
+	void CameraFileWrapper::copyFrom(CameraFileWrapper const & source)
+	{
+		if (source.getPtr() == nullptr)
+		{
+			throw exceptions::ArgumentException(
+				"Camera file copy source is not initialized");
+		}
+		if (m_cameraFile == nullptr)
+		{
+			throw exceptions::ArgumentException(
+				"Camera file copy destination is not initialized");
+		}
+		gphoto2pp::checkResponse(
+			gphoto2::gp_file_copy(m_cameraFile, source.getPtr()),
+			"gp_file_copy");
 	}
 
 	std::string CameraFileWrapper::getMimeType() const

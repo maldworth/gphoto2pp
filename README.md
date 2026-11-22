@@ -16,6 +16,7 @@ Table Of Contents
 * [Context callbacks](#context-callbacks)
 * [Camera abilities](#camera-abilities)
 * [Streaming camera file reads](#streaming-camera-file-reads)
+* [Camera file objects](#camera-file-objects)
 * [Camera file metadata](#camera-file-metadata)
 * [Camera storage metadata](#camera-storage-metadata)
 * [Camera lists](#camera-lists)
@@ -227,6 +228,16 @@ maximum number of bytes to read. A short read (including an empty result)
 indicates that the camera returned fewer bytes, such as at end of file.
 Zero-size reads return an empty vector without camera I/O. Driver errors are
 thrown; no whole-file buffering is required by this API.
+
+Camera file objects
+-------------------
+`CameraFileWrapper` supports memory-backed data and FD-backed file ownership.
+Constructing `CameraFileWrapper(fd)` transfers descriptor ownership to
+libgphoto2 on successful construction; the descriptor is closed when the last
+file wrapper releases the object. Negative descriptors are rejected.
+`clear()` resets the file object, and `copyFrom()` copies metadata and data
+between compatible file objects. Copy semantics preserve libgphoto2 reference
+sharing until the wrapper lifecycle ends.
 
 Camera file metadata
 --------------------
