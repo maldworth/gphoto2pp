@@ -25,7 +25,9 @@
 #ifndef CAMERAABILITIESLISTWRAPPER_H
 #define CAMERAABILITIESLISTWRAPPER_H
 
+#include <cstdint>
 #include <string>
+#include <vector>
 
 namespace gphoto2
 {
@@ -37,6 +39,69 @@ namespace gphoto2pp
 {
 	class GPPortInfoListWrapper;
 	class CameraListWrapper;
+
+	enum class CameraDriverStatus : int
+	{
+		Production = 0,
+		Testing = 1,
+		Experimental = 2,
+		Deprecated = 3
+	};
+
+	enum class GphotoDeviceType : int
+	{
+		StillCamera = 0,
+		AudioPlayer = 1 << 0
+	};
+
+	enum class CameraOperation : std::uint32_t
+	{
+		None = 0,
+		CaptureImage = 1 << 0,
+		CaptureVideo = 1 << 1,
+		CaptureAudio = 1 << 2,
+		CapturePreview = 1 << 3,
+		Config = 1 << 4,
+		TriggerCapture = 1 << 5
+	};
+
+	enum class CameraFileOperation : std::uint32_t
+	{
+		None = 0,
+		Delete = 1 << 1,
+		Preview = 1 << 3,
+		Raw = 1 << 4,
+		Audio = 1 << 5,
+		Exif = 1 << 6
+	};
+
+	enum class CameraFolderOperation : std::uint32_t
+	{
+		None = 0,
+		DeleteAll = 1 << 0,
+		PutFile = 1 << 1,
+		MakeDir = 1 << 2,
+		RemoveDir = 1 << 3
+	};
+
+	struct CameraAbilitiesSnapshot
+	{
+		std::string model;
+		CameraDriverStatus status = CameraDriverStatus::Production;
+		std::uint32_t port = 0;
+		std::vector<int> speeds;
+		std::uint32_t operations = 0;
+		std::uint32_t fileOperations = 0;
+		std::uint32_t folderOperations = 0;
+		int usbVendor = 0;
+		int usbProduct = 0;
+		int usbClass = 0;
+		int usbSubclass = 0;
+		int usbProtocol = 0;
+		std::string library;
+		std::string id;
+		GphotoDeviceType deviceType = GphotoDeviceType::StillCamera;
+	};
 	
 	/**
 	 * \class CameraAbilitiesListWrapper
@@ -57,6 +122,33 @@ namespace gphoto2pp
 		CameraAbilitiesListWrapper& operator=(CameraAbilitiesListWrapper const & other) = delete;
 		
 		gphoto2::_CameraAbilitiesList* getPtr() const;
+
+		/**
+		 * \brief Returns an owned snapshot of one abilities entry.
+		 * \param[in] index zero-based abilities index
+		 * \return Copied model, status, ports, operations, USB and device data.
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception for an invalid index
+		 * or libgphoto2 failure
+		 * \throw std::runtime_error if fixed strings are unterminated
+		 */
+		CameraAbilitiesSnapshot getAbilities(int index) const;
+
+		/**
+		 * \brief Loads camera drivers from a directory.
+		 * \param[in] directory directory containing libgphoto2 camera modules
+		 * \throw GPhoto2pp::exceptions::ArgumentException for embedded NUL bytes
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception on libgphoto2 failure
+		 */
+		void loadDirectory(std::string const & directory);
+
+		/**
+		 * \brief Appends a camera abilities entry.
+		 * \param[in] abilities owned snapshot to append
+		 * \throw GPhoto2pp::exceptions::ArgumentException for malformed strings
+		 * or an oversize serial port speed list
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception on libgphoto2 failure
+		 */
+		void append(CameraAbilitiesSnapshot const & abilities);
 		
 		/**
 		 * \brief Tries to detect any cameras connected to the computer using the list of ports provided
@@ -85,12 +177,14 @@ namespace gphoto2pp
 		 * \brief Scans the list for the given model
 		 * \param[in]	model	of camera to search for
 		 * \return the index of the item (if found)
-		 * \note Direct wrapper for <tt>gp_abilities_list_count(...)</tt>
+		 * \note Direct wrapper for <tt>gp_abilities_list_lookup_model(...)</tt>
+		 * \throw GPhoto2pp::exceptions::ArgumentException for embedded NUL bytes
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		int lookupModel(std::string const & model) const;
 		
 	private:
+		gphoto2::_CameraAbilitiesList* requireList() const;
 		gphoto2::_CameraAbilitiesList* m_cameraAbilitiesList;
 	};
 }

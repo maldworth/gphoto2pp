@@ -1,5 +1,9 @@
-/** \file 
+/** 
+ * \file helper_gphoto2.hpp
+ *
  * \author Copyright (c) 2013 maldworth <https://github.com/maldworth>
+ * 
+ * \author Copyright (c) 2026 Vitor Fonseca <https://github.com/VSF1>
  *
  * \note
  * This file is part of gphoto2pp
@@ -39,9 +43,11 @@ namespace gphoto2pp
 	class CameraListWrapper;
 	
 	/**
-	 * \brief Finds the first available and recognized camera type connected to the computer
+	 * \brief Finds the first available and recognized camera type connected to 
+     * the computer
 	 * \return the model and port of the first camera found
-	 * \throw GPhoto2pp::exceptions::NoCameraFoundError if it didn't find any cameras
+	 * \throw GPhoto2pp::exceptions::NoCameraFoundError if it didn't find any 
+     * cameras
 	 */
 	std::pair<std::string, std::string> autoDetect();
 
@@ -65,16 +71,28 @@ namespace gphoto2pp
 	 * \brief Helper used to validate the response of gphoto2 methods, but does not throw an exception (logs the error instead)
 	 * \param[in]	result	of the gphoto2 method
 	 * \param[in]	methodName	of the gphoto2 method that was called
-	 * \return the integer result returned from all gphoto2 methods. This is usually <= 0 (gphoto2 error codes), but some methods return the count of items, and so values > 0 can be returned and unrelated to error codes
+	 * \return the integer result returned from all gphoto2 methods. This is 
+     * usually <= 0 (gphoto2 error codes), but some methods return the count of items, and so values > 0 can be returned and unrelated to error codes
 	 */
 	int checkResponseSilent(int result, std::string&& methodName);
 
 	/**
-	 * \brief Returns the version of gphoto library currently linked in the system
-	 * \param[in]	verbose	response, set to true, otherwise set to false
+	 * \brief Returns the version of gphoto library currently linked in the
+     * system
+	 * \param[in] verbose response, set to true, otherwise set to false
+	 * \return An owning string with one newline-terminated line per entry.
 	 * \note Direct wrapper for gp_library_version(...)
+	 * \throw std::runtime_error if libgphoto2 returns a null array
 	 */
 	std::string LibraryVersion(bool verbose = false);
+
+	/**
+	 * \brief Returns the linked libgphoto2_port library version information.
+	 * \param[in] verbose include build and backend details when true
+	 * \return An owning string with one newline-terminated line per entry.
+	 * \throw std::runtime_error if libgphoto2_port returns a null array
+	 */
+	std::string PortLibraryVersion(bool verbose = false);
 }
 
 #endif // HELPERGPHOTO2_HPP

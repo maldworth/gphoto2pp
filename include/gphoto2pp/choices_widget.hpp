@@ -28,12 +28,16 @@
 #include <gphoto2pp/string_widget.hpp>
 
 #include <vector>
+#include <cstddef>
 
 namespace gphoto2pp
 {
 	/**
 	 * \class ChoicesWidget
-	 * A class representing gphoto2 widgets which are of the widget type GPhoto2pp::CameraWidgetTypeWrapper::Menu or GPhoto2pp::CameraWidgetTypeWrapper::Radio
+     *
+     * A class representing gphoto2 widgets which are of the widget type
+	 * GPhoto2pp::CameraWidgetTypeWrapper::Menu or
+	 * GPhoto2pp::CameraWidgetTypeWrapper::Radio
 	 */
 	class ChoicesWidget : public StringWidget
 	{
@@ -52,7 +56,8 @@ namespace gphoto2pp
 		 * \brief Gets the currently set choice at the specified index
 		 * \return the choices index
 		 * \note Direct wrapper for <tt>gp_widget_get_choice(...)</tt>
-		 * \throw GPhoto2pp::exceptions::IndexOutOfRange if the index is greater than countChoices of choices
+		 * \throw GPhoto2pp::exceptions::IndexOutOfRange if the index is negative
+		 * or greater than or equal to countChoices
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		int getChoice() const;
@@ -60,8 +65,10 @@ namespace gphoto2pp
 		/**
 		 * \brief Sets the choice at the specified index
 		 * \param[in]	index	of the choice to set
-		 * \note Helper which calls getChoice with the provided index and then setValue with the response
-		 * \throw GPhoto2pp::exceptions::IndexOutOfRange if the index is greater than countChoices
+		 * \note Helper which calls getChoice with the provided index and then
+         * setValue with the response
+		 * \throw GPhoto2pp::exceptions::IndexOutOfRange if the index is negative
+		 * or greater than or equal to countChoices
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		void setChoice(int index);
@@ -69,26 +76,41 @@ namespace gphoto2pp
 		/**
 		 * \brief Gets all the possible choices
 		 * \return the choices
-		 * \note Helper which iterates through all choices compiling them into a vector
+		 * \note Helper which iterates through all choices compiling them into a
+         * vector
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		std::vector<std::string> getChoices() const;
 		
 		/**
-		 * \brief Gets the string representation of the choice at the specified index
-		 * \param[in]	index	of the choice to get
+		 * \brief Gets the string representation of the choice at the specified
+         * index
+		 * \param[in] index of the choice to get
 		 * \return the choices value
 		 * \note Direct wrapper for <tt>gp_widget_get_choice(...)</tt>
-		 * \throw GPhoto2pp::exceptions::IndexOutOfRange if the index is greater than countChoices of choices
+		 * \throw GPhoto2pp::exceptions::IndexOutOfRange if the index is greater
+         * than countChoices of choices
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		std::string choiceToString(int index) const;
+
+		/**
+		 * \brief Gets a choice, enforcing a maximum byte length.
+		 * \param[in] index index of the choice
+		 * \param[in] maxLength maximum accepted length
+		 * \return the choice value
+		 * \throw GPhoto2pp::exceptions::IndexOutOfRange
+		 * \throw std::length_error if the choice exceeds maxLength
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		std::string choiceToString(int index, std::size_t maxLength) const;
 		
 		/**
 		 * \brief Formats the choices into a string with optional separator
-		 * \param[in]	separator	used to insert inbetween all the choices for concatenation
-		 * \return the string of choices
-		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 * \param[in] separator used to insert inbetween all the choices for
+		 * concatenation
+         * \return the string of choices
+         * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		std::string choicesToString(std::string&& separator = " ") const;
 		

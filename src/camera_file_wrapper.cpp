@@ -26,12 +26,15 @@
 
 #include <gphoto2pp/helper_gphoto2.hpp>
 #include <gphoto2pp/camera_file_type_wrapper.hpp>
-
-#ifdef GPHOTO_LESS_25
 #include <gphoto2pp/exceptions.hpp>
-#endif
 
 #include <gphoto2pp/log.h>
+
+#include <cstdlib>
+#include <cstring>
+#include <limits>
+#include <memory>
+#include <stdexcept>
 
 namespace gphoto2
 {
@@ -135,12 +138,21 @@ namespace gphoto2pp
 		FILE_LOG(logDEBUG) << "CameraFileWrapper getDataAndSize";
 		
 		char const * buffer = nullptr;
-		unsigned long int size;
+		unsigned long int size = 0;
 		
 		gphoto2pp::checkResponse(gphoto2::gp_file_get_data_and_size(m_cameraFile,&buffer,&size),"gp_file_get_data_and_size");
 		
 		FILE_LOG(logDEBUG) << "bufferSize: '"<<size<<"'";
-		
+
+		if (size == 0)
+		{
+			return {};
+		}
+		if (buffer == nullptr)
+		{
+			throw std::runtime_error(
+				"libgphoto2 returned null file data with a nonzero size");
+		}
 		return std::vector<char>{buffer, buffer+size};
 	}
 
@@ -162,24 +174,31 @@ namespace gphoto2pp
 	void CameraFileWrapper::setDataAndSize(std::vector<char> const & file)
 	{
 		FILE_LOG(logDEBUG) << "CameraFileWrapper setDataAndSize copy";
-		
-		char* myCopy = new char[file.size()];
-		
-		try
+
+		if (file.size() > static_cast<std::size_t>(
+			(std::numeric_limits<unsigned long int>::max)()))
 		{
-			if(file.empty() == false)
-			{
-				std::copy(std::begin(file), std::end(file), myCopy);	
-				gphoto2pp::checkResponse(gphoto2::gp_file_set_data_and_size(m_cameraFile,myCopy,file.size()),"gp_file_set_data_and_size");
-				// We don't delete myCopy because ownership was transferred to the m_cameraFile struct along with the contents
-			}
+			throw exceptions::ArgumentException(
+				"Camera file data exceeds libgphoto2's size limit");
 		}
-		catch (...)
+
+		std::unique_ptr<char, decltype(&std::free)> copy(
+			file.empty() ? nullptr : static_cast<char *>(
+				std::malloc(file.size())), &std::free);
+		if (!file.empty() && copy == nullptr)
 		{
-			// Just in case, we catch any exception and delete our myCopy, because we can assume it failed and we don't want that memory leaking
-			delete[] myCopy;
-			throw;
+			throw std::bad_alloc();
 		}
+		if (!file.empty())
+		{
+			std::memcpy(copy.get(), file.data(), file.size());
+		}
+
+		gphoto2pp::checkResponse(gphoto2::gp_file_set_data_and_size(
+			m_cameraFile, copy.get(),
+			static_cast<unsigned long int>(file.size())),
+			"gp_file_set_data_and_size");
+		copy.release();
 	}
 
 	std::string CameraFileWrapper::getMimeType() const

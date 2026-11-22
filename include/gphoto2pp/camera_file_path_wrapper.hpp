@@ -1,5 +1,7 @@
-/** \file 
+/**
+ * \file camera_file_path_wrapper.hpp
  * \author Copyright (c) 2013 maldworth <https://github.com/maldworth>
+ * \author Copyright (c) 2026 Vitor Fonseca <https://github.com/VSF1>
  *
  * \note
  * This file is part of gphoto2pp
@@ -29,8 +31,9 @@
 
 namespace gphoto2pp
 {
-	/** struct CameraFilePathWrapper
-	 * Provides a POD for the camerafilepath. This doesn't actually wrap the gphoto2 CameraFilePath struct because the structure was so simple
+	/**
+	 * @brief Owning C++ value for a camera file or folder path.
+	 * @note CameraWrapper copies the C CameraFilePath fields into these strings.
 	 */
 	struct CameraFilePathWrapper
 	{

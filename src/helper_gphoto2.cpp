@@ -48,9 +48,32 @@ namespace gphoto2
 }
 
 #include <sstream>
+#include <stdexcept>
 
 namespace gphoto2pp
 {
+	namespace
+	{
+		std::string formatLibraryVersion(char const *const *lines)
+		{
+			if (lines == nullptr)
+			{
+				throw std::runtime_error("Library returned a null version array");
+			}
+			std::ostringstream version;
+			for (auto line = lines; *line != nullptr; ++line)
+			{
+				version << *line << '\n';
+			}
+			return version.str();
+		}
+	}
+
+	bool exceptions::gphoto2_exception::isNotSupported() const
+	{
+		return this->getResultCode() == GP_ERROR_NOT_SUPPORTED;
+	}
+
 	std::pair<std::string, std::string> autoDetect()
 	{
 		auto cameraList = autoDetectAll();
@@ -86,8 +109,10 @@ namespace gphoto2pp
 			cameraListWrapper.append(name, value);
 		}
 #else
-		auto spContext = gphoto2pp::getContext();
-		gphoto2pp::checkResponse(gphoto2::gp_camera_autodetect(cameraListWrapper.getPtr(), spContext.get()), "gp_camera_autodetect");
+		ContextWrapper context;
+		gphoto2pp::checkResponse(gphoto2::gp_camera_autodetect(
+			cameraListWrapper.getPtr(), context.getPtr()),
+			"gp_camera_autodetect");
 #endif
 		int count = cameraListWrapper.count();
 		
@@ -135,24 +160,15 @@ namespace gphoto2pp
 
 	std::string LibraryVersion(bool verbose)
 	{
-		gphoto2::GPVersionVerbosity verbosity = gphoto2::GP_VERSION_SHORT;
-		if(verbose)
-		{
-			verbosity = gphoto2::GP_VERSION_VERBOSE;
-		}
-		
-		// array of char pointers. Remember const char** is equivalent to char const**
-		char const** resp = gphoto2::gp_library_version(verbosity);
-		
-		std::stringstream version;
-		
-		char const** iter = resp;
-		
-		for(iter = resp; *iter; iter++)
-		{
-			version << *iter << std::endl;
-		}
-		
-		return version.str();
+		const auto verbosity = verbose
+			? gphoto2::GP_VERSION_VERBOSE : gphoto2::GP_VERSION_SHORT;
+		return formatLibraryVersion(gphoto2::gp_library_version(verbosity));
+	}
+
+	std::string PortLibraryVersion(bool verbose)
+	{
+		const auto verbosity = verbose
+			? gphoto2::GP_VERSION_VERBOSE : gphoto2::GP_VERSION_SHORT;
+		return formatLibraryVersion(gphoto2::gp_port_library_version(verbosity));
 	}
 }

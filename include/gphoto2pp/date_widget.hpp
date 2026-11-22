@@ -38,6 +38,7 @@ namespace gphoto2pp
 	class DateWidget: public ValueWidgetBase<std::time_t>
 	{
 	friend class NonValueWidget;
+	friend class CameraWrapper;
 
 	public:
 		/**

@@ -107,6 +107,20 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		void append(std::string const & name, std::string const & value);
+
+		/**
+		 * \brief Replaces the list with sequential formatted dummy entries.
+		 * \param[in] format printf-style format that receives one-based
+		 * integers, without embedded NUL bytes
+		 * \param[in] count number of entries to append; must be nonnegative
+		 * \note Direct wrapper for <tt>gp_list_populate(...)</tt>.
+		 * The value field of generated entries is null and is returned as an
+		 * empty string by this wrapper.
+		 * \throw GPhoto2pp::exceptions::ArgumentException for embedded NUL
+		 * bytes or a negative count
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception on libgphoto2 failure
+		 */
+		void populate(std::string const & format, int count);
 		
 		/**
 		 * \brief Erases all model and port pairs in the current list.

@@ -26,6 +26,7 @@
 
 #include <gphoto2pp/helper_gphoto2.hpp>
 #include <gphoto2pp/exceptions.hpp>
+#include <gphoto2pp/camera_widget_type_wrapper.hpp>
 
 namespace gphoto2
 {
@@ -44,12 +45,40 @@ namespace gphoto2pp
 	{
 		return gphoto2pp::checkResponse(gphoto2::gp_widget_count_children(m_cameraWidget),"gp_widget_count_children");
 	}
+
+	CameraWidgetTypeWrapper NonValueWidget::getChildType(int index) const
+	{
+		auto childWidget = this->getChildWrapper(index);
+		gphoto2::CameraWidgetType type;
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_get_type(childWidget, &type),
+			"gp_widget_get_type");
+		return static_cast<CameraWidgetTypeWrapper>(type);
+	}
 	
 	// Protected Methods, this call is done here so we don't have to put any gphoto includes in the header hpp files.
 	gphoto2::_CameraWidget* NonValueWidget::getChildByNameWrapper(std::string const & name) const
 	{
 		gphoto2::_CameraWidget* childWidget;
 		gphoto2pp::checkResponse(gphoto2::gp_widget_get_child_by_name(m_cameraWidget, name.c_str(), &childWidget),"gp_widget_get_child_by_name");
+		return childWidget;
+	}
+
+	gphoto2::_CameraWidget* NonValueWidget::tryGetChildByNameWrapper(std::string const & name) const
+	{
+		if (m_cameraWidget == nullptr)
+		{
+			gphoto2pp::checkResponse(
+				GP_ERROR_BAD_PARAMETERS, "gp_widget_get_child_by_name");
+		}
+		gphoto2::_CameraWidget* childWidget = nullptr;
+		const int result = gphoto2::gp_widget_get_child_by_name(
+			m_cameraWidget, name.c_str(), &childWidget);
+		if (result == GP_ERROR_BAD_PARAMETERS)
+		{
+			return nullptr;
+		}
+		gphoto2pp::checkResponse(result, "gp_widget_get_child_by_name");
 		return childWidget;
 	}
 	
@@ -62,9 +91,10 @@ namespace gphoto2pp
 	
 	gphoto2::_CameraWidget* NonValueWidget::getChildWrapper(int index) const
 	{
-		if( index >= countChildren())
+		if (index < 0 || index >= countChildren())
 		{
-			throw exceptions::IndexOutOfRange("You are trying to get a child widget at an index which is greater than the maximum index.");
+			throw exceptions::IndexOutOfRange(
+				"Child widget index is outside the available range.");
 		}
 		
 		gphoto2::_CameraWidget* childWidget;

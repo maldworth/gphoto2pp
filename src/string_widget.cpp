@@ -28,6 +28,7 @@
 #include <gphoto2pp/camera_widget_type_wrapper.hpp>
 
 #include <gphoto2pp/exceptions.hpp>
+#include "widget_string_helper.hpp"
 
 namespace gphoto2
 {
@@ -47,8 +48,35 @@ namespace gphoto2pp
 		char* temp = nullptr;
 		
 		gphoto2pp::checkResponse(gphoto2::gp_widget_get_value(m_cameraWidget, &temp),"gp_widget_get_value");
+		if (temp == nullptr)
+		{
+			throw exceptions::NullWidget("Camera widget value is null");
+		}
 		
 		return std::string(temp);
+	}
+
+	std::string StringWidget::getValue(std::size_t maxLength) const
+	{
+		char* temp = nullptr;
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_get_value(m_cameraWidget, &temp),
+			"gp_widget_get_value");
+		return detail::copyWidgetString(temp, maxLength, "value");
+	}
+
+	bool StringWidget::tryGetValue(std::string & value) const
+	{
+		char* temp = nullptr;
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_get_value(m_cameraWidget, &temp),
+			"gp_widget_get_value");
+		if (temp == nullptr)
+		{
+			return false;
+		}
+		value = temp;
+		return true;
 	}
 	
 	void StringWidget::setValue(std::string const & value)

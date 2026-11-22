@@ -7,9 +7,22 @@ Table Of Contents
 -----------------
 * [Prerequisites](#prerequisites)
 * [2 Minute Tutorial](#2-minute-tutorial)
+* [Single-setting configuration](#single-setting-configuration)
+* [Camera information text](#camera-information-text)
+* [Camera port speed](#camera-port-speed)
+* [Port information](#port-information)
+* [GPPort I/O](#gpport-io)
+* [Context callbacks](#context-callbacks)
+* [Camera abilities](#camera-abilities)
+* [Streaming camera file reads](#streaming-camera-file-reads)
+* [Camera file metadata](#camera-file-metadata)
+* [Camera storage metadata](#camera-storage-metadata)
+* [Camera lists](#camera-lists)
+* [Button widgets](#button-widgets)
 * [Installation](INSTALL.md#installation)
   * [User Prerequisites](INSTALL.md#user-prerequisites)
-  * [Dev/Test/Contributor Prerequisites](INSTALL.md#devtestcontributor-prerequisites)
+  * [Dev/Test/Contributor
+    Prerequisites](INSTALL.md#devtestcontributor-prerequisites)
   * [Libgphoto2 (Simple)](INSTALL.md#installing-libgphoto2-simple)
   * [Libgphoto2 (Advanced)](INSTALL.md#installing-libgphoto2-advanced)
   * [CMake](INSTALL.md#installing-cmake)
@@ -37,12 +50,15 @@ Prerequisites
 ------------
 * A C++11 compiler (I've only tested g++, but others should work)
 * libgphoto2 (2.4.14 or greater)
-* cmake (2.8.3 or greater), *only needed to build the library once to generate libgphoto2pp.so*
+* cmake (2.8.3 or greater), *only needed to build the library once to generate
+  libgphoto2pp.so*
   
 2 Minute Tutorial
 -----------------
-The following snip will show you a quick demo of how easy it is to interact with your camera using gphoto2pp. Don't forget you will need to follow the [installation instructions](#installation) before you can compile this 2 minute tutorial on your computer.
-Make a source file eg. ``touch testgphoto2pp.cpp``
+The following snip will show you a quick demo of how easy it is to interact with
+your camera using gphoto2pp. Don't forget you will need to follow the
+[installation instructions](#installation) before you can compile this 2 minute
+tutorial on your computer. Make a source file eg. ``touch testgphoto2pp.cpp``
 Now put this in the source file
 ```cpp
 #include <gphoto2pp/camera_wrapper.hpp> 		// Header for CameraWrapper
@@ -83,7 +99,156 @@ and then execute it
 ./a.out
 ```
 
-That's it! The library is certainly capable of more, which you can view at [examples](EXAMPLES.md).
+That's it! The library is certainly capable of more, which you can view at
+[examples](EXAMPLES.md).
+
+Single-setting configuration
+----------------------------
+`CameraWrapper::listConfig()`, `getSingleConfig()`, and `setSingleConfig()`
+provide access to libgphoto2's single-setting configuration APIs. Those
+functions were introduced in libgphoto2 2.5.10. gphoto2pp detects their
+availability at build time; when the linked version does not provide the
+required functions, the corresponding call throws
+`gphoto2pp::exceptions::InvalidLinkedVersionException`.
+
+The read method returns an owning polymorphic widget. Use its widget type to
+cast to a supported typed wrapper, change its local value, and pass it to the
+write method:
+
+```cpp
+#include <gphoto2pp/camera_wrapper.hpp>
+#include <gphoto2pp/menu_widget.hpp>
+
+gphoto2pp::CameraWrapper camera;
+for (const auto &name : camera.listConfig()) {
+    // Names may repeat if the camera reports duplicates.
+}
+
+auto setting = camera.getSingleConfig("iso");
+auto *menu = dynamic_cast<gphoto2pp::MenuWidget *>(setting.get());
+if (menu != nullptr) {
+    menu->setValue("100");
+    camera.setSingleConfig("iso", *setting);
+}
+```
+
+`setSingleConfig()` checks that the supplied widget's name and type match the
+camera's current widget and copies only its value onto the camera-provided
+widget. The read and write occur under one camera-I/O lock. A driver may still
+report a write error after changing the value; re-read the setting before
+retrying. The returned widget owns its data and may outlive `CameraWrapper`.
+
+Camera information text
+-----------------------
+`CameraWrapper::getSummary()`, `getManual()`, and `getAbout()` expose the
+corresponding camera-provided libgphoto2 text. Each call serializes camera I/O
+and returns an owning `std::string`. Unsupported operations and camera errors
+are reported as exceptions; malformed text without a terminator in libgphoto2's
+fixed-size buffer is rejected.
+
+Camera port speed
+-----------------
+`CameraWrapper::getPortSpeed()` and `setPortSpeed()` expose libgphoto2's
+camera-port speed operations. Camera I/O is serialized and libgphoto2 errors
+are reported as exceptions. Port and driver support varies. Setting a speed
+may prevent the camera driver from selecting its optimal value, so leave it
+unchanged unless an application has a specific reason to manage it.
+
+Port information
+----------------
+`GPPortInfoListWrapper` enumerates available port entries. `getInfo(index)`
+returns an owned `PortInfoSnapshot` containing the port name, path, and type;
+the copied values remain valid after the list is destroyed.
+The list wrapper is move-only: code that previously copied it must instead
+move it or pass it by reference. Rebuild consumers against the updated header;
+previously compiled shallow copies remain unsafe. A moved-from wrapper may be
+destroyed or assigned to, but cannot be used for lookups or enumeration.
+`PortLibraryVersion()` reports the linked libgphoto2_port version; pass `true`
+for verbose build information. `LibraryVersion()` reports libgphoto2's version.
+
+GPPort I/O
+----------
+`GPPortWrapper` owns a libgphoto2_port `GPPort`. It exposes lifecycle, port
+information, timeout, serial/USB settings, binary read/write, interrupt reads,
+serial pins, breaks, and flush operations. The wrapper validates lengths and
+binary pointers through C++ types and reports libgphoto2_port errors as
+exceptions. Port support is driver- and port-type-dependent; synthetic tests
+do not verify physical serial or USB hardware.
+
+Context callbacks
+-----------------
+`ContextWrapper` owns a libgphoto2 context and provides C++ callbacks for idle,
+error, status, message, question, cancel, and progress notifications. It is
+move-only and reports use after move as `std::logic_error`. Callback updates are
+protected by a state mutex; callback bodies execute outside that mutex.
+Callback bodies may run on libgphoto2 worker or camera-I/O threads, so they
+must not assume UI-thread affinity and must use their own synchronization.
+The wrapper also provides direct notification methods for backend code.
+Direct text-reporting methods reject embedded NUL bytes; callback exceptions
+are logged and converted to non-cancel feedback or a zero progress ID.
+`CameraWrapper::getContext()` exposes the context owned by a camera wrapper,
+allowing applications to register callbacks for that camera's operations.
+For example:
+
+```cpp
+gphoto2pp::CameraWrapper camera;
+auto &context = camera.getContext();
+context.setCancelCallback([]() {
+    return gphoto2pp::ContextFeedback::Ok;
+});
+context.setProgressCallbacks(
+    [](float, const std::string &) { return 1U; },
+    [](unsigned int, float) {},
+    [](unsigned int) {});
+```
+
+Camera abilities
+----------------
+`CameraAbilitiesListWrapper::getAbilities()` returns an owned snapshot of a
+camera model and its supported ports, serial speeds, operations, USB identity,
+and device type. `loadDirectory()` loads modules from an explicit directory,
+and `append()` adds a synthetic or custom abilities entry. Fixed-string limits
+and embedded-NUL restrictions are enforced before libgphoto2 calls.
+
+Streaming camera file reads
+---------------------------
+`CameraWrapper::fileRead()` reads a requested byte range into an owning
+`std::vector<char>`. Pass the folder, filename, file type, byte offset, and
+maximum number of bytes to read. A short read (including an empty result)
+indicates that the camera returned fewer bytes, such as at end of file.
+Zero-size reads return an empty vector without camera I/O. Driver errors are
+thrown; no whole-file buffering is required by this API.
+
+Camera file metadata
+--------------------
+`CameraWrapper::fileGetInfo()` returns owned metadata for the normal file,
+preview, and audio components. Check each component's field mask with
+`has()` before using a value. `fileSetInfo()` sends only explicitly selected
+permission and modification-time fields; driver support varies. Both methods
+reject embedded NUL bytes in the folder or filename.
+
+Camera storage metadata
+-----------------------
+`CameraWrapper::getStorageInfo()` returns owned snapshots of the storage
+entries reported by the camera. Use each entry's `has()` method to check
+whether a field is valid; unsupported operations and camera errors throw.
+Driver support varies.
+
+Camera lists
+------------
+`CameraListWrapper::populate(format, count)` replaces a generic name/value
+list with sequential entries formatted with a printf-style integer format.
+The generated value is empty. Negative counts and embedded-NUL formats are
+rejected before the libgphoto2 call.
+
+Button widgets
+--------------
+`CameraWrapper::pressButton()` invokes the camera callback for a uniquely
+named button in the current configuration. The camera may not provide button
+widgets, and duplicate widget names are rejected. Button actions are not
+configuration values and should not be sent with `setConfig()` or
+`setSingleConfig()`. Callbacks may immediately change camera state, so use
+them only when their camera-specific behavior is understood.
 
 Installation
 ------------
@@ -91,11 +256,13 @@ Please see the [Installation document](INSTALL.md) for details.
 
 Examples
 --------
-Please see the [Examples document](EXAMPLES.md) for details about all examples provided.
+Please see the [Examples document](EXAMPLES.md) for details about all examples
+provided.
 
 Dev/Test
 --------
-If you would like to contribute/develop/test gphoto2pp, please see the [Dev-Test doc](DEV-TEST.md).
+If you would like to contribute/develop/test gphoto2pp, please see the [Dev-Test
+doc](DEV-TEST.md).
 
 FAQ
 ---
@@ -103,11 +270,13 @@ Please see the [FAQ document](FAQ.md)
 
 Doxygen Documentation
 -----------------------
-Please see this [projects github pages](http://maldworth.github.io/gphoto2pp/) for the auto generated Doxygen Page.
+Please see this [projects github pages](http://maldworth.github.io/gphoto2pp/)
+for the auto generated Doxygen Page.
 
 Other Useful Links
 ---------------
-If you are new to gphoto2pp (and perhaps gphoto), then please view some of these resources:
+If you are new to gphoto2pp (and perhaps gphoto), then please view some of these
+resources:
 * This library wraps [gphoto](http://www.gphoto.org/)
 
 Version History

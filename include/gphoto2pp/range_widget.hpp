@@ -38,6 +38,7 @@ namespace gphoto2pp
 	class RangeWidget: public FloatWidget
 	{
 	friend class NonValueWidget;
+	friend class CameraWrapper;
 
 	public:
 		/**

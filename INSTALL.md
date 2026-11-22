@@ -1,6 +1,9 @@
 Installation
 ============
-Don't be overwhelmed with all the installation steps listed below here. Most distros can install both **libgphoto** and **cmake** through their package manger, and then all you need to do is follow the instructions in the [gphoto2pp section](#installing-gphoto2pp).
+Don't be overwhelmed with all the installation steps listed below here. Most
+distros can install both **libgphoto** and **cmake** through their package
+manger, and then all you need to do is follow the instructions in the [gphoto2pp
+section](#installing-gphoto2pp).
 
 Table Of Contents
 -----------------
@@ -22,38 +25,68 @@ Dev/Test/Contributor Prerequisites
 ----------------------------------
 Everything mentioned in *User Prerequisites* plus:
 * cxxtest 
-* *(optional)* doxygen and graphviz
-Once complete the installation, please also view the [Dev-Test document](DEV-TEST.md) for more information.
+* *(optional)* doxygen and graphviz Once complete the installation, please also
+view the [Dev-Test document](DEV-TEST.md) for more information.
 
 Installing libgphoto2 (Simple)
 ------------------------------
-``apt-get install libgphoto2-2-dev`` or ``brew install libgphoto2`` or yum, or whatever package management system your OS uses
+``apt-get install libgphoto2-2-dev`` or ``brew install libgphoto2`` or yum, or
+whatever package management system your OS uses
 
 Installing libgphoto2 (Advanced)
 --------------------------------
-You only need to do this if you explicitly want the latest and greatest libgphoto2 to work with. But most distros have 2.4.14 or greater in their package management system, in which case you should probably use the simple way.
+You only need to do this if you explicitly want the latest and greatest
+libgphoto2 to work with. But most distros have 2.4.14 or greater in their
+package management system, in which case you should probably use the simple way.
 * download libgphoto from http://www.sourceforge.net/projects/gphoto/files
-* If you are using this method I'm going to assume you are a more proficient and can follow the INSTALL instructions
-* If you need some references, check out: http://github.com/gonzalo/gphoto2-updater http://www.ohmypi.com/2013/06/07/compiling-gphoto2-dependencies-how-to/ or http://www.yannock.be/computer/compiling-gphoto2-on-the-raspberry-pi (note: some of these guide download and compile/install the libusbx-1.X... beforehand, which I didn't have to do on my distro, I just did **apt-get install libusb-1.0.0-dev)
+* If you are using this method I'm going to assume you are a more proficient and
+  can follow the INSTALL instructions
+* If you need some references, check out:
+  http://github.com/gonzalo/gphoto2-updater
+  http://www.ohmypi.com/2013/06/07/compiling-gphoto2-dependencies-how-to/ or
+  http://www.yannock.be/computer/compiling-gphoto2-on-the-raspberry-pi (note:
+  some of these guide download and compile/install the libusbx-1.X...
+  beforehand, which I didn't have to do on my distro, I just did **apt-get
+  install libusb-1.0.0-dev)
 
 Installing CMake
 ----------------
-Again, most distros have this, so install it through your package manager *brew, apt-get, yum, etc...*
+Again, most distros have this, so install it through your package manager *brew,
+apt-get, yum, etc...*
 
 Installing Dev/Test/Contributor Only
 ------------------------------------
-Install ``cxxtest`` using package manager.
-Also, if you'd like to generate the documentation, install ``doxygen`` and ``graphviz`` the same way. You can make the documentation by typing ``make doc``.
+Install ``cxxtest`` using package manager. Also, if you'd like to generate the
+documentation, install ``doxygen`` and ``graphviz`` the same way. You can make
+the documentation by typing ``make doc``.
 
 Installing gphoto2pp
 --------------------
 We are almost there.
-* Download gphoto2pp from here (of course), and extract it to any directory of your choosing (or clone with **git clone**)
-* Open a terminal (if not done already), and run ``./cmake_release.sh`` or ``./cmake_debug.sh``. I recommend release, unless you plan on debugging and perhaps contributing code back to the repo.
-* This shell script will simply run the cmake commands and appropriate build flag. CMake will scan and make sure gphoto2 is linked in the system before continuing, and then it will create all the Makefile's which will be used to compile and install gphoto2pp
-* Pay attention to the output, if there's an error saying *Could NOT find CxxTest...* that's okay if you aren't going to run any unit tests
-* Now browse into the appropriate folder ``cd ./build/debug/`` or ``cd ./build/release/`` and enter the command ``make``, and it will build the library.
-* **Optional** to build examples, run command ``make examples`` or ``make example[0-9]+``.
-* Lastly, you most likely want to install, which will copy the library and headers to your system lib paths. Run the command ``make install`` and let it do it's magic. (will probably require sudo, and the install will not be present if compiled in DEBUG mode)
-* You might have to use the command ``ldconfig`` to update your PATH with the new library (this is the command my OS, it might vary, and you might need to use *sudo* as well)
-* Optional, if you want to uninstall at any time, you can run ``make uninstall`` from this same directory. You will need to have the *install_manifest.txt* preserved so the uninstall know's what files to uninstall. (again, will probably require sudo)
+* Download gphoto2pp from here (of course), and extract it to any directory of
+  your choosing (or clone with **git clone**)
+* Open a terminal (if not done already), and run ``./cmake_release.sh`` or
+  ``./cmake_debug.sh``. I recommend release, unless you plan on debugging and
+  perhaps contributing code back to the repo.
+* This shell script will simply run the cmake commands and appropriate build
+  flag. CMake will scan and make sure gphoto2 is linked in the system before
+  continuing, and then it will create all the Makefile's which will be used to
+  compile and install gphoto2pp
+* Pay attention to the output, if there's an error saying *Could NOT find
+  CxxTest...* that's okay if you aren't going to run any unit tests
+* Now browse into the appropriate folder ``cd ./build/debug/`` or ``cd
+  ./build/release/`` and enter the command ``make``, and it will build the
+  library.
+* **Optional** to build examples, run command ``make examples`` or ``make
+  example[0-9]+``.
+* Lastly, you most likely want to install, which will copy the library and
+  headers to your system lib paths. Run the command ``make install`` and let it
+  do it's magic. (will probably require sudo, and the install will not be
+  present if compiled in DEBUG mode)
+* You might have to use the command ``ldconfig`` to update your PATH with the
+  new library (this is the command my OS, it might vary, and you might need to
+  use *sudo* as well)
+* Optional, if you want to uninstall at any time, you can run ``make uninstall``
+  from this same directory. You will need to have the *install_manifest.txt*
+  preserved so the uninstall know's what files to uninstall. (again, will
+  probably require sudo)

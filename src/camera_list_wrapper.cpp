@@ -25,6 +25,7 @@
 #include <gphoto2pp/camera_list_wrapper.hpp>
 
 #include <gphoto2pp/helper_gphoto2.hpp>
+#include <gphoto2pp/exceptions.hpp>
 
 namespace gphoto2
 {
@@ -151,6 +152,24 @@ namespace gphoto2pp
 	void CameraListWrapper::append(std::string const & name, std::string const & value)
 	{
 		gphoto2pp::checkResponse(gphoto2::gp_list_append(m_cameraList, name.c_str(), value.c_str()),"gp_list_append");
+	}
+
+	void CameraListWrapper::populate(
+		std::string const & format, int count)
+	{
+		if (format.find('\0') != std::string::npos)
+		{
+			throw exceptions::ArgumentException(
+				"Camera list format must not contain embedded NUL");
+		}
+		if (count < 0)
+		{
+			throw exceptions::ArgumentException(
+				"Camera list populate count must be nonnegative");
+		}
+		gphoto2pp::checkResponse(gphoto2::gp_list_populate(
+			m_cameraList, format.c_str(), count),
+			"gp_list_populate");
 	}
 	
 	void CameraListWrapper::reset()

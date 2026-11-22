@@ -1,35 +1,46 @@
-/** \file 
+/**
+ * \file button_widget.hpp
+ *
  * \author Copyright (c) 2013 maldworth <https://github.com/maldworth>
  *
- * \note
- * This file is part of gphoto2pp
- * 
- * \note
- * gphoto2pp is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
+ * \author Copyright (c) 2026 Vitor Fonseca <https://github.com/VSF1>
  *
- * \note
- * gphoto2pp is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * \note This file is part of gphoto2pp
  *
- * \note
- * You should have received a copy of the GNU Lesser General Public
- * License along with gphoto2pp.
- * If not, see http://www.gnu.org/licenses
+ * \note gphoto2pp is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * \note gphoto2pp is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+ * for more details.
+ *
+ * \note You should have received a copy of the GNU Lesser General Public
+ * License along with gphoto2pp. If not, see http://www.gnu.org/licenses
  */
 
 #ifndef BUTTONWIDGET_HPP
 #define BUTTONWIDGET_HPP
 
+#include <gphoto2pp/camera_widget_wrapper.hpp>
+
 namespace gphoto2pp
 {
-	
-	// My D90 doesn't have button widget, so I'm not quite sure  how to implement this widget
-	
+	/**
+	 * \class ButtonWidget
+	 * A typed wrapper for libgphoto2 button widgets. Button callbacks are
+	 * invoked through @ref CameraWrapper::pressButton.
+	 */
+	class ButtonWidget : public CameraWidgetWrapper
+	{
+		friend class CameraWrapper;
+		friend class NonValueWidget;
+
+	protected:
+		explicit ButtonWidget(gphoto2::_CameraWidget *cameraWidget);
+	};
 }
 
 #endif // BUTTONWIDGET_HPP

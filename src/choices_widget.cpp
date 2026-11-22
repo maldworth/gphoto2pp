@@ -27,6 +27,7 @@
 #include <gphoto2pp/helper_gphoto2.hpp>
 #include <gphoto2pp/camera_widget_type_wrapper.hpp>
 #include <gphoto2pp/exceptions.hpp>
+#include "widget_string_helper.hpp"
 
 #include <algorithm>
 #include <sstream>
@@ -90,26 +91,42 @@ namespace gphoto2pp
 	
 	void ChoicesWidget::setChoice(int index)
 	{
-		if (index >= countChoices())
-		{
-			throw exceptions::IndexOutOfRange("You are trying to set a choice index which is greater than the maximum choice index.");
-		}
-		
 		this->setValue(choiceToString(index));
 	}
 	
 	std::string ChoicesWidget::choiceToString(int index) const
 	{
-		if (index >= countChoices())
+		if (index < 0 || index >= countChoices())
 		{
-			throw exceptions::IndexOutOfRange("You are trying to get a choice index which is greater than the maximum choice index.");
+			throw exceptions::IndexOutOfRange(
+				"Choice index is outside the available range");
 		}
 		
 		char const * temp = nullptr;
 		
 		gphoto2pp::checkResponse(gphoto2::gp_widget_get_choice(m_cameraWidget, index, &temp),"gp_widget_get_choice");
+		if (temp == nullptr)
+		{
+			throw exceptions::NullWidget("Camera widget choice is null");
+		}
 		
 		return std::string(temp);
+	}
+
+	std::string ChoicesWidget::choiceToString(
+		int index, std::size_t maxLength) const
+	{
+		if (index < 0 || index >= countChoices())
+		{
+			throw exceptions::IndexOutOfRange(
+				"Choice index is outside the available range");
+		}
+
+		char const *temp = nullptr;
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_get_choice(m_cameraWidget, index, &temp),
+			"gp_widget_get_choice");
+		return detail::copyWidgetString(temp, maxLength, "choice");
 	}
 	
 	std::string ChoicesWidget::choicesToString(std::string&& separator /* = " " */) const

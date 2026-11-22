@@ -26,6 +26,8 @@
 
 #include <gphoto2pp/helper_gphoto2.hpp>
 #include <gphoto2pp/camera_widget_type_wrapper.hpp>
+#include <gphoto2pp/exceptions.hpp>
+#include "widget_string_helper.hpp"
 
 namespace gphoto2
 {
@@ -120,8 +122,21 @@ namespace gphoto2pp
 		const char* temp = nullptr;
 		
 		gphoto2pp::checkResponse(gphoto2::gp_widget_get_name(m_cameraWidget, &temp),"gp_widget_get_name");
+		if (temp == nullptr)
+		{
+			throw exceptions::NullWidget("Camera widget name is null");
+		}
 		
 		return std::string(temp);
+	}
+
+	std::string CameraWidgetWrapper::getName(std::size_t maxLength) const
+	{
+		const char* temp = nullptr;
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_get_name(m_cameraWidget, &temp),
+			"gp_widget_get_name");
+		return detail::copyWidgetString(temp, maxLength, "name");
 	}
 
 	CameraWidgetTypeWrapper CameraWidgetWrapper::getType() const
@@ -138,8 +153,21 @@ namespace gphoto2pp
 		const char* temp = nullptr;
 		
 		gphoto2pp::checkResponse(gphoto2::gp_widget_get_label(m_cameraWidget, &temp),"gp_widget_get_label");
+		if (temp == nullptr)
+		{
+			throw exceptions::NullWidget("Camera widget label is null");
+		}
 		
 		return std::string(temp);
+	}
+
+	std::string CameraWidgetWrapper::getLabel(std::size_t maxLength) const
+	{
+		const char* temp = nullptr;
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_get_label(m_cameraWidget, &temp),
+			"gp_widget_get_label");
+		return detail::copyWidgetString(temp, maxLength, "label");
 	}
 
 	std::string CameraWidgetWrapper::getInfo() const
@@ -147,6 +175,10 @@ namespace gphoto2pp
 		const char* temp = nullptr;
 		
 		gphoto2pp::checkResponse(gphoto2::gp_widget_get_info(m_cameraWidget, &temp),"gp_widget_get_info");
+		if (temp == nullptr)
+		{
+			throw exceptions::NullWidget("Camera widget info is null");
+		}
 		
 		return std::string(temp);
 	}
@@ -158,6 +190,17 @@ namespace gphoto2pp
 		gphoto2pp::checkResponse(gphoto2::gp_widget_get_id(m_cameraWidget, &id),"gp_widget_get_id");
 		
 		return id;
+	}
+
+	int CameraWidgetWrapper::getReadOnly() const
+	{
+		int readOnly = 0;
+
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_get_readonly(m_cameraWidget, &readOnly),
+			"gp_widget_get_readonly");
+
+		return readOnly;
 	}
 	
 	CameraWidgetWrapper CameraWidgetWrapper::getRoot() const

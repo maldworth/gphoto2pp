@@ -97,6 +97,27 @@ class CameraListWrapper_NoDevice : public CxxTest::TestSuite {
         // TS_ASSERT_EQUALS(cameraList.count(),1);
     }
 
+    void testPopulateReplacesWithSequentialNames() {
+        gphoto2pp::CameraListWrapper cameraList;
+        cameraList.append("Old", "Old Port");
+        cameraList.populate("Camera %03d", 3);
+
+        TS_ASSERT_EQUALS(cameraList.count(), 3);
+        TS_ASSERT_EQUALS(cameraList.getName(0), "Camera 001");
+        TS_ASSERT_EQUALS(cameraList.getName(1), "Camera 002");
+        TS_ASSERT_EQUALS(cameraList.getName(2), "Camera 003");
+        TS_ASSERT_EQUALS(cameraList.getValue(0), "");
+
+        cameraList.populate("Empty", 0);
+        TS_ASSERT_EQUALS(cameraList.count(), 0);
+
+        TS_ASSERT_THROWS(cameraList.populate("Camera %d", -1),
+            const gphoto2pp::exceptions::ArgumentException &);
+        TS_ASSERT_THROWS(cameraList.populate(
+            std::string("Camera\0%d", 8), 1),
+            const gphoto2pp::exceptions::ArgumentException &);
+    }
+
     void testCopyAndAssignmentOperators() {
         gphoto2pp::CameraListWrapper cameraList;
 

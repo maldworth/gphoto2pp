@@ -36,6 +36,7 @@ namespace gphoto2pp
 	class MenuWidget: public ChoicesWidget
 	{
 	friend class NonValueWidget;
+	friend class CameraWrapper;
 	
 	protected:
 		MenuWidget(gphoto2::_CameraWidget* cameraWidget);

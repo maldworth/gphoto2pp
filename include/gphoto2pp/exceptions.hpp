@@ -57,6 +57,13 @@ namespace gphoto2pp
 			{
 				return m_resultCode;
 			}
+
+			/**
+			 * \brief Checks whether the failure indicates unsupported functionality.
+			 * \return true when libgphoto2 returned GP_ERROR_NOT_SUPPORTED
+			 */
+			bool isNotSupported() const;
+
 		private:
 			const int m_resultCode;
 			

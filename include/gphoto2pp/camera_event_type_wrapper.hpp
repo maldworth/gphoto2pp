@@ -37,6 +37,7 @@ namespace gphoto2pp
 		FileAdded = 2,			///< Maps to GP_EVENT_FILE_ADDED
 		FolderAdded = 3,		///< Maps to GP_EVENT_FOLDER_ADDED
 		CaptureComplete = 4,	///< Maps to GP_EVENT_CAPTURE_COMPLETE
+		FileChanged = 5,		///< Maps to GP_EVENT_FILE_CHANGED
 	};
 }
 

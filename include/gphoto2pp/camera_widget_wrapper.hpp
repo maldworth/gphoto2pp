@@ -1,31 +1,31 @@
-/** \file 
+/** 
+ * \file camera_widget_wrapper.hpp
+ *
  * \author Copyright (c) 2013 maldworth <https://github.com/maldworth>
  *
- * \note
- * This file is part of gphoto2pp
- * 
- * \note
- * gphoto2pp is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
+ * \author Copyright (c) 2026 Vitor Fonseca <https://github.com/VSF1>
  *
- * \note
- * gphoto2pp is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * \note This file is part of gphoto2pp
  *
- * \note
- * You should have received a copy of the GNU Lesser General Public
- * License along with gphoto2pp.
- * If not, see http://www.gnu.org/licenses
+ * \note gphoto2pp is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * \note gphoto2pp is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+ * for more details.
+ *
+ * \note You should have received a copy of the GNU Lesser General Public
+ * License along with gphoto2pp. If not, see http://www.gnu.org/licenses
  */
 
 #ifndef CAMERAWIDGETWRAPPER_HPP
 #define CAMERAWIDGETWRAPPER_HPP
 
 #include <string>
+#include <cstddef>
 
 namespace gphoto2
 {
@@ -39,13 +39,20 @@ namespace gphoto2pp
 	
 	/**
 	 * \class CameraWidgetWrapper
-	 * This class provides a RAII wrapper around the gphoto2 CameraWidget struct. In the gphoto2 the camera's abilities are represented by an N-ary tree.
+	 * This class provides a RAII wrapper around the gphoto2 CameraWidget struct.
+     * In the gphoto2 the camera's abilities are represented by an N-ary tree.
 	 * 
-	 * Gphoto2 has 9 node types. 7 of them compose the leaf nodes of the tree and contian read, or read/write values. 2 of them (window and section) are non value widgets, and represent the internal nodes with 1 or more children.
+	 * Gphoto2 has 9 node types. 7 of them compose the leaf nodes of the tree
+     * and contian read, or read/write values. 2 of them (window and section)
+     * are non value widgets, and represent the internal nodes with 1 or more
+     * children.
 	 * 
-	 * Every camera abilities tree has Only 1 root node, which is always of type *Window*. Then this can have n children, typically they are *Section* widgets.
+	 * A complete camera abilities tree has a Window root, typically with
+     * Section children. A single-setting query can return a standalone widget.
 	 * 
-	 * Please review the above graphical tree to look at the inheritance hierarchy of the widget types to understand the underlying value they each represent.
+	 * Please review the above graphical tree to look at the inheritance
+     * hierarchy of the widget types to understand the underlying value they
+     * each represent.
 	 * 
 	 * | Type    | Value  | Node Type |
 	 * | ------- |:------:| --------- |
@@ -62,6 +69,7 @@ namespace gphoto2pp
 	 */
 	class CameraWidgetWrapper
 	{
+	friend class CameraWrapper;
 	public:
 		virtual ~CameraWidgetWrapper();
 		
@@ -75,7 +83,8 @@ namespace gphoto2pp
 		
 		/**
 		 * \brief Gets the raw resource
-		 * RAII indicates we still should allow our users access to the RAW Resource and it is applicable.
+		 * RAII indicates we still should allow our users access to the RAW
+         * Resource and it is applicable.
 		 * \return the gphoto2 CameraWidget struct
 		 */
 		gphoto2::_CameraWidget* getPtr() const;
@@ -87,6 +96,15 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		std::string getName() const;
+
+		/**
+		 * \brief Gets the widget name, enforcing a maximum byte length.
+		 * \param[in]	maxLength	maximum accepted length
+		 * \return the widget name
+		 * \throw std::length_error if the name exceeds maxLength
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		std::string getName(std::size_t maxLength) const;
 		
 		/**
 		 * \brief Gets the widget's type
@@ -103,6 +121,15 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		std::string getLabel() const;
+
+		/**
+		 * \brief Gets the widget label, enforcing a maximum byte length.
+		 * \param[in]	maxLength	maximum accepted length
+		 * \return the widget label
+		 * \throw std::length_error if the label exceeds maxLength
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		std::string getLabel(std::size_t maxLength) const;
 		
 		/**
 		 * \brief Gets the widget's info
@@ -119,11 +146,18 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		int getId() const;
+
+		/**
+		 * \brief Gets the widget's read-only flag.
+		 * \return the value returned by libgphoto2, normally 0 or 1
+		 * \note Direct wrapper for gp_widget_get_readonly(...)
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		int getReadOnly() const;
 		
 		/**
 		 * \brief Gets the widget's Root.
-		 * This is likely going to be the Window Widget (same widget from ICameraWrapper::getConfig()).
-		 * \return the root widget
+		 * \return the root widget, which may be this widget
 		 * \note Direct wrapper for gp_widget_get_root(...)
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
@@ -131,7 +165,9 @@ namespace gphoto2pp
 		
 		/**
 		 * \brief Gets the widget's parent.
-		 * This is the immediate parent of the widget. If the current widget is a leaf node, then this is likely a Section Widget, but could also be a Window Widget.
+		 * This is the immediate parent of the widget. If the current widget is
+         * a leaf node, then this is likely a Section Widget, but could also be
+         * a Window Widget.
 		 * \return the parent widget
 		 * \note Direct wrapper for gp_widget_get_parent(...)
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
@@ -142,14 +178,16 @@ namespace gphoto2pp
 		CameraWidgetWrapper(gphoto2::_CameraWidget* cameraWidget);
 		
 		/**
-		 * \brief Adds a reference count to the internal gphoto2::CameraWidget struct
+		 * \brief Adds a reference count to the internal gphoto2::CameraWidget 
+         * struct
 		 * \note Direct wrapper for gp_widget_ref(...)
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		void ref();
 		
 		/**
-		 * \brief Subtracts a reference count to the internal gphoto2::CameraWidget struct
+		 * \brief Subtracts a reference count to the internal 
+         * gphoto2::CameraWidget struct
 		 * \note Direct wrapper for gp_widget_unref(...)
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */

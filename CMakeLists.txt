@@ -69,6 +69,28 @@ set (GPHOTO2PP_HEADERS ${GPHOTO2PP_HPPHEADER_FILES} ${GPHOTO2PP_HEADER_FILES})
 add_library (gphoto2pp SHARED ${GPHOTO2PP_SOURCES})
 target_link_libraries (gphoto2pp pthread)
 
+include (CMakePushCheckState)
+include (CheckCXXSymbolExists)
+cmake_push_check_state (RESET)
+set (CMAKE_REQUIRED_INCLUDES ${GPHOTO2_INCLUDE_DIRS})
+set (CMAKE_REQUIRED_LIBRARIES ${GPHOTO2_LIBRARIES})
+check_cxx_symbol_exists (gp_camera_list_config "gphoto2/gphoto2-camera.h"
+	GPHOTO2PP_HAVE_CAMERA_LIST_CONFIG)
+check_cxx_symbol_exists (gp_camera_get_single_config "gphoto2/gphoto2-camera.h"
+	GPHOTO2PP_HAVE_CAMERA_GET_SINGLE_CONFIG)
+check_cxx_symbol_exists (gp_camera_set_single_config "gphoto2/gphoto2-camera.h"
+	GPHOTO2PP_HAVE_CAMERA_SET_SINGLE_CONFIG)
+cmake_pop_check_state ()
+if (GPHOTO2PP_HAVE_CAMERA_LIST_CONFIG)
+	target_compile_definitions (gphoto2pp PRIVATE GPHOTO2PP_HAVE_CAMERA_LIST_CONFIG)
+endif ()
+if (GPHOTO2PP_HAVE_CAMERA_GET_SINGLE_CONFIG)
+	target_compile_definitions (gphoto2pp PRIVATE GPHOTO2PP_HAVE_CAMERA_GET_SINGLE_CONFIG)
+endif ()
+if (GPHOTO2PP_HAVE_CAMERA_SET_SINGLE_CONFIG)
+	target_compile_definitions (gphoto2pp PRIVATE GPHOTO2PP_HAVE_CAMERA_SET_SINGLE_CONFIG)
+endif ()
+
 include_directories ("include")
 
 # sets the shared library version

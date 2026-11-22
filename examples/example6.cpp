@@ -102,7 +102,10 @@ void doToggleWidget(gphoto2pp::CameraWrapper& cameraWrapper, bool readOnly)
 
 void doButtonWidget(gphoto2pp::CameraWrapper& cameraWrapper, bool readOnly)
 {
-	std::cout << std::endl << "Nikon D90 unfortunately does not have any button widgets, but you are free to put your own test implementation here!" << std::endl;
+	std::cout << std::endl
+		<< "The Nikon D90 does not expose button widgets. With a camera that "
+		<< "does, invoke a uniquely named button with "
+		<< "cameraWrapper.pressButton(\"button-name\")." << std::endl;
 }
 
 void doRangeWidget(gphoto2pp::CameraWrapper& cameraWrapper, bool readOnly)

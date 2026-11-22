@@ -27,6 +27,8 @@
 
 #include <gphoto2pp/value_widget_base.hpp>
 
+#include <cstddef>
+
 #include <string>
 
 namespace gphoto2pp
@@ -47,6 +49,23 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		std::string getValue() const override;
+
+		/**
+		 * \brief Reads the value if the widget has one.
+		 * \param[out] value receives the value when present; otherwise unchanged
+		 * \return false when libgphoto2 reports an unset value, true otherwise
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception on a libgphoto2 error
+		 */
+		bool tryGetValue(std::string & value) const;
+
+		/**
+		 * \brief Gets the widget value, enforcing a maximum byte length.
+		 * \param[in]	maxLength	maximum accepted length
+		 * \return the widget value
+		 * \throw std::length_error if the value exceeds maxLength
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		std::string getValue(std::size_t maxLength) const;
 		
 		/**
 		 * \brief Sets the widget's value in terms of std::string

@@ -27,6 +27,8 @@
 
 #include <gphoto2pp/camera_widget_wrapper.hpp>
 
+#include <memory>
+
 namespace gphoto2pp
 {
 	/**
@@ -35,6 +37,7 @@ namespace gphoto2pp
 	 */
 	class NonValueWidget : public CameraWidgetWrapper
 	{
+	friend class CameraWrapper;
 	public:
 		/**
 		 * \brief Gets the number of children to this current widget
@@ -43,6 +46,15 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		int countChildren() const;
+
+		/**
+		 * \brief Gets the type of the child at the specified index.
+		 * \param[in]	index	of the child widget
+		 * \return the child widget type
+		 * \throw GPhoto2pp::exceptions::IndexOutOfRange
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		CameraWidgetTypeWrapper getChildType(int index) const;
 		
 		/**
 		 * \brief Gets the child widget that matches the name.
@@ -56,6 +68,25 @@ namespace gphoto2pp
 		{
 			auto cameraWidget = getChildByNameWrapper(name);
 			return T(cameraWidget);
+		}
+
+		/**
+		 * \brief Finds a child by name, returning an empty pointer when absent.
+		 * \tparam T type that inherits from CameraWidgetWrapper
+		 * \param[in]	name	of the child widget to find
+		 * \return an owning wrapper, or an empty pointer if no child has that name
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception for errors other than
+		 * a missing child
+		 */
+		template<typename T>
+		std::unique_ptr<T> findChildByName(std::string const & name) const
+		{
+			auto cameraWidget = tryGetChildByNameWrapper(name);
+			if (cameraWidget == nullptr)
+			{
+				return std::unique_ptr<T>();
+			}
+			return std::unique_ptr<T>(new T(cameraWidget));
 		}
 		
 		/**
@@ -74,9 +105,11 @@ namespace gphoto2pp
 		
 		/**
 		 * \brief Gets the child widget at the specified index.
-		 * \tparam a type that inherits from CameraWidgetWrapper
+		 * \tparam T type that inherits from CameraWidgetWrapper
 		 * \param[in]	index	of the child widget to get
 		 * \return the widget
+		 * \throw GPhoto2pp::exceptions::IndexOutOfRange when index is negative
+		 * or is greater than or equal to countChildren()
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		template<typename T>
@@ -112,6 +145,8 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception
 		 */
 		gphoto2::_CameraWidget* getChildByNameWrapper(std::string const & name) const;
+
+		gphoto2::_CameraWidget* tryGetChildByNameWrapper(std::string const & name) const;
 		
 		/**
 		 * \brief Gets the child widget by the label passed in and returns the widget type that the user expects.
