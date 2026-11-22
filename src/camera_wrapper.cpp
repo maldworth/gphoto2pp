@@ -66,11 +66,328 @@ namespace gphoto2
 #include <limits>
 #include <utility>
 #include <chrono>
+#include <condition_variable>
+#include <climits>
+#include <exception>
+#include <unordered_set>
 
 namespace gphoto2pp
 {
+	namespace detail
+	{
+		struct CameraTimeoutCallbackState
+			: std::enable_shared_from_this<CameraTimeoutCallbackState>
+		{
+			explicit CameraTimeoutCallbackState(
+				CameraTimeoutCallbacks value)
+				: callbacks{std::move(value)}
+			{
+			}
+
+			void activate(gphoto2::Camera *cameraValue,
+				gphoto2::GPContext *contextValue)
+			{
+				std::lock_guard<std::mutex> lock{mutex};
+				camera = cameraValue;
+				context = contextValue;
+				active = true;
+			}
+
+			void deactivate()
+			{
+				std::unique_lock<std::mutex> lock{mutex};
+				active = false;
+				callbacksDrained.wait(lock, [this]() {
+					return startsInFlight == 0 && callbacksInFlight == 0;
+				});
+				camera = nullptr;
+				context = nullptr;
+				activeTimerIds.clear();
+			}
+
+			void deactivateIfIdle()
+			{
+				std::unique_lock<std::mutex> lock{mutex};
+				if (!activeTimerIds.empty() || startsInFlight != 0)
+				{
+					throw exceptions::CameraWrapperException(
+						"Cannot remove timeout callbacks while timers are active");
+				}
+				active = false;
+				callbacksDrained.wait(lock, [this]() {
+					return callbacksInFlight == 0;
+				});
+				camera = nullptr;
+				context = nullptr;
+			}
+
+			bool hasActiveTimers() const
+			{
+				std::lock_guard<std::mutex> lock{mutex};
+				return !activeTimerIds.empty();
+			}
+
+			void replaceCallbacks(CameraTimeoutCallbacks value)
+			{
+				std::lock_guard<std::mutex> lock{mutex};
+				if (!activeTimerIds.empty() || startsInFlight != 0 ||
+					callbacksInFlight != 0)
+				{
+					throw exceptions::CameraWrapperException(
+						"Cannot replace timeout callbacks while timers are active");
+				}
+				callbacks = std::move(value);
+			}
+
+			unsigned int start(unsigned int timeout,
+				gphoto2::CameraTimeoutFunc function)
+			{
+				CameraTimeoutCallbacks currentCallbacks;
+				{
+					std::lock_guard<std::mutex> lock{mutex};
+					if (!active || !callbacks.start || !callbacks.stop)
+					{
+						return static_cast<unsigned int>(GP_ERROR);
+					}
+					currentCallbacks = callbacks;
+					++startsInFlight;
+				}
+
+				const auto finishStart = [this]() {
+					std::lock_guard<std::mutex> lock{mutex};
+					--startsInFlight;
+					if (startsInFlight == 0 && callbacksInFlight == 0)
+					{
+						callbacksDrained.notify_all();
+					}
+				};
+				unsigned int id = 0;
+				try
+				{
+					auto self = shared_from_this();
+					CameraTimeoutAction action = [self, function]() {
+						return self->invoke(function);
+					};
+					id = currentCallbacks.start(
+						timeout, std::move(action));
+				}
+				catch (...)
+				{
+					finishStart();
+					throw;
+				}
+				if (id > static_cast<unsigned int>(INT_MAX))
+				{
+					try
+					{
+						currentCallbacks.stop(id);
+					}
+					catch (...)
+					{
+						FILE_LOG(logERROR)
+							<< "Timeout scheduler failed to stop an "
+							<< "unrepresentable timer ID";
+					}
+					finishStart();
+					return static_cast<unsigned int>(GP_ERROR);
+				}
+
+				try
+				{
+					std::lock_guard<std::mutex> lock{mutex};
+					if (active)
+					{
+						activeTimerIds.insert(id);
+						--startsInFlight;
+						if (startsInFlight == 0 && callbacksInFlight == 0)
+						{
+							callbacksDrained.notify_all();
+						}
+						return id;
+					}
+				}
+				catch (...)
+				{
+					try
+					{
+						currentCallbacks.stop(id);
+					}
+					catch (...)
+					{
+						FILE_LOG(logERROR)
+							<< "Timeout scheduler failed to stop a timer "
+							<< "that could not be tracked";
+					}
+					finishStart();
+					throw;
+				}
+
+				try
+				{
+					currentCallbacks.stop(id);
+				}
+				catch (...)
+				{
+					FILE_LOG(logERROR)
+						<< "Timeout scheduler failed to stop a timer "
+						<< "created during camera shutdown";
+				}
+				finishStart();
+				return static_cast<unsigned int>(GP_ERROR);
+			}
+
+			void stop(unsigned int id) noexcept
+			{
+				CameraTimeoutCallbacks currentCallbacks;
+				{
+					std::lock_guard<std::mutex> lock{mutex};
+					currentCallbacks = callbacks;
+				}
+
+				try
+				{
+					if (currentCallbacks.stop)
+					{
+						currentCallbacks.stop(id);
+					}
+				}
+				catch (const std::exception &error)
+				{
+					FILE_LOG(logERROR)
+						<< "Timeout scheduler stop callback failed: "
+						<< error.what();
+				}
+				catch (...)
+				{
+					FILE_LOG(logERROR)
+						<< "Timeout scheduler stop callback failed";
+				}
+
+				std::lock_guard<std::mutex> lock{mutex};
+				activeTimerIds.erase(id);
+			}
+
+			int invoke(gphoto2::CameraTimeoutFunc function) noexcept
+			{
+				gphoto2::Camera *cameraValue = nullptr;
+				gphoto2::GPContext *contextValue = nullptr;
+				{
+					std::lock_guard<std::mutex> lock{mutex};
+					if (!active || function == nullptr)
+					{
+						return GP_ERROR_CANCEL;
+					}
+					cameraValue = camera;
+					contextValue = context;
+					++callbacksInFlight;
+				}
+
+				int result = GP_ERROR;
+				try
+				{
+					result = function(cameraValue, contextValue);
+				}
+				catch (const std::exception &error)
+				{
+					FILE_LOG(logERROR)
+						<< "Camera timeout action threw an exception: "
+						<< error.what();
+				}
+				catch (...)
+				{
+					FILE_LOG(logERROR)
+						<< "Camera timeout action threw an exception";
+				}
+
+				{
+					std::lock_guard<std::mutex> lock{mutex};
+					--callbacksInFlight;
+					if (callbacksInFlight == 0)
+					{
+						callbacksDrained.notify_all();
+					}
+				}
+				return result;
+			}
+
+			CameraTimeoutCallbacks callbacks;
+			mutable std::mutex mutex;
+			std::condition_variable callbacksDrained;
+			gphoto2::Camera *camera = nullptr;
+			gphoto2::GPContext *context = nullptr;
+			std::unordered_set<unsigned int> activeTimerIds;
+			std::size_t startsInFlight = 0;
+			std::size_t callbacksInFlight = 0;
+			bool active = false;
+		};
+	}
+
 	namespace
 	{
+		void validateTimeoutCallbacks(
+			CameraTimeoutCallbacks const & callbacks)
+		{
+			if (static_cast<bool>(callbacks.start) !=
+				static_cast<bool>(callbacks.stop))
+			{
+				throw exceptions::ArgumentException(
+					"Both camera timeout callbacks must be set together");
+			}
+		}
+
+		std::shared_ptr<detail::CameraTimeoutCallbackState>
+		makeTimeoutCallbackState(
+			CameraTimeoutCallbacks const & callbacks)
+		{
+			validateTimeoutCallbacks(callbacks);
+			if (!callbacks.start)
+			{
+				return {};
+			}
+			return std::make_shared<detail::CameraTimeoutCallbackState>(
+				callbacks);
+		}
+
+		unsigned int cameraTimeoutStart(
+			gphoto2::Camera *camera, unsigned int timeout,
+			gphoto2::CameraTimeoutFunc function, void *data)
+		{
+			(void)camera;
+			if (data == nullptr || function == nullptr)
+			{
+				return static_cast<unsigned int>(
+					GP_ERROR_BAD_PARAMETERS);
+			}
+			try
+			{
+				return static_cast<detail::CameraTimeoutCallbackState *>(data)
+					->start(timeout, function);
+			}
+			catch (const std::exception &error)
+			{
+				FILE_LOG(logERROR)
+					<< "Camera timeout start callback failed: "
+					<< error.what();
+			}
+			catch (...)
+			{
+				FILE_LOG(logERROR)
+					<< "Camera timeout start callback failed";
+			}
+			return static_cast<unsigned int>(GP_ERROR);
+		}
+
+		void cameraTimeoutStop(
+			gphoto2::Camera *camera, unsigned int id, void *data)
+		{
+			(void)camera;
+			if (data != nullptr)
+			{
+				static_cast<detail::CameraTimeoutCallbackState *>(data)
+					->stop(id);
+			}
+		}
+
 		std::string cameraTextToString(gphoto2::CameraText const & text)
 		{
 			const char *end = static_cast<const char *>(
@@ -361,32 +678,92 @@ namespace gphoto2pp
 		static_cast<int>(CameraStorageAccessType::ReadOnlyWithDelete) == gphoto2::GP_STORAGEINFO_AC_READONLY_WITH_DELETE,
 		"Storage enum values must match libgphoto2");
 
-	CameraWrapper::CameraWrapper(std::string const & model, std::string const & port)
+	CameraWrapper::CameraWrapper(std::string const & model,
+		std::string const & port)
+		: CameraWrapper(model, port, CameraTimeoutCallbacks{})
+	{
+	}
+
+	CameraWrapper::CameraWrapper(std::string const & model,
+		std::string const & port,
+		CameraTimeoutCallbacks const & timeoutCallbacks)
 		: m_camera{nullptr}
 		, m_context{}
+		, m_timeoutState{makeTimeoutCallbackState(timeoutCallbacks)}
 		, m_model{model}
 		, m_port{port}
 		, m_listenForEvents{false}
 	{
 		FILE_LOG(logINFO) << "CameraWrapper Constructor - model[" << m_model.c_str() << "], port[" << m_port.c_str() << "]";
-		
-		gphoto2pp::checkResponse(gphoto2::gp_camera_new(&m_camera),"gp_camera_new");
-		
-		initialize(m_model, m_port);
+
+		try
+		{
+			gphoto2pp::checkResponse(
+				gphoto2::gp_camera_new(&m_camera), "gp_camera_new");
+			initialize(m_model, m_port);
+		}
+		catch (...)
+		{
+			if (m_camera != nullptr)
+			{
+				if (m_cameraInitialized || m_timeoutState)
+				{
+					gphoto2pp::checkResponseSilent(
+						gphoto2::gp_camera_exit(
+							m_camera, m_context.getPtr()),
+						"gp_camera_exit");
+				}
+				clearTimeoutCallbacks();
+				gphoto2pp::checkResponseSilent(
+					gphoto2::gp_camera_unref(m_camera),
+					"gp_camera_unref");
+				m_camera = nullptr;
+			}
+			throw;
+		}
 	}
 
 	CameraWrapper::CameraWrapper()
+		: CameraWrapper(CameraTimeoutCallbacks{})
+	{
+	}
+
+	CameraWrapper::CameraWrapper(
+		CameraTimeoutCallbacks const & timeoutCallbacks)
 		: m_camera{nullptr}
 		, m_context{}
+		, m_timeoutState{makeTimeoutCallbackState(timeoutCallbacks)}
 		, m_model{}
 		, m_port{}
 		, m_listenForEvents{false}
 	{
 		FILE_LOG(logINFO) << "CameraWrapper Constructor";
-		
-		gphoto2pp::checkResponse(gphoto2::gp_camera_new(&m_camera),"gp_camera_new");
-		
-		initialize();
+
+		try
+		{
+			gphoto2pp::checkResponse(
+				gphoto2::gp_camera_new(&m_camera), "gp_camera_new");
+			initialize();
+		}
+		catch (...)
+		{
+			if (m_camera != nullptr)
+			{
+				if (m_cameraInitialized || m_timeoutState)
+				{
+					gphoto2pp::checkResponseSilent(
+						gphoto2::gp_camera_exit(
+							m_camera, m_context.getPtr()),
+						"gp_camera_exit");
+				}
+				clearTimeoutCallbacks();
+				gphoto2pp::checkResponseSilent(
+					gphoto2::gp_camera_unref(m_camera),
+					"gp_camera_unref");
+				m_camera = nullptr;
+			}
+			throw;
+		}
 	}
 
 	CameraWrapper::~CameraWrapper()
@@ -404,6 +781,7 @@ namespace gphoto2pp
 					gphoto2::gp_camera_exit(m_camera, m_context.getPtr()),
 					"gp_camera_exit");
 			}
+			clearTimeoutCallbacks();
 			gphoto2pp::checkResponse(gphoto2::gp_camera_unref(m_camera),"gp_camera_unref");
 			m_camera = nullptr;
 			m_cameraInitialized = false;
@@ -419,10 +797,62 @@ namespace gphoto2pp
 	{
 		return m_context;
 	}
+
+	void CameraWrapper::setTimeoutCallbacks(
+		CameraTimeoutCallbacks const & timeoutCallbacks)
+	{
+		validateTimeoutCallbacks(timeoutCallbacks);
+		if (m_camera == nullptr)
+		{
+			throw exceptions::CameraWrapperException(
+				"Camera wrapper is not initialized");
+		}
+
+		std::lock_guard<std::mutex> lock{m_cameraIOMutex};
+		if (m_timeoutState &&
+			m_timeoutState->hasActiveTimers())
+		{
+			throw exceptions::CameraWrapperException(
+				"Cannot replace timeout callbacks while timers are active");
+		}
+
+		if (!timeoutCallbacks.start)
+		{
+			if (m_timeoutState)
+			{
+				m_timeoutState->deactivateIfIdle();
+			}
+			if (m_cameraInitialized)
+			{
+				gphoto2::gp_camera_set_timeout_funcs(
+					m_camera, nullptr, nullptr, nullptr);
+			}
+			if (m_timeoutState)
+			{
+				m_timeoutState.reset();
+			}
+			return;
+		}
+
+		if (!m_timeoutState)
+		{
+			m_timeoutState =
+				makeTimeoutCallbackState(timeoutCallbacks);
+		}
+		else
+		{
+			m_timeoutState->replaceCallbacks(timeoutCallbacks);
+		}
+		if (m_cameraInitialized)
+		{
+			installTimeoutCallbacks();
+		}
+	}
 	
 	CameraWrapper::CameraWrapper(CameraWrapper&& other)
 		: m_camera{other.m_camera}
 		, m_context{std::move(other.m_context)}
+		, m_timeoutState{std::move(other.m_timeoutState)}
 		, m_cameraInitialized{other.m_cameraInitialized}
 		, m_model{std::move(other.m_model)}
 		, m_port{std::move(other.m_port)}
@@ -465,12 +895,14 @@ namespace gphoto2pp
 						gphoto2::gp_camera_exit(m_camera, m_context.getPtr()),
 						"gp_camera_exit");
 				}
+				clearTimeoutCallbacks();
 				gphoto2pp::checkResponse(gphoto2::gp_camera_unref(m_camera),"gp_camera_unref");
 			}
 			
 			// Steal or "move" the other objects resource
 			m_camera = other.m_camera;
 			m_context = std::move(other.m_context);
+			m_timeoutState = std::move(other.m_timeoutState);
 			m_cameraInitialized = other.m_cameraInitialized;
 			m_model = std::move(other.m_model);
 			m_port = std::move(other.m_port);
@@ -664,6 +1096,7 @@ namespace gphoto2pp
 		gphoto2pp::checkResponse(
 			gphoto2::gp_camera_exit(m_camera, m_context.getPtr()),
 			"gp_camera_exit");
+		clearTimeoutCallbacks();
 		m_cameraInitialized = false;
 	}
 
@@ -686,6 +1119,7 @@ namespace gphoto2pp
 	void CameraWrapper::initialize()
 	{
 		// Connects to first camera found
+		installTimeoutCallbacks();
 		gphoto2pp::checkResponse(gphoto2::gp_camera_init(m_camera, m_context.getPtr()),"gp_camera_init");
 		m_cameraInitialized = true;
 		
@@ -729,8 +1163,31 @@ namespace gphoto2pp
 		gphoto2pp::checkResponse(gphoto2::gp_camera_set_port_info(m_camera, portInfo),"gp_camera_set_port_info");
 		
 		// Finally, init the camera
+		installTimeoutCallbacks();
 		gphoto2pp::checkResponse(gphoto2::gp_camera_init(m_camera, m_context.getPtr()),"gp_camera_init");
 		m_cameraInitialized = true;
+	}
+
+	void CameraWrapper::installTimeoutCallbacks()
+	{
+		if (!m_timeoutState)
+		{
+			return;
+		}
+		m_timeoutState->activate(m_camera, m_context.getPtr());
+		gphoto2::gp_camera_set_timeout_funcs(
+			m_camera, cameraTimeoutStart, cameraTimeoutStop,
+			m_timeoutState.get());
+	}
+
+	void CameraWrapper::clearTimeoutCallbacks()
+	{
+		if (m_camera != nullptr && m_timeoutState)
+		{
+			m_timeoutState->deactivate();
+			gphoto2::gp_camera_set_timeout_funcs(
+				m_camera, nullptr, nullptr, nullptr);
+		}
 	}
 
 	std::string CameraWrapper::getSummary() const

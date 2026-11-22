@@ -39,6 +39,7 @@
 #include <mutex>
 #include <memory>
 #include <vector>
+#include <functional>
 
 namespace gphoto2
 {
@@ -60,18 +61,66 @@ namespace gphoto2pp
 	class WindowWidget;
 	class CameraListWrapper;
 	
+	using CameraTimeoutAction = std::function<int()>;
+
+	/**
+	 * \brief Host-provided scheduler for camera-driver keep-alive callbacks.
+	 *
+	 * The start callback receives a repeat interval in seconds and an action
+	 * that returns a libgphoto2 result code. It must schedule the action
+	 * asynchronously rather than invoke it inline. The returned timer ID must
+	 * fit in a nonnegative int and be unique among active timers. The stop
+	 * callback must synchronously prevent further action calls and wait for
+	 * any in-flight call to finish.
+	 */
+	struct CameraTimeoutCallbacks
+	{
+		std::function<unsigned int(
+			unsigned int, CameraTimeoutAction)> start;
+		std::function<void(unsigned int)> stop;
+	};
+
+	namespace detail
+	{
+		struct CameraTimeoutCallbackState;
+	}
+
 	class CameraWrapper
 	{
 	public:
 		/**
-		 * @brief Create a Camera without prior using autoDetect static method. This method will automatically choose the first camera it finds
+		 * @brief Initializes the first detected camera without a timeout scheduler.
 		 */
 		CameraWrapper();
+
+		/**
+		 * \brief Initializes the first detected camera with a host timeout scheduler.
+		 * \param[in] timeoutCallbacks host callbacks used for driver keep-alive
+		 * timers; both callbacks must be set or both empty
+		 * \throw gphoto2pp::exceptions::ArgumentException if only one
+		 * callback is set
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception on camera failure
+		 */
+		explicit CameraWrapper(
+			CameraTimeoutCallbacks const & timeoutCallbacks);
 		
 		/**
 		 * @brief Connects and initializes using the provided model and port.
 		 */
 		CameraWrapper(std::string const & model, std::string const & port);
+
+		/**
+		 * \brief Initializes the selected camera with a host timeout scheduler.
+		 * \param[in] model camera model
+		 * \param[in] port camera port
+		 * \param[in] timeoutCallbacks host callbacks used for driver keep-alive
+		 * timers; both callbacks must be set or both empty
+		 * \throw gphoto2pp::exceptions::ArgumentException if only one
+		 * callback is set
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception on camera failure
+		 */
+		CameraWrapper(std::string const & model, std::string const & port,
+			CameraTimeoutCallbacks const & timeoutCallbacks);
 
 		/**
 		 * \brief Gets the context owner used by camera operations.
@@ -80,6 +129,21 @@ namespace gphoto2pp
 		 */
 		ContextWrapper &getContext();
 		ContextWrapper const &getContext() const;
+
+		/**
+		 * \brief Sets or replaces the host scheduler for driver keep-alive timers.
+		 * \param[in] timeoutCallbacks both callbacks must be set or both empty
+		 * \note Configure through the constructor when camera initialization
+		 * itself may request a keep-alive timer. A host scheduler must not run
+		 * the supplied action inline from start and its stop callback must
+		 * synchronously cancel and drain it.
+		 * \throw gphoto2pp::exceptions::ArgumentException if only one callback
+		 * is set
+		 * \throw GPhoto2pp::exceptions::CameraWrapperException if a timeout is
+		 * active or the wrapper has been moved from
+		 */
+		void setTimeoutCallbacks(
+			CameraTimeoutCallbacks const & timeoutCallbacks);
 
 		~CameraWrapper();
 		
@@ -526,10 +590,14 @@ namespace gphoto2pp
 		 * \param[in]	port	to find the camera and connect to it through
 		 */
 		void initialize(std::string const & model, std::string const & port);
+
+		void installTimeoutCallbacks();
+		void clearTimeoutCallbacks();
 		
 		gphoto2::_Camera* m_camera = nullptr;
 		
 		ContextWrapper m_context;
+		std::shared_ptr<detail::CameraTimeoutCallbackState> m_timeoutState;
 		bool m_cameraInitialized = false;
 
 		std::string m_model;

@@ -12,6 +12,7 @@ Table Of Contents
 * [Camera port speed](#camera-port-speed)
 * [Port information](#port-information)
 * [Camera lifecycle](#camera-lifecycle)
+* [Camera timeout callbacks](#camera-timeout-callbacks)
 * [GPPort I/O](#gpport-io)
 * [Context callbacks](#context-callbacks)
 * [Camera abilities](#camera-abilities)
@@ -183,6 +184,25 @@ that remains initialized.
 `CameraWrapper::reinitialize()` reconnects after exit using first-camera
 recovery and refreshes model/port values; it rejects already initialized and
 moved-from wrappers.
+
+Camera timeout callbacks
+------------------------
+`CameraTimeoutCallbacks` lets a frontend provide a repeating timer scheduler
+for driver keep-alive callbacks. Configure both `start` and `stop` together;
+the start callback receives an interval in seconds and a C++ action that
+returns a libgphoto2 result code. The returned timer ID must fit in a
+nonnegative `int` unique among active timers. The stop callback must
+synchronously prevent later action calls and wait for an in-flight action to
+finish.
+
+Pass the callbacks to a `CameraWrapper` constructor when a driver may request
+a timer during camera initialization. `setTimeoutCallbacks()` can replace or
+remove the scheduler only when no timer is active. The action may run on a
+timer-owned thread, so it must not assume camera-I/O or UI-thread affinity.
+`shifucc-svr` supplies its own scheduler; clients do not use gphoto2pp.
+Synthetic tests verify registration, timer lifecycle and callback removal.
+Keep-alive behavior on physical cameras remains unverified. Driver-only
+timeout-request functions are not part of the frontend wrapper surface.
 
 GPPort I/O
 ----------
