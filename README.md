@@ -191,6 +191,9 @@ do not verify physical serial or USB hardware.
 USB system-device selection, halt clearing, and seek operations are available
 for low-level port users. These APIs require an opened/configured port and
 must be used only with port types that support them.
+USB discovery and standard, interface and class control transfers are also
+available. Their data buffers are owned by C++ vectors and physical USB support
+remains unverified.
 
 Context callbacks
 -----------------

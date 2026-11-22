@@ -125,6 +125,21 @@ namespace gphoto2pp
 		static int getUSBSystemDevice();
 		void clearUSBHalt(int endpoint);
 		void seek(int offset, PortSeekWhence whence);
+		void findUSBDevice(int vendorId, int productId);
+		void findUSBDeviceByClass(int mainClass, int subClass,
+			int protocol);
+		int writeUSBMessage(int request, int value, int index,
+			std::vector<char> const & data);
+		std::vector<char> readUSBMessage(int request, int value, int index,
+			std::size_t size);
+		int writeUSBInterfaceMessage(int request, int value, int index,
+			std::vector<char> const & data);
+		std::vector<char> readUSBInterfaceMessage(int request, int value,
+			int index, std::size_t size);
+		int writeUSBClassMessage(int request, int value, int index,
+			std::vector<char> const & data);
+		std::vector<char> readUSBClassMessage(int request, int value,
+			int index, std::size_t size);
 
 	private:
 		gphoto2::_GPPort* requirePort() const;

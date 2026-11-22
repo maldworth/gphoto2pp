@@ -52,6 +52,11 @@ int clear_halt_endpoint = -1;
 int seek_calls = 0;
 int seek_offset = 0;
 int seek_whence = 0;
+int usb_find_calls = 0;
+int usb_find_vendor = 0;
+int usb_find_product = 0;
+int usb_class_calls = 0;
+int usb_msg_calls = 0;
 }
 
 namespace gphoto2 {
@@ -166,6 +171,61 @@ extern "C" int gp_port_seek(GPPort *, int offset, int whence) {
     return GP_OK;
 }
 
+extern "C" int gp_port_usb_find_device(
+    GPPort *, int vendor, int product) {
+    ++usb_find_calls;
+    usb_find_vendor = vendor;
+    usb_find_product = product;
+    return port_result;
+}
+
+extern "C" int gp_port_usb_find_device_by_class(
+    GPPort *, int, int, int) {
+    ++usb_class_calls;
+    return port_result;
+}
+
+extern "C" int gp_port_usb_msg_write(
+    GPPort *, int, int, int, char *data, int size) {
+    ++usb_msg_calls;
+    written_data.clear();
+    if (data != nullptr && size > 0) {
+        written_data.assign(data, data + size);
+    }
+    return size;
+}
+
+extern "C" int gp_port_usb_msg_read(
+    GPPort *, int, int, int, char *data, int size) {
+    ++usb_msg_calls;
+    if (size > 0) {
+        std::memcpy(data, "usb", size > 3 ? 3 : size);
+    }
+    return size > 3 ? 3 : size;
+}
+
+extern "C" int gp_port_usb_msg_interface_write(
+    GPPort *, int, int, int, char *data, int size) {
+    return gp_port_usb_msg_write(
+        nullptr, 0, 0, 0, data, size);
+}
+
+extern "C" int gp_port_usb_msg_interface_read(
+    GPPort *, int, int, int, char *data, int size) {
+    return gp_port_usb_msg_read(nullptr, 0, 0, 0, data, size);
+}
+
+extern "C" int gp_port_usb_msg_class_write(
+    GPPort *, int, int, int, char *data, int size) {
+    return gp_port_usb_msg_write(
+        nullptr, 0, 0, 0, data, size);
+}
+
+extern "C" int gp_port_usb_msg_class_read(
+    GPPort *, int, int, int, char *data, int size) {
+    return gp_port_usb_msg_read(nullptr, 0, 0, 0, data, size);
+}
+
 extern "C" int gp_port_set_error(GPPort *, const char *format, ...) {
     (void)format;
     port_error = "Synthetic port error";
@@ -271,6 +331,11 @@ public:
         seek_calls = 0;
         seek_offset = 0;
         seek_whence = 0;
+        usb_find_calls = 0;
+        usb_find_vendor = 0;
+        usb_find_product = 0;
+        usb_class_calls = 0;
+        usb_msg_calls = 0;
     }
 
     void testLifecycleIoAndTimeout() {
@@ -351,6 +416,30 @@ public:
         TS_ASSERT_EQUALS(seek_calls, 1);
         TS_ASSERT_EQUALS(seek_offset, 123);
         TS_ASSERT_EQUALS(seek_whence, 1);
+    }
+
+    void testUsbDiscoveryAndControlTransfers() {
+        gphoto2pp::GPPortWrapper port;
+        port.findUSBDevice(0x1234, 0x5678);
+        TS_ASSERT_EQUALS(usb_find_calls, 1);
+        TS_ASSERT_EQUALS(usb_find_vendor, 0x1234);
+        TS_ASSERT_EQUALS(usb_find_product, 0x5678);
+        port.findUSBDeviceByClass(6, 1, 1);
+        TS_ASSERT_EQUALS(usb_class_calls, 1);
+
+        const std::vector<char> payload = {'x', 'y'};
+        TS_ASSERT_EQUALS(
+            port.writeUSBMessage(0x40, 1, 0, payload), 2);
+        TS_ASSERT_EQUALS(written_data, payload);
+        TS_ASSERT_EQUALS(port.readUSBMessage(
+            0xc0, 1, 0, 5).size(), 3U);
+
+        port.writeUSBInterfaceMessage(0x41, 1, 0, payload);
+        TS_ASSERT_EQUALS(port.readUSBInterfaceMessage(
+            0xc1, 1, 0, 5).size(), 3U);
+        port.writeUSBClassMessage(0x21, 1, 0, payload);
+        TS_ASSERT_EQUALS(port.readUSBClassMessage(
+            0xa1, 1, 0, 5).size(), 3U);
     }
 
     void testPortErrorState() {

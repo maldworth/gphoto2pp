@@ -497,4 +497,144 @@ namespace gphoto2pp
 		gphoto2pp::checkResponse(gphoto2::gp_port_seek(
 			this->requirePort(), offset, value), "gp_port_seek");
 	}
+
+	void GPPortWrapper::findUSBDevice(int vendorId, int productId)
+	{
+		gphoto2pp::checkResponse(gphoto2::gp_port_usb_find_device(
+			this->requirePort(), vendorId, productId),
+			"gp_port_usb_find_device");
+	}
+
+	void GPPortWrapper::findUSBDeviceByClass(int mainClass, int subClass,
+		int protocol)
+	{
+		gphoto2pp::checkResponse(gphoto2::gp_port_usb_find_device_by_class(
+			this->requirePort(), mainClass, subClass, protocol),
+			"gp_port_usb_find_device_by_class");
+	}
+
+	int GPPortWrapper::writeUSBMessage(int request, int value, int index,
+		std::vector<char> const & data)
+	{
+		if (data.size() >
+			static_cast<std::size_t>((std::numeric_limits<int>::max)()))
+		{
+			throw exceptions::ArgumentException(
+				"USB message size exceeds libgphoto2_port int limit");
+		}
+		const int result = gphoto2::gp_port_usb_msg_write(
+			this->requirePort(), request, value, index,
+			const_cast<char *>(data.empty() ? nullptr : data.data()),
+			static_cast<int>(data.size()));
+		gphoto2pp::checkResponse(result, "gp_port_usb_msg_write");
+		return result;
+	}
+
+	std::vector<char> GPPortWrapper::readUSBMessage(int request, int value,
+		int index, std::size_t size)
+	{
+		if (size >
+			static_cast<std::size_t>((std::numeric_limits<int>::max)()))
+		{
+			throw exceptions::ArgumentException(
+				"USB message size exceeds libgphoto2_port int limit");
+		}
+		std::vector<char> data(size);
+		const int result = gphoto2::gp_port_usb_msg_read(
+			this->requirePort(), request, value, index,
+			data.empty() ? nullptr : data.data(),
+			static_cast<int>(size));
+		gphoto2pp::checkResponse(result, "gp_port_usb_msg_read");
+		if (static_cast<std::size_t>(result) > size)
+		{
+			throw std::runtime_error(
+				"libgphoto2_port reported an invalid USB read length");
+		}
+		data.resize(static_cast<std::size_t>(result));
+		return data;
+	}
+
+	int GPPortWrapper::writeUSBInterfaceMessage(int request, int value,
+		int index, std::vector<char> const & data)
+	{
+		if (data.size() >
+			static_cast<std::size_t>((std::numeric_limits<int>::max)()))
+		{
+			throw exceptions::ArgumentException(
+				"USB interface message size exceeds libgphoto2_port int limit");
+		}
+		const int result = gphoto2::gp_port_usb_msg_interface_write(
+			this->requirePort(), request, value, index,
+			const_cast<char *>(data.empty() ? nullptr : data.data()),
+			static_cast<int>(data.size()));
+		gphoto2pp::checkResponse(
+			result, "gp_port_usb_msg_interface_write");
+		return result;
+	}
+
+	std::vector<char> GPPortWrapper::readUSBInterfaceMessage(int request,
+		int value, int index, std::size_t size)
+	{
+		if (size >
+			static_cast<std::size_t>((std::numeric_limits<int>::max)()))
+		{
+			throw exceptions::ArgumentException(
+				"USB interface message size exceeds libgphoto2_port int limit");
+		}
+		std::vector<char> data(size);
+		const int result = gphoto2::gp_port_usb_msg_interface_read(
+			this->requirePort(), request, value, index,
+			data.empty() ? nullptr : data.data(),
+			static_cast<int>(size));
+		gphoto2pp::checkResponse(
+			result, "gp_port_usb_msg_interface_read");
+		if (static_cast<std::size_t>(result) > size)
+		{
+			throw std::runtime_error(
+				"libgphoto2_port reported an invalid USB interface read");
+		}
+		data.resize(static_cast<std::size_t>(result));
+		return data;
+	}
+
+	int GPPortWrapper::writeUSBClassMessage(int request, int value,
+		int index, std::vector<char> const & data)
+	{
+		if (data.size() >
+			static_cast<std::size_t>((std::numeric_limits<int>::max)()))
+		{
+			throw exceptions::ArgumentException(
+				"USB class message size exceeds libgphoto2_port int limit");
+		}
+		const int result = gphoto2::gp_port_usb_msg_class_write(
+			this->requirePort(), request, value, index,
+			const_cast<char *>(data.empty() ? nullptr : data.data()),
+			static_cast<int>(data.size()));
+		gphoto2pp::checkResponse(result, "gp_port_usb_msg_class_write");
+		return result;
+	}
+
+	std::vector<char> GPPortWrapper::readUSBClassMessage(int request,
+		int value, int index, std::size_t size)
+	{
+		if (size >
+			static_cast<std::size_t>((std::numeric_limits<int>::max)()))
+		{
+			throw exceptions::ArgumentException(
+				"USB class message size exceeds libgphoto2_port int limit");
+		}
+		std::vector<char> data(size);
+		const int result = gphoto2::gp_port_usb_msg_class_read(
+			this->requirePort(), request, value, index,
+			data.empty() ? nullptr : data.data(),
+			static_cast<int>(size));
+		gphoto2pp::checkResponse(result, "gp_port_usb_msg_class_read");
+		if (static_cast<std::size_t>(result) > size)
+		{
+			throw std::runtime_error(
+				"libgphoto2_port reported an invalid USB class read");
+		}
+		data.resize(static_cast<std::size_t>(result));
+		return data;
+	}
 }
