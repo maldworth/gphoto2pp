@@ -111,6 +111,8 @@ namespace gphoto2pp
 		void setPin(PortPin pin, PortPinLevel level);
 		void sendBreak(int duration);
 		void flush(PortFlushDirection direction);
+		void setError(std::string const & text);
+		std::string getError() const;
 
 	private:
 		gphoto2::_GPPort* requirePort() const;

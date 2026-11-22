@@ -440,4 +440,21 @@ namespace gphoto2pp
 		gphoto2pp::checkResponse(gphoto2::gp_port_flush(
 			this->requirePort(), value), "gp_port_flush");
 	}
+
+	void GPPortWrapper::setError(std::string const & text)
+	{
+		if (text.find('\0') != std::string::npos)
+		{
+			throw exceptions::ArgumentException(
+				"GPPort error text must not contain embedded NUL");
+		}
+		gphoto2pp::checkResponse(gphoto2::gp_port_set_error(
+			this->requirePort(), "%s", text.c_str()), "gp_port_set_error");
+	}
+
+	std::string GPPortWrapper::getError() const
+	{
+		const char *error = gphoto2::gp_port_get_error(this->requirePort());
+		return error == nullptr ? std::string{} : std::string(error);
+	}
 }

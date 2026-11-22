@@ -187,6 +187,7 @@ serial pins, breaks, and flush operations. The wrapper validates lengths and
 binary pointers through C++ types and reports libgphoto2_port errors as
 exceptions. Port support is driver- and port-type-dependent; synthetic tests
 do not verify physical serial or USB hardware.
+`setError()` and `getError()` expose libgphoto2_port's port error text.
 
 Context callbacks
 -----------------

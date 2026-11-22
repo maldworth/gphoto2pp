@@ -45,6 +45,7 @@ int port_read_result = 3;
 int port_interrupt_result = 2;
 int port_result = GP_OK;
 std::vector<char> written_data;
+std::string port_error;
 }
 
 namespace gphoto2 {
@@ -137,6 +138,16 @@ extern "C" int gp_port_flush(GPPort *, int) {
     return port_result;
 }
 
+extern "C" int gp_port_set_error(GPPort *, const char *format, ...) {
+    (void)format;
+    port_error = "Synthetic port error";
+    return GP_OK;
+}
+
+extern "C" const char *gp_port_get_error(GPPort *) {
+    return port_error.empty() ? nullptr : port_error.c_str();
+}
+
 extern "C" int gp_port_info_new(GPPortInfo *info) {
     fake_port_info = &fake_port_info_storage;
     *info = fake_port_info;
@@ -225,6 +236,7 @@ public:
         port_interrupt_result = 2;
         port_result = GP_OK;
         written_data.clear();
+        port_error.clear();
     }
 
     void testLifecycleIoAndTimeout() {
@@ -291,6 +303,15 @@ public:
             gphoto2pp::PortPinLevel::High);
         port.sendBreak(50);
         port.flush(gphoto2pp::PortFlushDirection::Both);
+    }
+
+    void testPortErrorState() {
+        gphoto2pp::GPPortWrapper port;
+        port.setError("Synthetic port error");
+        TS_ASSERT_EQUALS(port.getError(), "Synthetic port error");
+        TS_ASSERT_THROWS(port.setError(
+            std::string("bad\0error", 9)),
+            const gphoto2pp::exceptions::ArgumentException &);
     }
 
     void testInvalidInputsAndMovedFromPort() {
