@@ -188,6 +188,9 @@ binary pointers through C++ types and reports libgphoto2_port errors as
 exceptions. Port support is driver- and port-type-dependent; synthetic tests
 do not verify physical serial or USB hardware.
 `setError()` and `getError()` expose libgphoto2_port's port error text.
+USB system-device selection, halt clearing, and seek operations are available
+for low-level port users. These APIs require an opened/configured port and
+must be used only with port types that support them.
 
 Context callbacks
 -----------------

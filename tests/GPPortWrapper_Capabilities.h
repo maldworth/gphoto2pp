@@ -46,6 +46,12 @@ int port_interrupt_result = 2;
 int port_result = GP_OK;
 std::vector<char> written_data;
 std::string port_error;
+int usb_sys_device = -1;
+int clear_halt_calls = 0;
+int clear_halt_endpoint = -1;
+int seek_calls = 0;
+int seek_offset = 0;
+int seek_whence = 0;
 }
 
 namespace gphoto2 {
@@ -136,6 +142,28 @@ extern "C" int gp_port_send_break(GPPort *, int) {
 
 extern "C" int gp_port_flush(GPPort *, int) {
     return port_result;
+}
+
+extern "C" int gp_port_usb_set_sys_device(int fd) {
+    usb_sys_device = fd;
+    return GP_OK;
+}
+
+extern "C" int gp_port_usb_get_sys_device() {
+    return usb_sys_device;
+}
+
+extern "C" int gp_port_usb_clear_halt(GPPort *, int endpoint) {
+    ++clear_halt_calls;
+    clear_halt_endpoint = endpoint;
+    return port_result;
+}
+
+extern "C" int gp_port_seek(GPPort *, int offset, int whence) {
+    ++seek_calls;
+    seek_offset = offset;
+    seek_whence = whence;
+    return GP_OK;
 }
 
 extern "C" int gp_port_set_error(GPPort *, const char *format, ...) {
@@ -237,6 +265,12 @@ public:
         port_result = GP_OK;
         written_data.clear();
         port_error.clear();
+        usb_sys_device = -1;
+        clear_halt_calls = 0;
+        clear_halt_endpoint = -1;
+        seek_calls = 0;
+        seek_offset = 0;
+        seek_whence = 0;
     }
 
     void testLifecycleIoAndTimeout() {
@@ -303,6 +337,20 @@ public:
             gphoto2pp::PortPinLevel::High);
         port.sendBreak(50);
         port.flush(gphoto2pp::PortFlushDirection::Both);
+    }
+
+    void testUsbSystemDeviceClearHaltAndSeek() {
+        gphoto2pp::GPPortWrapper::setUSBSystemDevice(42);
+        TS_ASSERT_EQUALS(
+            gphoto2pp::GPPortWrapper::getUSBSystemDevice(), 42);
+        gphoto2pp::GPPortWrapper port;
+        port.clearUSBHalt(0x81);
+        TS_ASSERT_EQUALS(clear_halt_calls, 1);
+        TS_ASSERT_EQUALS(clear_halt_endpoint, 0x81);
+        port.seek(123, gphoto2pp::PortSeekWhence::Current);
+        TS_ASSERT_EQUALS(seek_calls, 1);
+        TS_ASSERT_EQUALS(seek_offset, 123);
+        TS_ASSERT_EQUALS(seek_whence, 1);
     }
 
     void testPortErrorState() {

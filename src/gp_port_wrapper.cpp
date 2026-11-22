@@ -457,4 +457,44 @@ namespace gphoto2pp
 		const char *error = gphoto2::gp_port_get_error(this->requirePort());
 		return error == nullptr ? std::string{} : std::string(error);
 	}
+
+	void GPPortWrapper::setUSBSystemDevice(int fd)
+	{
+		if (fd < -1)
+		{
+			throw exceptions::ArgumentException(
+				"USB system device descriptor must be -1 or nonnegative");
+		}
+		gphoto2pp::checkResponse(
+			gphoto2::gp_port_usb_set_sys_device(fd),
+			"gp_port_usb_set_sys_device");
+	}
+
+	int GPPortWrapper::getUSBSystemDevice()
+	{
+		return gphoto2::gp_port_usb_get_sys_device();
+	}
+
+	void GPPortWrapper::clearUSBHalt(int endpoint)
+	{
+		if (endpoint < 0)
+		{
+			throw exceptions::ArgumentException(
+				"USB endpoint number must be nonnegative");
+		}
+		gphoto2pp::checkResponse(gphoto2::gp_port_usb_clear_halt(
+			this->requirePort(), endpoint), "gp_port_usb_clear_halt");
+	}
+
+	void GPPortWrapper::seek(int offset, PortSeekWhence whence)
+	{
+		const int value = static_cast<int>(whence);
+		if (value < 0 || value > 2)
+		{
+			throw exceptions::ArgumentException(
+				"GPPort seek origin is invalid");
+		}
+		gphoto2pp::checkResponse(gphoto2::gp_port_seek(
+			this->requirePort(), offset, value), "gp_port_seek");
+	}
 }

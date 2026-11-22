@@ -48,6 +48,13 @@ namespace gphoto2pp
 		Both = 2
 	};
 
+	enum class PortSeekWhence : int
+	{
+		Set = 0,
+		Current = 1,
+		End = 2
+	};
+
 	struct SerialPortSettings
 	{
 		std::string port;
@@ -113,6 +120,11 @@ namespace gphoto2pp
 		void flush(PortFlushDirection direction);
 		void setError(std::string const & text);
 		std::string getError() const;
+
+		static void setUSBSystemDevice(int fd);
+		static int getUSBSystemDevice();
+		void clearUSBHalt(int endpoint);
+		void seek(int offset, PortSeekWhence whence);
 
 	private:
 		gphoto2::_GPPort* requirePort() const;
