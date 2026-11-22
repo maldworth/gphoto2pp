@@ -35,6 +35,7 @@ namespace gphoto2
 }
 
 #include <sstream>
+#include <cmath>
 
 namespace gphoto2pp
 {
@@ -53,6 +54,23 @@ namespace gphoto2pp
 		auto range = RangeWidgetRange{0,0,0};
 		gphoto2pp::checkResponse(gphoto2::gp_widget_get_range(m_cameraWidget, &range.Min, &range.Max, &range.Step),"gp_widget_get_range");
 		return range;
+	}
+
+	void RangeWidget::setRange(RangeWidgetRange const & range)
+	{
+		if (!std::isfinite(range.Min) ||
+			!std::isfinite(range.Max) ||
+			!std::isfinite(range.Step) ||
+			range.Min > range.Max ||
+			range.Step <= 0.0f)
+		{
+			throw exceptions::ArgumentException(
+				"Camera range values must be finite and ordered");
+		}
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_set_range(
+				m_cameraWidget, range.Min, range.Max, range.Step),
+			"gp_widget_set_range");
 	}
 	
 	std::string RangeWidget::ToString() const

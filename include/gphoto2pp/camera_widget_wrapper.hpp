@@ -26,6 +26,7 @@
 
 #include <string>
 #include <cstddef>
+#include <memory>
 
 namespace gphoto2
 {
@@ -70,8 +71,21 @@ namespace gphoto2pp
 	class CameraWidgetWrapper
 	{
 	friend class CameraWrapper;
+	friend class NonValueWidget;
 	public:
 		virtual ~CameraWidgetWrapper();
+
+		/**
+		 * \brief Creates a standalone widget of the requested type.
+		 * \param[in] type libgphoto2 widget type
+		 * \param[in] label initial label/name, without embedded NUL bytes
+		 * \return Owning polymorphic widget
+		 * \throw GPhoto2pp::exceptions::ArgumentException for embedded NUL
+		 * \throw GPhoto2pp::exceptions::InvalidWidgetType for unsupported types
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		static std::unique_ptr<CameraWidgetWrapper> create(
+			CameraWidgetTypeWrapper type, std::string const & label);
 		
 		// Move constructor and move assignment
 		CameraWidgetWrapper(CameraWidgetWrapper&& other);
@@ -217,6 +231,7 @@ namespace gphoto2pp
 		
 	protected:
 		CameraWidgetWrapper(gphoto2::_CameraWidget* cameraWidget);
+		void releaseOwnership();
 		
 		/**
 		 * \brief Adds a reference count to the internal gphoto2::CameraWidget 

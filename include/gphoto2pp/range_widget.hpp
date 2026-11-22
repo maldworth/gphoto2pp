@@ -26,6 +26,7 @@
 #define RANGEWIDGET_HPP
 
 #include <gphoto2pp/float_widget.hpp>
+#include <gphoto2pp/range_widget_range.hpp>
 
 namespace gphoto2pp
 {
@@ -39,8 +40,16 @@ namespace gphoto2pp
 	{
 	friend class NonValueWidget;
 	friend class CameraWrapper;
+	friend class CameraWidgetWrapper;
 
 	public:
+		/**
+		 * \brief Sets the range minimum, maximum and increment.
+		 * \throw GPhoto2pp::exceptions::ArgumentException for invalid bounds
+		 * or nonfinite values
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		void setRange(RangeWidgetRange const & range);
 		/**
 		 * \brief Gets the widget's range.
 		 * \return the widget's range

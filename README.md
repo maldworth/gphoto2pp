@@ -281,6 +281,9 @@ Names and info strings reject embedded NUL bytes and fixed-buffer overflow;
 read-only and changed values accept only 0 or 1. `isChanged()` reports the
 current libgphoto2 changed flag. Labels remain read-only because libgphoto2
 does not expose a public label setter.
+`CameraWidgetWrapper::create()` builds standalone typed widgets.
+`NonValueWidget::append()` and `prepend()` insert children; `ChoicesWidget`
+supports `addChoice()`; `RangeWidget::setRange()` updates finite ordered ranges.
 
 Installation
 ------------

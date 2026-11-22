@@ -36,6 +36,7 @@ namespace gphoto2pp
 	class WindowWidget : public NonValueWidget
 	{
 	friend class CameraWrapper;
+	friend class CameraWidgetWrapper;
 
 	protected:
 		WindowWidget(gphoto2::_CameraWidget* cameraWidget);

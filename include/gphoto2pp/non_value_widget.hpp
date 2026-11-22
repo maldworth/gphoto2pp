@@ -39,6 +39,9 @@ namespace gphoto2pp
 	{
 	friend class CameraWrapper;
 	public:
+		void append(CameraWidgetWrapper & child);
+		void prepend(CameraWidgetWrapper & child);
+
 		/**
 		 * \brief Gets the number of children to this current widget
 		 * \return the number of children

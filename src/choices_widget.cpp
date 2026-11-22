@@ -59,6 +59,18 @@ namespace gphoto2pp
 		return gphoto2pp::checkResponse(gphoto2::gp_widget_count_choices(m_cameraWidget),"gp_widget_count_choices");
 	}
 
+	void ChoicesWidget::addChoice(std::string const & choice)
+	{
+		if (choice.find('\0') != std::string::npos)
+		{
+			throw exceptions::ArgumentException(
+				"Camera widget choice must not contain embedded NUL");
+		}
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_add_choice(m_cameraWidget, choice.c_str()),
+			"gp_widget_add_choice");
+	}
+
 	std::vector<std::string> ChoicesWidget::getChoices() const
 	{
 		int choiceCount = countChoices();

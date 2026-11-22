@@ -45,6 +45,14 @@ namespace gphoto2pp
 
 	public:
 		/**
+		 * \brief Adds a choice string to a Menu or Radio widget.
+		 * \param[in] choice choice without embedded NUL bytes
+		 * \throw GPhoto2pp::exceptions::ArgumentException for embedded NUL
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		void addChoice(std::string const & choice);
+
+		/**
 		 * \brief Counts the number of choices/options to set for this widget
 		 * \return the number of choices
 		 * \note Direct wrapper for <tt>gp_widget_count_choices(...)</tt>

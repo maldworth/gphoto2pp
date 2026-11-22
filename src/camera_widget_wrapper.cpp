@@ -27,6 +27,16 @@
 #include <gphoto2pp/helper_gphoto2.hpp>
 #include <gphoto2pp/camera_widget_type_wrapper.hpp>
 #include <gphoto2pp/exceptions.hpp>
+#include <gphoto2pp/window_widget.hpp>
+#include <gphoto2pp/section_widget.hpp>
+#include <gphoto2pp/text_widget.hpp>
+#include <gphoto2pp/range_widget.hpp>
+#include <gphoto2pp/int_widget.hpp>
+#include <gphoto2pp/toggle_widget.hpp>
+#include <gphoto2pp/radio_widget.hpp>
+#include <gphoto2pp/menu_widget.hpp>
+#include <gphoto2pp/button_widget.hpp>
+#include <gphoto2pp/date_widget.hpp>
 #include "widget_string_helper.hpp"
 
 namespace gphoto2
@@ -36,6 +46,63 @@ namespace gphoto2
 
 namespace gphoto2pp
 {
+	std::unique_ptr<CameraWidgetWrapper> CameraWidgetWrapper::create(
+		CameraWidgetTypeWrapper type, std::string const & label)
+	{
+		if (label.find('\0') != std::string::npos)
+		{
+			throw exceptions::ArgumentException(
+				"Camera widget label must not contain embedded NUL");
+		}
+		gphoto2::_CameraWidget *raw = nullptr;
+		gphoto2pp::checkResponse(gphoto2::gp_widget_new(
+			static_cast<gphoto2::CameraWidgetType>(type),
+			label.c_str(), &raw), "gp_widget_new");
+		if (raw == nullptr)
+		{
+			throw exceptions::NullWidget(
+				"libgphoto2 returned a null camera widget");
+		}
+		std::unique_ptr<CameraWidgetWrapper> result;
+		switch (type)
+		{
+			case CameraWidgetTypeWrapper::Window:
+				result.reset(new WindowWidget(raw));
+				break;
+			case CameraWidgetTypeWrapper::Section:
+				result.reset(new SectionWidget(raw));
+				break;
+			case CameraWidgetTypeWrapper::Text:
+				result.reset(new TextWidget(raw));
+				break;
+			case CameraWidgetTypeWrapper::Range:
+				result.reset(new RangeWidget(raw));
+				break;
+			case CameraWidgetTypeWrapper::Toggle:
+				result.reset(new ToggleWidget(raw));
+				break;
+			case CameraWidgetTypeWrapper::Radio:
+				result.reset(new RadioWidget(raw));
+				break;
+			case CameraWidgetTypeWrapper::Menu:
+				result.reset(new MenuWidget(raw));
+				break;
+			case CameraWidgetTypeWrapper::Button:
+				result.reset(new ButtonWidget(raw));
+				break;
+			case CameraWidgetTypeWrapper::Date:
+				result.reset(new DateWidget(raw));
+				break;
+			default:
+				gphoto2::gp_widget_unref(raw);
+				throw exceptions::InvalidWidgetType(
+					"Unsupported standalone camera widget type");
+		}
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_unref(raw), "gp_widget_unref");
+		return result;
+	}
+
 	CameraWidgetWrapper::CameraWidgetWrapper(gphoto2::_CameraWidget* cameraWidget)
 		: m_cameraWidget{cameraWidget}
 	{
@@ -54,6 +121,11 @@ namespace gphoto2pp
 			
 			m_cameraWidget = nullptr;
 		}
+	}
+
+	void CameraWidgetWrapper::releaseOwnership()
+	{
+		m_cameraWidget = nullptr;
 	}
 
 	CameraWidgetWrapper::CameraWidgetWrapper(CameraWidgetWrapper&& other)

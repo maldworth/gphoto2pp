@@ -1,6 +1,12 @@
 #include <cxxtest/TestSuite.h>
 
 #include <gphoto2pp/choices_widget.hpp>
+#include <gphoto2pp/camera_widget_wrapper.hpp>
+#include <gphoto2pp/camera_widget_type_wrapper.hpp>
+#include <gphoto2pp/menu_widget.hpp>
+#include <gphoto2pp/range_widget.hpp>
+#include <gphoto2pp/text_widget.hpp>
+#include <gphoto2pp/window_widget.hpp>
 #include <gphoto2pp/exceptions.hpp>
 
 namespace gphoto2 {
@@ -100,6 +106,51 @@ public:
         TS_ASSERT_THROWS(m_choices->setReadOnly(2),
             const gphoto2pp::exceptions::ArgumentException &);
         TS_ASSERT_THROWS(m_choices->setChanged(-1),
+            const gphoto2pp::exceptions::ArgumentException &);
+    }
+
+    void testStandaloneCreationAndContainerInsertion() {
+        auto root = gphoto2pp::CameraWidgetWrapper::create(
+            gphoto2pp::CameraWidgetTypeWrapper::Window, "Root");
+        auto *window =
+            dynamic_cast<gphoto2pp::WindowWidget *>(root.get());
+        TS_ASSERT(window != nullptr);
+
+        auto menu = gphoto2pp::CameraWidgetWrapper::create(
+            gphoto2pp::CameraWidgetTypeWrapper::Menu, "Mode");
+        auto *typedMenu =
+            dynamic_cast<gphoto2pp::MenuWidget *>(menu.get());
+        TS_ASSERT(typedMenu != nullptr);
+        typedMenu->addChoice("Auto");
+        typedMenu->addChoice("Manual");
+        TS_ASSERT_EQUALS(typedMenu->countChoices(), 2);
+        TS_ASSERT_THROWS(typedMenu->addChoice(
+            std::string("bad\0choice", 11)),
+            const gphoto2pp::exceptions::ArgumentException &);
+
+        auto text = gphoto2pp::CameraWidgetWrapper::create(
+            gphoto2pp::CameraWidgetTypeWrapper::Text, "Name");
+        window->append(*menu);
+        window->prepend(*text);
+        TS_ASSERT_EQUALS(window->countChildren(), 2);
+
+        auto range = gphoto2pp::CameraWidgetWrapper::create(
+            gphoto2pp::CameraWidgetTypeWrapper::Range, "Exposure");
+        auto *typedRange =
+            dynamic_cast<gphoto2pp::RangeWidget *>(range.get());
+        TS_ASSERT(typedRange != nullptr);
+        gphoto2pp::RangeWidgetRange limits;
+        limits.Min = -2.0f;
+        limits.Max = 2.0f;
+        limits.Step = 0.5f;
+        typedRange->setRange(limits);
+        const auto readback = typedRange->getRange();
+        TS_ASSERT_EQUALS(readback.Min, -2.0f);
+        TS_ASSERT_EQUALS(readback.Max, 2.0f);
+        TS_ASSERT_EQUALS(readback.Step, 0.5f);
+
+        limits.Step = 0.0f;
+        TS_ASSERT_THROWS(typedRange->setRange(limits),
             const gphoto2pp::exceptions::ArgumentException &);
     }
 };

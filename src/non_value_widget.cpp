@@ -46,6 +46,22 @@ namespace gphoto2pp
 		return gphoto2pp::checkResponse(gphoto2::gp_widget_count_children(m_cameraWidget),"gp_widget_count_children");
 	}
 
+	void NonValueWidget::append(CameraWidgetWrapper & child)
+	{
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_append(m_cameraWidget, child.getPtr()),
+			"gp_widget_append");
+		child.releaseOwnership();
+	}
+
+	void NonValueWidget::prepend(CameraWidgetWrapper & child)
+	{
+		gphoto2pp::checkResponse(
+			gphoto2::gp_widget_prepend(m_cameraWidget, child.getPtr()),
+			"gp_widget_prepend");
+		child.releaseOwnership();
+	}
+
 	CameraWidgetTypeWrapper NonValueWidget::getChildType(int index) const
 	{
 		auto childWidget = this->getChildWrapper(index);
