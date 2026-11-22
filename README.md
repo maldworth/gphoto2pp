@@ -170,6 +170,8 @@ previously compiled shallow copies remain unsafe. A moved-from wrapper may be
 destroyed or assigned to, but cannot be used for lookups or enumeration.
 `PortLibraryVersion()` reports the linked libgphoto2_port version; pass `true`
 for verbose build information. `LibraryVersion()` reports libgphoto2's version.
+`PortResultString(result)` converts a libgphoto2_port result code to owned text
+and reports a null return as an error.
 
 Camera lifecycle
 ----------------

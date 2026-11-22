@@ -93,6 +93,14 @@ namespace gphoto2pp
 	 * \throw std::runtime_error if libgphoto2_port returns a null array
 	 */
 	std::string PortLibraryVersion(bool verbose = false);
+
+	/**
+	 * \brief Converts a libgphoto2_port result code to text.
+	 * \param[in] result negative or positive port result code
+	 * \return Owning result text
+	 * \throw std::runtime_error if libgphoto2_port returns null
+	 */
+	std::string PortResultString(int result);
 }
 
 #endif // HELPERGPHOTO2_HPP

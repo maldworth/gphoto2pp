@@ -4,6 +4,7 @@
 
 namespace gphoto2 {
 #include <gphoto2/gphoto2-version.h>
+#include <gphoto2/gphoto2-port-result.h>
 }
 
 #include <stdexcept>
@@ -17,6 +18,7 @@ const char *camera_short[] = {"camera 2", nullptr};
 const char *camera_verbose[] = {"camera 2", "build detail", nullptr};
 bool null_port_version = false;
 bool null_camera_version = false;
+bool null_port_result = false;
 }
 
 namespace gphoto2 {
@@ -33,6 +35,13 @@ extern "C" const char **gp_library_version(GPVersionVerbosity verbose) {
     }
     return verbose == GP_VERSION_VERBOSE ? camera_verbose : camera_short;
 }
+
+extern "C" const char *gp_port_result_as_string(int result) {
+    if (null_port_result) {
+        return nullptr;
+    }
+    return result == -7 ? "I/O problem" : "Unknown result";
+}
 }
 
 class Helpers_LibraryVersion : public CxxTest::TestSuite {
@@ -40,6 +49,7 @@ public:
     void setUp() {
         null_port_version = false;
         null_camera_version = false;
+        null_port_result = false;
         port_version[0] = 'p';
     }
 
@@ -56,6 +66,16 @@ public:
         TS_ASSERT_EQUALS(gphoto2pp::LibraryVersion(), "camera 2\n");
         TS_ASSERT_EQUALS(gphoto2pp::LibraryVersion(true),
             "camera 2\nbuild detail\n");
+    }
+
+    void testPortResultTextAndNullHandling() {
+        TS_ASSERT_EQUALS(gphoto2pp::PortResultString(-7),
+            "I/O problem");
+        TS_ASSERT_EQUALS(gphoto2pp::PortResultString(123),
+            "Unknown result");
+        null_port_result = true;
+        TS_ASSERT_THROWS(gphoto2pp::PortResultString(-7),
+            const std::runtime_error &);
     }
 
     void testNullVersionArraysAreReported() {

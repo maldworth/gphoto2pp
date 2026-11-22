@@ -45,6 +45,7 @@ namespace gphoto2
 #include <gphoto2/gphoto2-context.h>
 #endif
 #include <gphoto2/gphoto2-version.h>
+#include <gphoto2/gphoto2-port-result.h>
 }
 
 #include <sstream>
@@ -170,5 +171,17 @@ namespace gphoto2pp
 		const auto verbosity = verbose
 			? gphoto2::GP_VERSION_VERBOSE : gphoto2::GP_VERSION_SHORT;
 		return formatLibraryVersion(gphoto2::gp_port_library_version(verbosity));
+	}
+
+	std::string PortResultString(int result)
+	{
+		const char *text =
+			gphoto2::gp_port_result_as_string(result);
+		if (text == nullptr)
+		{
+			throw std::runtime_error(
+				"libgphoto2_port returned a null result string");
+		}
+		return std::string(text);
 	}
 }
