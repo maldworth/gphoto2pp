@@ -3,7 +3,12 @@
 #include <gphoto2pp/camera_file_wrapper.hpp>
 #include <gphoto2pp/exceptions.hpp>
 
+namespace gphoto2 {
+#include <gphoto2/gphoto2-result.h>
+}
+
 #include <cerrno>
+#include <cstdint>
 #include <cstdio>
 #include <cstring>
 #include <fcntl.h>
@@ -74,5 +79,34 @@ public:
     void testNegativeFdIsRejected() {
         TS_ASSERT_THROWS(gphoto2pp::CameraFileWrapper(-1),
             const gphoto2pp::exceptions::ArgumentException &);
+    }
+
+    void testHandlerCallbacksReceiveSizeReadAndWrite() {
+        std::vector<char> written;
+        gphoto2pp::CameraFileHandlerCallbacks callbacks;
+        callbacks.size = [](std::uint64_t &size) {
+            size = 3;
+            return GP_OK;
+        };
+        callbacks.read = [](std::vector<char> &data,
+            std::uint64_t &length) {
+            data = {'a', 'b', 'c'};
+            length = data.size();
+            return GP_OK;
+        };
+        callbacks.write = [&written](std::vector<char> const &data,
+            std::uint64_t &length) {
+            written = data;
+            length = data.size();
+            return GP_OK;
+        };
+
+        gphoto2pp::CameraFileWrapper file(callbacks);
+        TS_ASSERT_EQUALS(file.getSize(), 3UL);
+        TS_ASSERT_EQUALS(file.getDataAndSize(),
+            (std::vector<char>{'a', 'b', 'c'}));
+        file.setDataAndSize({'x', 'y', 'z'});
+        TS_ASSERT_EQUALS(written,
+            (std::vector<char>{'x', 'y', 'z'}));
     }
 };

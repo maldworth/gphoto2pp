@@ -28,6 +28,9 @@
 #include <string>
 #include <ctime>
 #include <vector>
+#include <cstdint>
+#include <functional>
+#include <memory>
 
 namespace gphoto2
 {
@@ -38,6 +41,18 @@ namespace gphoto2pp
 {
 	//Forward Declarations
 	enum class CameraFileTypeWrapper : int;
+
+	/**
+	 * \brief C++ callbacks for a handler-backed CameraFile.
+	 * \note libgphoto2's handler API is marked unstable. Callback exceptions
+	 * are converted to GP_ERROR by the bridge.
+	 */
+	struct CameraFileHandlerCallbacks
+	{
+		std::function<int(std::uint64_t &)> size;
+		std::function<int(std::vector<char> &, std::uint64_t &)> read;
+		std::function<int(std::vector<char> const &, std::uint64_t &)> write;
+	};
 	
 	/**
 	 * \class CameraFileWrapper
@@ -56,6 +71,14 @@ namespace gphoto2pp
 		 * \throw GPhoto2pp::exceptions::gphoto2_exception on construction failure
 		 */
 		explicit CameraFileWrapper(int fd);
+		/**
+		 * \brief Creates a handler-backed camera file.
+		 * \warning The callback API is unstable in libgphoto2.
+		 * \param[in] callbacks size/read/write callbacks
+		 * \throw GPhoto2pp::exceptions::gphoto2_exception
+		 */
+		explicit CameraFileWrapper(
+			CameraFileHandlerCallbacks const & callbacks);
 		~CameraFileWrapper();
 		
 		// Move constructor and move assignment
@@ -210,6 +233,8 @@ namespace gphoto2pp
 
 	private:
 		gphoto2::_CameraFile* m_cameraFile;
+		std::shared_ptr<void> m_handlerState;
+		bool m_callerOwnedData = false;
 
 	};
 

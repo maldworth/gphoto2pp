@@ -39,12 +39,124 @@
 namespace gphoto2
 {
 #include <gphoto2/gphoto2-file.h>
+#include <gphoto2/gphoto2-result.h>
 }
 
 namespace gphoto2pp
 {
+	struct CameraFileHandlerState
+	{
+		CameraFileHandlerCallbacks callbacks;
+		gphoto2::CameraFileHandler handler;
+	};
+
+	namespace
+	{
+		int handlerSize(void *privateData, std::uint64_t *size)
+		{
+			auto *state =
+				static_cast<CameraFileHandlerState *>(privateData);
+			if (state == nullptr || !state->callbacks.size)
+			{
+				return GP_ERROR_NOT_SUPPORTED;
+			}
+			try
+			{
+				std::uint64_t value = 0;
+				const int result = state->callbacks.size(value);
+				if (result == GP_OK)
+				{
+					*size = value;
+				}
+				return result;
+			}
+			catch (...)
+			{
+				return GP_ERROR;
+			}
+		}
+
+		int handlerRead(void *privateData, unsigned char *data,
+			std::uint64_t *length)
+		{
+			auto *state =
+				static_cast<CameraFileHandlerState *>(privateData);
+			if (state == nullptr || !state->callbacks.read)
+			{
+				return GP_ERROR_NOT_SUPPORTED;
+			}
+			try
+			{
+				std::uint64_t requested = length == nullptr ? 0 : *length;
+				std::vector<char> buffer(
+					requested > 0
+						? static_cast<std::size_t>(requested) : 0);
+				const int result =
+					state->callbacks.read(buffer, requested);
+				if (result == GP_OK)
+				{
+					if (length != nullptr)
+					{
+						if (requested > buffer.size())
+						{
+							requested = buffer.size();
+						}
+						*length = requested;
+					}
+					if (data != nullptr && requested > 0)
+					{
+						std::memcpy(data, buffer.data(),
+							static_cast<std::size_t>(requested));
+					}
+				}
+				return result;
+			}
+			catch (...)
+			{
+				return GP_ERROR;
+			}
+		}
+
+		int handlerWrite(void *privateData, unsigned char *data,
+			std::uint64_t *length)
+		{
+			auto *state =
+				static_cast<CameraFileHandlerState *>(privateData);
+			if (state == nullptr || !state->callbacks.write)
+			{
+				return GP_ERROR_NOT_SUPPORTED;
+			}
+			try
+			{
+				std::uint64_t requested =
+					length == nullptr ? 0 : *length;
+				std::vector<char> buffer;
+				if (data != nullptr && requested > 0)
+				{
+					buffer.assign(
+						reinterpret_cast<char *>(data),
+						reinterpret_cast<char *>(data) +
+							static_cast<std::size_t>(requested));
+				}
+				const int result =
+					state->callbacks.write(buffer, requested);
+				if (result == GP_OK && length != nullptr)
+				{
+					*length = requested;
+				}
+				return result;
+			}
+			catch (...)
+			{
+				return GP_ERROR;
+			}
+		}
+	}
+
 	CameraFileWrapper::CameraFileWrapper()
 		: m_cameraFile(nullptr)
+		, m_handlerState(nullptr)
+		, m_callerOwnedData(false)
 	{
 		FILE_LOG(logINFO) << "CameraFileWrapper Constructor";
 		
@@ -53,6 +165,8 @@ namespace gphoto2pp
 
 	CameraFileWrapper::CameraFileWrapper(int fd)
 		: m_cameraFile(nullptr)
+		, m_handlerState(nullptr)
+		, m_callerOwnedData(true)
 	{
 		FILE_LOG(logINFO) << "CameraFileWrapper FD Constructor";
 		if (fd < 0)
@@ -63,6 +177,26 @@ namespace gphoto2pp
 		gphoto2pp::checkResponse(
 			gphoto2::gp_file_new_from_fd(&m_cameraFile, fd),
 			"gp_file_new_from_fd");
+	}
+
+	CameraFileWrapper::CameraFileWrapper(
+		CameraFileHandlerCallbacks const & callbacks)
+		: m_cameraFile(nullptr)
+		, m_handlerState(std::make_shared<CameraFileHandlerState>())
+		, m_callerOwnedData(true)
+	{
+		FILE_LOG(logINFO) << "CameraFileWrapper Handler Constructor";
+		auto *state =
+			std::static_pointer_cast<CameraFileHandlerState>(
+				m_handlerState).get();
+		state->callbacks = callbacks;
+		state->handler.size = handlerSize;
+		state->handler.read = handlerRead;
+		state->handler.write = handlerWrite;
+		gphoto2pp::checkResponse(
+			gphoto2::gp_file_new_from_handler(
+				&m_cameraFile, &state->handler, state),
+			"gp_file_new_from_handler");
 	}
 
 	CameraFileWrapper::~CameraFileWrapper()
@@ -78,10 +212,14 @@ namespace gphoto2pp
 	
 	CameraFileWrapper::CameraFileWrapper(CameraFileWrapper&& other)
 		: m_cameraFile(other.m_cameraFile)
+		, m_handlerState(std::move(other.m_handlerState))
+		, m_callerOwnedData(other.m_callerOwnedData)
 	{
 		FILE_LOG(logINFO) << "CameraFileWrapper move Constructor";
-		
+
 		other.m_cameraFile = nullptr;
+		other.m_handlerState.reset();
+		other.m_callerOwnedData = false;
 	}
 	
 	CameraFileWrapper& CameraFileWrapper::operator=(CameraFileWrapper&& other)
@@ -98,15 +236,21 @@ namespace gphoto2pp
 			
 			// Steal or "move" the other objects resource
 			m_cameraFile = other.m_cameraFile;
+			m_handlerState = std::move(other.m_handlerState);
+			m_callerOwnedData = other.m_callerOwnedData;
 			
 			// Unreference the other objects resource, so it's destructor doesn't unreference it
 			other.m_cameraFile = nullptr;
+			other.m_handlerState.reset();
+			other.m_callerOwnedData = false;
 		}
 		return *this;
 	}
 	
 	CameraFileWrapper::CameraFileWrapper(CameraFileWrapper const & other)
 		: m_cameraFile(other.m_cameraFile)
+		, m_handlerState(other.m_handlerState)
+		, m_callerOwnedData(other.m_callerOwnedData)
 	{
 		FILE_LOG(logINFO) << "CameraFileWrapper copy Constructor";
 		
@@ -133,6 +277,8 @@ namespace gphoto2pp
 			
 			// copy the other objects pointer
 			m_cameraFile = other.m_cameraFile;
+			m_handlerState = other.m_handlerState;
+			m_callerOwnedData = other.m_callerOwnedData;
 			
 			if(m_cameraFile != nullptr)
 			{
@@ -167,7 +313,12 @@ namespace gphoto2pp
 			throw std::runtime_error(
 				"libgphoto2 returned null file data with a nonzero size");
 		}
-		return std::vector<char>{buffer, buffer+size};
+		std::vector<char> result{buffer, buffer + size};
+		if (m_callerOwnedData)
+		{
+			std::free(const_cast<char *>(buffer));
+		}
+		return result;
 	}
 
 

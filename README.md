@@ -241,6 +241,10 @@ Camera file objects
 Constructing `CameraFileWrapper(fd)` transfers descriptor ownership to
 libgphoto2 on successful construction; the descriptor is closed when the last
 file wrapper releases the object. Negative descriptors are rejected.
+`CameraFileWrapper(handlerCallbacks)` exposes libgphoto2's handler API through
+C++ size/read/write callbacks. This API is marked unstable by libgphoto2.
+Callback state remains valid for the lifetime of the file wrapper, and callback
+exceptions are converted to libgphoto2 error codes.
 `clear()` resets the file object, and `copyFrom()` copies metadata and data
 between compatible file objects. Copy semantics preserve libgphoto2 reference
 sharing until the wrapper lifecycle ends.
