@@ -8,8 +8,11 @@ namespace gphoto2 {
 #include <gphoto2/gphoto2-port-result.h>
 #include <gphoto2/gphoto2-port-info-list.h>
 #include <gphoto2/gphoto2-abilities-list.h>
+#include <gphoto2/gphoto2-setting.h>
 }
 
+#include <algorithm>
+#include <cstring>
 #include <stdexcept>
 #include <string>
 
@@ -27,6 +30,13 @@ int locale_result = GP_OK;
 int port_locale_result = GP_OK;
 std::string initialized_localedir;
 bool localedir_was_null = false;
+int setting_get_result = GP_OK;
+int setting_set_result = GP_OK;
+bool setting_get_unterminated = false;
+std::string setting_value = "stored";
+std::string setting_id;
+std::string setting_key;
+std::string setting_set_value;
 std::string current_port_codeset = "UTF-8";
 std::string previous_port_codeset;
 std::string initialized_port_localedir;
@@ -77,6 +87,25 @@ extern "C" int gp_init_localedir(const char *localedir) {
     initialized_localedir = localedir == nullptr ? "" : localedir;
     return locale_result;
 }
+
+extern "C" int gp_setting_get(char *id, char *key, char *value) {
+    setting_id = id;
+    setting_key = key;
+    if (setting_get_unterminated) {
+        std::fill(value, value + 256, 'x');
+    } else {
+        std::copy(setting_value.begin(), setting_value.end(), value);
+        value[setting_value.size()] = '\0';
+    }
+    return setting_get_result;
+}
+
+extern "C" int gp_setting_set(char *id, char *key, char *value) {
+    setting_id = id;
+    setting_key = key;
+    setting_set_value = value;
+    return setting_set_result;
+}
 }
 
 class Helpers_LibraryVersion : public CxxTest::TestSuite {
@@ -88,6 +117,13 @@ public:
         null_port_codeset = false;
         locale_result = GP_OK;
         port_locale_result = GP_OK;
+        setting_get_result = GP_OK;
+        setting_set_result = GP_OK;
+        setting_get_unterminated = false;
+        setting_value = "stored";
+        setting_id.clear();
+        setting_key.clear();
+        setting_set_value.clear();
         initialized_localedir.clear();
         localedir_was_null = false;
         current_port_codeset = "UTF-8";
@@ -184,6 +220,78 @@ public:
             gphoto2pp::InitializeLocaleDirectory("/tmp/gphoto-locale"),
             const gphoto2pp::exceptions::InvalidLinkedVersionException &);
 #endif
+    }
+
+    void testGetSettingValidatesAndCopiesResult() {
+#ifdef GPHOTO2PP_HAVE_SETTING_GET
+        TS_ASSERT_EQUALS(gphoto2pp::GetSetting("frontend", "mode"), "stored");
+        TS_ASSERT_EQUALS(setting_id, "frontend");
+        TS_ASSERT_EQUALS(setting_key, "mode");
+
+        setting_value = std::string(255, 'v');
+        TS_ASSERT_EQUALS(gphoto2pp::GetSetting("frontend", "mode").size(),
+            255u);
+
+        setting_get_result = GP_ERROR_NO_MEMORY;
+        bool preserved_error = false;
+        try {
+            gphoto2pp::GetSetting("frontend", "mode");
+        } catch (const gphoto2pp::exceptions::gphoto2_exception &error) {
+            preserved_error =
+                error.getResultCode() == GP_ERROR_NO_MEMORY;
+        }
+        TS_ASSERT(preserved_error);
+
+        setting_get_result = GP_OK;
+        setting_get_unterminated = true;
+        TS_ASSERT_THROWS(gphoto2pp::GetSetting("frontend", "mode"),
+            const std::runtime_error &);
+#else
+        TS_ASSERT_THROWS(gphoto2pp::GetSetting("frontend", "mode"),
+            const gphoto2pp::exceptions::InvalidLinkedVersionException &);
+#endif
+    }
+
+    void testSetSettingValidatesInputsAndPropagatesErrors() {
+#ifdef GPHOTO2PP_HAVE_SETTING_SET
+        gphoto2pp::SetSetting("frontend", "mode", "manual");
+        TS_ASSERT_EQUALS(setting_id, "frontend");
+        TS_ASSERT_EQUALS(setting_key, "mode");
+        TS_ASSERT_EQUALS(setting_set_value, "manual");
+
+        gphoto2pp::SetSetting(
+            "frontend", "mode", std::string(255, 'x'));
+        TS_ASSERT_EQUALS(setting_set_value.size(), 255u);
+
+        setting_set_result = GP_ERROR_NO_MEMORY;
+        bool preserved_error = false;
+        try {
+            gphoto2pp::SetSetting("frontend", "mode", "auto");
+        } catch (const gphoto2pp::exceptions::gphoto2_exception &error) {
+            preserved_error =
+                error.getResultCode() == GP_ERROR_NO_MEMORY;
+        }
+        TS_ASSERT(preserved_error);
+#else
+        TS_ASSERT_THROWS(
+            gphoto2pp::SetSetting("frontend", "mode", "manual"),
+            const gphoto2pp::exceptions::InvalidLinkedVersionException &);
+#endif
+
+        std::string invalid = "mode";
+        invalid.push_back('\0');
+        invalid += "suffix";
+        TS_ASSERT_THROWS(gphoto2pp::GetSetting("frontend", invalid),
+            const gphoto2pp::exceptions::ArgumentException &);
+        TS_ASSERT_THROWS(
+            gphoto2pp::SetSetting("frontend", "mode", invalid),
+            const gphoto2pp::exceptions::ArgumentException &);
+        TS_ASSERT_THROWS(
+            gphoto2pp::SetSetting("frontend", "mode", std::string(256, 'x')),
+            const gphoto2pp::exceptions::ArgumentException &);
+        TS_ASSERT_THROWS(
+            gphoto2pp::GetSetting(std::string(256, 'i'), "mode"),
+            const gphoto2pp::exceptions::ArgumentException &);
     }
 
     void testPortLocaleDirectoryInitializationAndErrors() {

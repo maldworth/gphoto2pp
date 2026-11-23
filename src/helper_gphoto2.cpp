@@ -45,18 +45,25 @@ namespace gphoto2
 #include <gphoto2/gphoto2-context.h>
 #endif
 #include <gphoto2/gphoto2-abilities-list.h>
+#include <gphoto2/gphoto2-setting.h>
 #include <gphoto2/gphoto2-version.h>
 #include <gphoto2/gphoto2-port-result.h>
 #include <gphoto2/gphoto2-port-info-list.h>
 }
 
 #include <sstream>
+#include <array>
+#include <cstddef>
+#include <cstring>
 #include <stdexcept>
+#include <vector>
 
 namespace gphoto2pp
 {
 	namespace
 	{
+		constexpr std::size_t maxSettingFieldLength = 255;
+
 		std::string formatLibraryVersion(char const *const *lines)
 		{
 			if (lines == nullptr)
@@ -69,6 +76,21 @@ namespace gphoto2pp
 				version << *line << '\n';
 			}
 			return version.str();
+		}
+
+		std::vector<char> makeSettingCString(
+			std::string const & value, char const *fieldName)
+		{
+			if (value.find('\0') != std::string::npos ||
+				value.size() > maxSettingFieldLength)
+			{
+				throw exceptions::ArgumentException(
+					std::string("Setting ") + fieldName +
+					" must not contain embedded NUL bytes or exceed 255 bytes");
+			}
+			std::vector<char> buffer(value.begin(), value.end());
+			buffer.push_back('\0');
+			return buffer;
 		}
 	}
 
@@ -242,6 +264,46 @@ namespace gphoto2pp
 		throw exceptions::InvalidLinkedVersionException(
 			"Initializing the locale directory requires "
 			"gp_init_localedir (libgphoto2 2.5.31 or greater)");
+#endif
+	}
+
+	std::string GetSetting(
+		std::string const & id, std::string const & key)
+	{
+		auto idBuffer = makeSettingCString(id, "id");
+		auto keyBuffer = makeSettingCString(key, "key");
+#ifdef GPHOTO2PP_HAVE_SETTING_GET
+		std::array<char, maxSettingFieldLength + 1> valueBuffer{};
+		gphoto2pp::checkResponse(
+			gphoto2::gp_setting_get(
+				idBuffer.data(), keyBuffer.data(), valueBuffer.data()),
+			"gp_setting_get");
+		if (std::memchr(valueBuffer.data(), '\0', valueBuffer.size()) == nullptr)
+		{
+			throw std::runtime_error(
+				"gp_setting_get returned an unterminated value");
+		}
+		return std::string(valueBuffer.data());
+#else
+		throw exceptions::InvalidLinkedVersionException(
+			"Retrieving settings requires gp_setting_get");
+#endif
+	}
+
+	void SetSetting(std::string const & id, std::string const & key,
+		std::string const & value)
+	{
+		auto idBuffer = makeSettingCString(id, "id");
+		auto keyBuffer = makeSettingCString(key, "key");
+		auto valueBuffer = makeSettingCString(value, "value");
+#ifdef GPHOTO2PP_HAVE_SETTING_SET
+		gphoto2pp::checkResponse(
+			gphoto2::gp_setting_set(
+				idBuffer.data(), keyBuffer.data(), valueBuffer.data()),
+			"gp_setting_set");
+#else
+		throw exceptions::InvalidLinkedVersionException(
+			"Storing settings requires gp_setting_set");
 #endif
 	}
 

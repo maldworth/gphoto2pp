@@ -142,6 +142,38 @@ namespace gphoto2pp
 	void InitializeLocaleDirectory();
 
 	/**
+	 * \brief Retrieves a persisted libgphoto2 setting.
+	 * \param[in] id setting owner, at most 255 bytes and without embedded NUL
+	 * \param[in] key setting key, at most 255 bytes and without embedded NUL
+	 * \return The stored value.
+	 * \note The C API has no output-capacity parameter. A custom getter
+	 * registered outside gphoto2pp must write at most 255 bytes plus NUL.
+	 * Setting storage is process-global; callers must serialize concurrent
+	 * get and set operations.
+	 * \throw gphoto2pp::exceptions::ArgumentException for invalid input
+	 * \throw gphoto2pp::exceptions::InvalidLinkedVersionException when the
+	 * linked libgphoto2 lacks this API
+	 * \throw gphoto2pp::exceptions::gphoto2_exception on library failure
+	 * \throw std::runtime_error if the getter does not NUL-terminate its result
+	 */
+	std::string GetSetting(std::string const & id, std::string const & key);
+
+	/**
+	 * \brief Stores a persisted libgphoto2 setting.
+	 * \param[in] id setting owner, at most 255 bytes and without embedded NUL
+	 * \param[in] key setting key, at most 255 bytes and without embedded NUL
+	 * \param[in] value setting value, at most 255 bytes and without embedded NUL
+	 * \note Setting storage is process-global; callers must serialize
+	 * concurrent get and set operations.
+	 * \throw gphoto2pp::exceptions::ArgumentException for invalid input
+	 * \throw gphoto2pp::exceptions::InvalidLinkedVersionException when the
+	 * linked libgphoto2 lacks this API
+	 * \throw gphoto2pp::exceptions::gphoto2_exception on library failure
+	 */
+	void SetSetting(std::string const & id, std::string const & key,
+		std::string const & value);
+
+	/**
 	 * \brief Initializes libgphoto2_port's gettext locale directory.
 	 * \note Call before any other libgphoto2_port initialization. The first
 	 * initialization wins; later calls may be ignored by the library.

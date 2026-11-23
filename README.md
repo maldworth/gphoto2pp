@@ -232,6 +232,13 @@ non-initialization operation on its library; subsequent calls may be ignored.
 Builds linked against libgphoto2 versions before 2.5.31 or libgphoto2_port
 versions before 0.12.1 report an unsupported-version exception.
 
+Persisted libgphoto2 settings are available through `GetSetting()` and
+`SetSetting()`. Setting identifiers, keys and values are limited to 255 bytes
+to match libgphoto2's fixed-size storage. The C getter API has no buffer-size
+parameter, so any custom getter registered outside gphoto2pp must honor the
+same 256-byte buffer limit. Settings are process-global and callers must
+serialize concurrent reads and writes.
+
 Context callbacks
 -----------------
 `ContextWrapper` owns a libgphoto2 context and provides C++ callbacks for idle,
