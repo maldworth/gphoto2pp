@@ -31,6 +31,7 @@
 
 #include <string>
 #include <vector>
+#include <functional>
 
 namespace gphoto2
 {
@@ -172,6 +173,49 @@ namespace gphoto2pp
 	 */
 	void SetSetting(std::string const & id, std::string const & key,
 		std::string const & value);
+
+	/**
+	 * \brief C++ callback for retrieving a persisted libgphoto2 setting.
+	 * \param[in] id setting owner
+	 * \param[in] key setting key
+	 * \param[out] value stored value, at most 255 bytes on success
+	 * \return A libgphoto2 result code.
+	 */
+	using SettingGetCallback = std::function<int(
+		std::string const &, std::string const &, std::string &)>;
+
+	/**
+	 * \brief C++ callback for storing a persisted libgphoto2 setting.
+	 * \param[in] id setting owner
+	 * \param[in] key setting key
+	 * \param[in] value setting value
+	 * \return A libgphoto2 result code.
+	 */
+	using SettingSetCallback = std::function<int(
+		std::string const &, std::string const &, std::string const &)>;
+
+	/**
+	 * \brief Installs or clears libgphoto2's process-global settings getter.
+	 * \param[in] callback callback to install, or empty to clear
+	 * \note Configure before camera operations and do not change while setting
+	 * callbacks are in flight. Callback bodies may run concurrently and must
+	 * provide their own synchronization. The getter output is limited to 255
+	 * bytes to fit libgphoto2's 256-byte C callback convention.
+	 * \throw gphoto2pp::exceptions::InvalidLinkedVersionException when the
+	 * linked libgphoto2 lacks callback registration APIs
+	 */
+	void SetSettingGetCallback(SettingGetCallback callback);
+
+	/**
+	 * \brief Installs or clears libgphoto2's process-global settings setter.
+	 * \param[in] callback callback to install, or empty to clear
+	 * \note Configure before camera operations and do not change while setting
+	 * callbacks are in flight. Callback bodies may run concurrently and must
+	 * provide their own synchronization.
+	 * \throw gphoto2pp::exceptions::InvalidLinkedVersionException when the
+	 * linked libgphoto2 lacks callback registration APIs
+	 */
+	void SetSettingSetCallback(SettingSetCallback callback);
 
 	/**
 	 * \brief Initializes libgphoto2_port's gettext locale directory.

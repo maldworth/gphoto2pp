@@ -9,9 +9,11 @@ namespace gphoto2 {
 #include <gphoto2/gphoto2-port-info-list.h>
 #include <gphoto2/gphoto2-abilities-list.h>
 #include <gphoto2/gphoto2-setting.h>
+#include <gphoto2/gphoto2-result.h>
 }
 
 #include <algorithm>
+#include <array>
 #include <cstring>
 #include <stdexcept>
 #include <string>
@@ -37,6 +39,10 @@ std::string setting_value = "stored";
 std::string setting_id;
 std::string setting_key;
 std::string setting_set_value;
+gphoto2::gp_settings_func setting_get_callback = nullptr;
+gphoto2::gp_settings_func setting_set_callback = nullptr;
+void *setting_get_callback_data = nullptr;
+void *setting_set_callback_data = nullptr;
 std::string current_port_codeset = "UTF-8";
 std::string previous_port_codeset;
 std::string initialized_port_localedir;
@@ -106,6 +112,18 @@ extern "C" int gp_setting_set(char *id, char *key, char *value) {
     setting_set_value = value;
     return setting_set_result;
 }
+
+extern "C" void gp_setting_set_get_func(
+    gp_settings_func callback, void *data) {
+    setting_get_callback = callback;
+    setting_get_callback_data = data;
+}
+
+extern "C" void gp_setting_set_set_func(
+    gp_settings_func callback, void *data) {
+    setting_set_callback = callback;
+    setting_set_callback_data = data;
+}
 }
 
 class Helpers_LibraryVersion : public CxxTest::TestSuite {
@@ -124,6 +142,10 @@ public:
         setting_id.clear();
         setting_key.clear();
         setting_set_value.clear();
+#ifdef GPHOTO2PP_HAVE_SETTING_CALLBACKS
+        gphoto2pp::SetSettingGetCallback({});
+        gphoto2pp::SetSettingSetCallback({});
+#endif
         initialized_localedir.clear();
         localedir_was_null = false;
         current_port_codeset = "UTF-8";
@@ -292,6 +314,110 @@ public:
         TS_ASSERT_THROWS(
             gphoto2pp::GetSetting(std::string(256, 'i'), "mode"),
             const gphoto2pp::exceptions::ArgumentException &);
+    }
+
+    void testSettingCallbacksAreBoundedAndContainExceptions() {
+#ifdef GPHOTO2PP_HAVE_SETTING_CALLBACKS
+        gphoto2pp::SetSettingGetCallback(
+            [](std::string const &id, std::string const &key,
+                std::string &value) {
+                setting_id = id;
+                setting_key = key;
+                value = std::string(255, 'v');
+                return GP_OK;
+            });
+        TS_ASSERT(setting_get_callback != nullptr);
+
+        char id[] = "frontend";
+        char key[] = "mode";
+        std::array<char, 256> output;
+        output.fill('?');
+        TS_ASSERT_EQUALS(setting_get_callback(
+            id, key, output.data(), setting_get_callback_data), GP_OK);
+        TS_ASSERT_EQUALS(setting_id, "frontend");
+        TS_ASSERT_EQUALS(setting_key, "mode");
+        TS_ASSERT_EQUALS(std::string(output.data()), std::string(255, 'v'));
+
+        gphoto2pp::SetSettingGetCallback(
+            [](std::string const &, std::string const &,
+                std::string &value) {
+                value = "not written on error";
+                return GP_ERROR_NO_MEMORY;
+            });
+        output.fill('?');
+        TS_ASSERT_EQUALS(setting_get_callback(
+            id, key, output.data(), setting_get_callback_data),
+            GP_ERROR_NO_MEMORY);
+        TS_ASSERT_EQUALS(output[0], '?');
+
+        gphoto2pp::SetSettingGetCallback(
+            [](std::string const &, std::string const &,
+                std::string &value) {
+                value = std::string(256, 'x');
+                return GP_OK;
+            });
+        output.fill('?');
+        TS_ASSERT_EQUALS(setting_get_callback(
+            id, key, output.data(), setting_get_callback_data),
+            GP_ERROR_BAD_PARAMETERS);
+        TS_ASSERT_EQUALS(output[0], '?');
+
+        gphoto2pp::SetSettingGetCallback(
+            [](std::string const &, std::string const &, std::string &) -> int {
+                throw std::runtime_error("synthetic getter failure");
+            });
+        TS_ASSERT_EQUALS(setting_get_callback(
+            id, key, output.data(), setting_get_callback_data), GP_ERROR);
+        gphoto2pp::SetSettingGetCallback({});
+        TS_ASSERT(setting_get_callback == nullptr);
+
+        gphoto2pp::SetSettingSetCallback(
+            [](std::string const &settingId, std::string const &settingKey,
+                std::string const &value) {
+                setting_id = settingId;
+                setting_key = settingKey;
+                setting_set_value = value;
+                return GP_OK;
+            });
+        char value[] = "custom";
+        TS_ASSERT_EQUALS(setting_set_callback(
+            id, key, value, setting_set_callback_data), GP_OK);
+        TS_ASSERT_EQUALS(setting_id, "frontend");
+        TS_ASSERT_EQUALS(setting_key, "mode");
+        TS_ASSERT_EQUALS(setting_set_value, "custom");
+
+        gphoto2pp::SetSettingSetCallback(
+            [](std::string const &, std::string const &,
+                std::string const &) {
+                return GP_ERROR_NO_MEMORY;
+            });
+        TS_ASSERT_EQUALS(setting_set_callback(
+            id, key, value, setting_set_callback_data), GP_ERROR_NO_MEMORY);
+
+        char oversized_value[257];
+        std::fill(oversized_value, oversized_value + 256, 'x');
+        oversized_value[256] = '\0';
+        TS_ASSERT_EQUALS(setting_set_callback(
+            id, key, oversized_value, setting_set_callback_data),
+            GP_ERROR_BAD_PARAMETERS);
+
+        gphoto2pp::SetSettingSetCallback(
+            [](std::string const &, std::string const &,
+                std::string const &) -> int {
+                throw std::runtime_error("synthetic setter failure");
+            });
+        TS_ASSERT_EQUALS(setting_set_callback(
+            id, key, value, setting_set_callback_data), GP_ERROR);
+        gphoto2pp::SetSettingSetCallback({});
+        TS_ASSERT(setting_set_callback == nullptr);
+#else
+        TS_ASSERT_THROWS(
+            gphoto2pp::SetSettingGetCallback({}),
+            const gphoto2pp::exceptions::InvalidLinkedVersionException &);
+        TS_ASSERT_THROWS(
+            gphoto2pp::SetSettingSetCallback({}),
+            const gphoto2pp::exceptions::InvalidLinkedVersionException &);
+#endif
     }
 
     void testPortLocaleDirectoryInitializationAndErrors() {

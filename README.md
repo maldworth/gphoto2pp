@@ -236,8 +236,11 @@ Persisted libgphoto2 settings are available through `GetSetting()` and
 `SetSetting()`. Setting identifiers, keys and values are limited to 255 bytes
 to match libgphoto2's fixed-size storage. The C getter API has no buffer-size
 parameter, so any custom getter registered outside gphoto2pp must honor the
-same 256-byte buffer limit. Settings are process-global and callers must
-serialize concurrent reads and writes.
+same 256-byte buffer limit. gphoto2pp also provides C++ getter/setter callback
+registration on linked libraries that export the callback APIs; the getter
+bridge rejects values longer than 255 bytes and contains callback exceptions.
+Callbacks are process-global, may run concurrently, and must be configured
+before camera operations; serialize setting reads and writes.
 
 Context callbacks
 -----------------

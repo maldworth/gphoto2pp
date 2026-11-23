@@ -35,5 +35,11 @@ if(CXXTEST_FOUND)
 			target_compile_definitions (${testname} PRIVATE
 				GPHOTO2PP_HAVE_SETTING_SET)
 		endif ()
+		if (testname STREQUAL "Helpers_LibraryVersion" AND
+			GPHOTO2PP_HAVE_SETTING_GET_CALLBACK AND
+			GPHOTO2PP_HAVE_SETTING_SET_CALLBACK)
+			target_compile_definitions (${testname} PRIVATE
+				GPHOTO2PP_HAVE_SETTING_CALLBACKS)
+		endif ()
 	endforeach( testssourcefile ${TESTS_SOURCE_FILES} )
 endif(CXXTEST_FOUND)

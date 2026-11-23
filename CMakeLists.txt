@@ -87,6 +87,10 @@ check_cxx_symbol_exists (gp_setting_get "gphoto2/gphoto2-setting.h"
 	GPHOTO2PP_HAVE_SETTING_GET)
 check_cxx_symbol_exists (gp_setting_set "gphoto2/gphoto2-setting.h"
 	GPHOTO2PP_HAVE_SETTING_SET)
+check_cxx_symbol_exists (gp_setting_set_get_func
+	"gphoto2/gphoto2-setting.h" GPHOTO2PP_HAVE_SETTING_GET_CALLBACK)
+check_cxx_symbol_exists (gp_setting_set_set_func
+	"gphoto2/gphoto2-setting.h" GPHOTO2PP_HAVE_SETTING_SET_CALLBACK)
 check_cxx_symbol_exists (gp_port_init_localedir
 	"gphoto2/gphoto2-port-info-list.h"
 	GPHOTO2PP_HAVE_PORT_INIT_LOCALEDIR)
@@ -108,6 +112,11 @@ if (GPHOTO2PP_HAVE_SETTING_GET)
 endif ()
 if (GPHOTO2PP_HAVE_SETTING_SET)
 	target_compile_definitions (gphoto2pp PRIVATE GPHOTO2PP_HAVE_SETTING_SET)
+endif ()
+if (GPHOTO2PP_HAVE_SETTING_GET_CALLBACK AND
+	GPHOTO2PP_HAVE_SETTING_SET_CALLBACK)
+	target_compile_definitions (gphoto2pp PRIVATE
+		GPHOTO2PP_HAVE_SETTING_CALLBACKS)
 endif ()
 if (GPHOTO2PP_HAVE_PORT_INIT_LOCALEDIR)
 	target_compile_definitions (gphoto2pp PRIVATE GPHOTO2PP_HAVE_PORT_INIT_LOCALEDIR)

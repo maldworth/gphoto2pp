@@ -55,7 +55,10 @@ namespace gphoto2
 #include <array>
 #include <cstddef>
 #include <cstring>
+#include <mutex>
+#include <new>
 #include <stdexcept>
+#include <utility>
 #include <vector>
 
 namespace gphoto2pp
@@ -63,6 +66,20 @@ namespace gphoto2pp
 	namespace
 	{
 		constexpr std::size_t maxSettingFieldLength = 255;
+
+		struct SettingCallbacksState
+		{
+			std::mutex m_callbackMutex;
+			std::mutex m_registrationMutex;
+			SettingGetCallback m_get;
+			SettingSetCallback m_set;
+		};
+
+		SettingCallbacksState & settingCallbacksState()
+		{
+			static SettingCallbacksState state;
+			return state;
+		}
 
 		std::string formatLibraryVersion(char const *const *lines)
 		{
@@ -91,6 +108,134 @@ namespace gphoto2pp
 			std::vector<char> buffer(value.begin(), value.end());
 			buffer.push_back('\0');
 			return buffer;
+		}
+
+		int settingGetCallbackBridge(
+			char *id, char *key, char *value, void *)
+		{
+			if (id == nullptr || key == nullptr || value == nullptr)
+			{
+				return GP_ERROR_BAD_PARAMETERS;
+			}
+
+			SettingGetCallback callback;
+			try
+			{
+				auto & state = settingCallbacksState();
+				std::lock_guard<std::mutex> lock{state.m_callbackMutex};
+				callback = state.m_get;
+			}
+			catch (const std::bad_alloc &)
+			{
+				FILE_LOG(logERROR)
+					<< "Could not copy libgphoto2 setting getter callback";
+				return GP_ERROR_NO_MEMORY;
+			}
+			catch (...)
+			{
+				FILE_LOG(logERROR)
+					<< "Could not copy libgphoto2 setting getter callback";
+				return GP_ERROR;
+			}
+			if (!callback)
+			{
+				return GP_ERROR_BAD_PARAMETERS;
+			}
+
+			try
+			{
+				std::string settingValue;
+				const int result = callback(id, key, settingValue);
+				if (result < GP_OK)
+				{
+					return result;
+				}
+				const auto output = makeSettingCString(
+					settingValue, "callback value");
+				std::memcpy(value, output.data(), output.size());
+				return result;
+			}
+			catch (const exceptions::ArgumentException &)
+			{
+				FILE_LOG(logERROR)
+					<< "Libgphoto2 setting getter returned an invalid value";
+				return GP_ERROR_BAD_PARAMETERS;
+			}
+			catch (const std::bad_alloc &)
+			{
+				FILE_LOG(logERROR)
+					<< "Libgphoto2 setting getter ran out of memory";
+				return GP_ERROR_NO_MEMORY;
+			}
+			catch (...)
+			{
+				FILE_LOG(logERROR)
+					<< "Libgphoto2 setting getter callback threw";
+				return GP_ERROR;
+			}
+		}
+
+		int settingSetCallbackBridge(
+			char *id, char *key, char *value, void *)
+		{
+			if (id == nullptr || key == nullptr || value == nullptr)
+			{
+				return GP_ERROR_BAD_PARAMETERS;
+			}
+
+			SettingSetCallback callback;
+			std::string idValue;
+			std::string keyValue;
+			std::string settingValue;
+			try
+			{
+				idValue = id;
+				keyValue = key;
+				settingValue = value;
+				if (idValue.size() > maxSettingFieldLength ||
+					keyValue.size() > maxSettingFieldLength ||
+					settingValue.size() > maxSettingFieldLength)
+				{
+					return GP_ERROR_BAD_PARAMETERS;
+				}
+
+				auto & state = settingCallbacksState();
+				std::lock_guard<std::mutex> lock{state.m_callbackMutex};
+				callback = state.m_set;
+			}
+			catch (const std::bad_alloc &)
+			{
+				FILE_LOG(logERROR)
+					<< "Could not copy libgphoto2 setting setter callback";
+				return GP_ERROR_NO_MEMORY;
+			}
+			catch (...)
+			{
+				FILE_LOG(logERROR)
+					<< "Could not prepare libgphoto2 setting setter callback";
+				return GP_ERROR;
+			}
+			if (!callback)
+			{
+				return GP_ERROR_BAD_PARAMETERS;
+			}
+
+			try
+			{
+				return callback(idValue, keyValue, settingValue);
+			}
+			catch (const std::bad_alloc &)
+			{
+				FILE_LOG(logERROR)
+					<< "Libgphoto2 setting setter ran out of memory";
+				return GP_ERROR_NO_MEMORY;
+			}
+			catch (...)
+			{
+				FILE_LOG(logERROR)
+					<< "Libgphoto2 setting setter callback threw";
+				return GP_ERROR;
+			}
 		}
 	}
 
@@ -304,6 +449,68 @@ namespace gphoto2pp
 #else
 		throw exceptions::InvalidLinkedVersionException(
 			"Storing settings requires gp_setting_set");
+#endif
+	}
+
+	void SetSettingGetCallback(SettingGetCallback callback)
+	{
+#ifdef GPHOTO2PP_HAVE_SETTING_CALLBACKS
+		auto & state = settingCallbacksState();
+		std::lock_guard<std::mutex> registrationLock{
+			state.m_registrationMutex};
+		if (callback)
+		{
+			{
+				std::lock_guard<std::mutex> callbackLock{
+					state.m_callbackMutex};
+				state.m_get = std::move(callback);
+			}
+			gphoto2::gp_setting_set_get_func(
+				settingGetCallbackBridge, nullptr);
+		}
+		else
+		{
+			gphoto2::gp_setting_set_get_func(nullptr, nullptr);
+			std::lock_guard<std::mutex> callbackLock{
+				state.m_callbackMutex};
+			state.m_get = {};
+		}
+#else
+		(void)callback;
+		throw exceptions::InvalidLinkedVersionException(
+			"Setting getter callbacks require "
+			"gp_setting_set_get_func and gp_setting_set_set_func");
+#endif
+	}
+
+	void SetSettingSetCallback(SettingSetCallback callback)
+	{
+#ifdef GPHOTO2PP_HAVE_SETTING_CALLBACKS
+		auto & state = settingCallbacksState();
+		std::lock_guard<std::mutex> registrationLock{
+			state.m_registrationMutex};
+		if (callback)
+		{
+			{
+				std::lock_guard<std::mutex> callbackLock{
+					state.m_callbackMutex};
+				state.m_set = std::move(callback);
+			}
+			gphoto2::gp_setting_set_set_func(
+				settingSetCallbackBridge, nullptr);
+		}
+		else
+		{
+			gphoto2::gp_setting_set_set_func(nullptr, nullptr);
+			std::lock_guard<std::mutex> callbackLock{
+				state.m_callbackMutex};
+			state.m_set = {};
+		}
+#else
+		(void)callback;
+		throw exceptions::InvalidLinkedVersionException(
+			"Setting setter callbacks require "
+			"gp_setting_set_get_func and gp_setting_set_set_func");
 #endif
 	}
 
