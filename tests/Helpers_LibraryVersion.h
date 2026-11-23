@@ -28,6 +28,7 @@ bool null_port_version = false;
 bool null_camera_version = false;
 bool null_port_result = false;
 bool null_port_codeset = false;
+bool null_message_codeset = false;
 int locale_result = GP_OK;
 int port_locale_result = GP_OK;
 std::string initialized_localedir;
@@ -45,6 +46,7 @@ void *setting_get_callback_data = nullptr;
 void *setting_set_callback_data = nullptr;
 std::string current_port_codeset = "UTF-8";
 std::string previous_port_codeset;
+std::string current_message_codeset = "UTF-8";
 std::string initialized_port_localedir;
 bool port_localedir_was_null = false;
 }
@@ -80,6 +82,16 @@ extern "C" const char *gp_port_message_codeset(const char *codeset) {
         current_port_codeset = codeset;
     }
     return previous_port_codeset.c_str();
+}
+
+extern "C" const char *gp_message_codeset(const char *codeset) {
+    if (null_message_codeset) {
+        return nullptr;
+    }
+    if (codeset != nullptr) {
+        current_message_codeset = codeset;
+    }
+    return current_message_codeset.c_str();
 }
 
 extern "C" int gp_port_init_localedir(const char *localedir) {
@@ -133,6 +145,7 @@ public:
         null_camera_version = false;
         null_port_result = false;
         null_port_codeset = false;
+        null_message_codeset = false;
         locale_result = GP_OK;
         port_locale_result = GP_OK;
         setting_get_result = GP_OK;
@@ -150,6 +163,7 @@ public:
         localedir_was_null = false;
         current_port_codeset = "UTF-8";
         previous_port_codeset.clear();
+        current_message_codeset = "UTF-8";
         initialized_port_localedir.clear();
         port_localedir_was_null = false;
         port_version[0] = 'p';
@@ -202,6 +216,28 @@ public:
         null_port_codeset = true;
         TS_ASSERT_THROWS(gphoto2pp::PortMessageCodeset(),
             const std::runtime_error &);
+    }
+
+    void testMessageCodesetCanBeSetAndQueried() {
+#ifdef GPHOTO2PP_HAVE_MESSAGE_CODESET
+        TS_ASSERT_EQUALS(gphoto2pp::MessageCodeset("ASCII"), "ASCII");
+        TS_ASSERT_EQUALS(gphoto2pp::MessageCodeset(), "ASCII");
+
+        std::string invalid_codeset = "UTF-8";
+        invalid_codeset.push_back('\0');
+        invalid_codeset += "suffix";
+        TS_ASSERT_THROWS(gphoto2pp::MessageCodeset(invalid_codeset),
+            const gphoto2pp::exceptions::ArgumentException &);
+
+        null_message_codeset = true;
+        TS_ASSERT_THROWS(gphoto2pp::MessageCodeset(),
+            const std::runtime_error &);
+#else
+        TS_ASSERT_THROWS(gphoto2pp::MessageCodeset(),
+            const gphoto2pp::exceptions::InvalidLinkedVersionException &);
+        TS_ASSERT_THROWS(gphoto2pp::MessageCodeset("UTF-8"),
+            const gphoto2pp::exceptions::InvalidLinkedVersionException &);
+#endif
     }
 
     void testLocaleDirectoryInitializationAndErrors() {

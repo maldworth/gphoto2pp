@@ -382,6 +382,44 @@ namespace gphoto2pp
 		return std::string(current);
 	}
 
+	std::string MessageCodeset(std::string const & codeset)
+	{
+		if (codeset.find('\0') != std::string::npos)
+		{
+			throw exceptions::ArgumentException(
+				"Message codeset must not contain embedded NUL bytes");
+		}
+#ifdef GPHOTO2PP_HAVE_MESSAGE_CODESET
+		const char *result =
+			gphoto2::gp_message_codeset(codeset.c_str());
+		if (result == nullptr)
+		{
+			throw std::runtime_error(
+				"libgphoto2 returned a null message codeset");
+		}
+		return std::string(result);
+#else
+		throw exceptions::InvalidLinkedVersionException(
+			"Setting the message codeset requires gp_message_codeset");
+#endif
+	}
+
+	std::string MessageCodeset()
+	{
+#ifdef GPHOTO2PP_HAVE_MESSAGE_CODESET
+		const char *current = gphoto2::gp_message_codeset(nullptr);
+		if (current == nullptr)
+		{
+			throw std::runtime_error(
+				"libgphoto2 returned a null message codeset");
+		}
+		return std::string(current);
+#else
+		throw exceptions::InvalidLinkedVersionException(
+			"Querying the message codeset requires gp_message_codeset");
+#endif
+	}
+
 	void InitializeLocaleDirectory(std::string const & directory)
 	{
 		if (directory.find('\0') != std::string::npos)

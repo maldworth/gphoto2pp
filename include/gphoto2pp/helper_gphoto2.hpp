@@ -120,6 +120,26 @@ namespace gphoto2pp
 	std::string PortMessageCodeset();
 
 	/**
+	 * \brief Sets libgphoto2's gettext message codeset.
+	 * \param[in] codeset codeset to set, without embedded NUL bytes
+	 * \return The resulting codeset reported by libgphoto2.
+	 * \throw gphoto2pp::exceptions::InvalidLinkedVersionException when the
+	 * linked libgphoto2 lacks this API
+	 * \throw gphoto2pp::exceptions::ArgumentException for embedded NUL bytes
+	 * \throw std::runtime_error if libgphoto2 returns no codeset string
+	 */
+	std::string MessageCodeset(std::string const & codeset);
+
+	/**
+	 * \brief Queries libgphoto2's current gettext message codeset.
+	 * \return The current codeset.
+	 * \throw gphoto2pp::exceptions::InvalidLinkedVersionException when the
+	 * linked libgphoto2 lacks this API
+	 * \throw std::runtime_error if libgphoto2 returns no codeset string
+	 */
+	std::string MessageCodeset();
+
+	/**
 	 * \brief Initializes libgphoto2's gettext locale directory.
 	 * \param[in] directory root directory of localization files, without
 	 * embedded NUL bytes

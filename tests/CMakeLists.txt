@@ -41,5 +41,10 @@ if(CXXTEST_FOUND)
 			target_compile_definitions (${testname} PRIVATE
 				GPHOTO2PP_HAVE_SETTING_CALLBACKS)
 		endif ()
+		if (testname STREQUAL "Helpers_LibraryVersion" AND
+			GPHOTO2PP_HAVE_MESSAGE_CODESET)
+			target_compile_definitions (${testname} PRIVATE
+				GPHOTO2PP_HAVE_MESSAGE_CODESET)
+		endif ()
 	endforeach( testssourcefile ${TESTS_SOURCE_FILES} )
 endif(CXXTEST_FOUND)

@@ -222,7 +222,10 @@ remains unverified.
 SCSI command transfer is exposed through `sendSCSICommand()` with owned command,
 sense and data buffers. It is intended for supported low-level USB-SCSI ports
 and remains hardware-dependent.
-`PortMessageCodeset()` queries the current libgphoto2_port message codeset;
+`MessageCodeset()` queries the current libgphoto2 message codeset;
+`MessageCodeset(codeset)` changes it and returns libgphoto2's resulting
+codeset. `PortMessageCodeset()` queries the current libgphoto2_port message
+codeset;
 `PortMessageCodeset(codeset)` changes it and returns the previous value.
 `InitializeLocaleDirectory()` configures libgphoto2's gettext locale directory,
 and `InitializePortLocaleDirectory()` configures libgphoto2_port's directory.
